@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+using namespace std;
 
 
 /*
@@ -8,7 +9,7 @@
 class Vector{
     public:
         double x,y,z; // these will be where the planets are moving
-        Vector(double x_ = 0 ,double y_ = 0,double z_ = 0): x(x_),y(y_),z(z_){} //if no params are given, default is zero
+        Vector(double x_ = 0.0 ,double y_ = 0.0,double z_ = 0.0): x(x_),y(y_),z(z_){} //if no params are given, default is zero
 };
 class Body{
     public:
@@ -16,13 +17,18 @@ class Body{
         Vector position;
         Vector velocity;
         Vector force;
+        static double timeStep = 0.01;
 
         //going to create a body now, sets mass, position, velocity, and force
-        Body(double m, Vector p, Vector v): mass(m), position(p),velocity(v),force(0,0,0) {};
+        Body(double m, Vector p, Vector v): mass(m), position(p), velocity(v), force(0.0, 0.0, 0.0) {
+            if (m <= 0) {
+                throw invalid_argument("Mass must be greater than 0");
+            }
+        }
 
         //body functions that can be used
         void resetForce(){
-            force = Vector(0,0,0);
+            force = Vector(0.0, 0.0, 0.0);
         }
         /*
             Calculating the distance vector
@@ -58,8 +64,31 @@ class Body{
                                  (p2.position.z - p1.position.z));
             return dist;
         }
-        void updatePosition(double mass,Body position,Body velocity, Body force){
-            //update position using velocity and force
+
+        void updatePosition(){
+            // calculate acceleration (a = F/m)
+            Vector accel = Vector(
+                force.x / mass,
+                force.y / mass,
+                force.z / mass
+            );
+
+            /* update position
+                position formula:
+                let s = position,
+                    s = s0 + v0*t + (0.5*a*t^2)
+            */
+            position.x += velocity.x * timeStep + (0.5 * accel.x * timeStep * timeStep);
+            position.y += velocity.y * timeStep + (0.5 * accel.x * timeStep * timeStep);
+            position.z += velocity.z * timeStep + (0.5 * accel.x * timeStep * timeStep);
+
+            /* update velocity
+                velocity formula:
+                    v = v0 + a*t
+            */
+           velocity.x += accel.x * timeStep;
+           velocity.y += accel.y * timeStep;
+           velocity.z += accel.z * timeStep;
         }
         
 
