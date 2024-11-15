@@ -12,120 +12,128 @@ class Vector{
         Vector(double x_ = 0.0 ,double y_ = 0.0,double z_ = 0.0): x(x_),y(y_),z(z_){} //if no params are given, default is zero
         
         double magnitude() const {
-            return sqrt(x * x + y * y + z * z);
+            return sqrt((x * x) + (y * y) + (z * z));
         }
 };
+/*
+    Body class:
+        Define a spheroid
+            Vecored position
+            vecored velocity
+            vecored acceleration
+            double mass
+            double radius
+            int oblateness (How squished or oblonged)
+            (3 doubles Roll, pitch, yaw) represent Orientation
+            Vectored angular velocity
+            String type (Include moon, planet, star, blackhole)
+            double density
+        
+*/
 class Body{
     public:
-        double mass;
         Vector position;
         Vector velocity;
-        Vector force;
-        Vector dist;
-        double timeStep = 0.01;
+        Vector acceleration;
+        Vector angular_velocity;
+        double mass;
+        double roll;
+        double pitch;
+        double yaw;
+        double density;
+        double radius;
+        int oblateness;
+        string type;
 
-        //going to create a body now, sets mass, position, velocity, and force
-        Body(double m, Vector p, Vector v): mass(m), position(p), velocity(v), force(0.0, 0.0, 0.0) {
-            if (m <= 0) {
-                throw invalid_argument("Mass must be greater than 0");
-            }
-        }
 
-        //body functions that can be used
-        void resetForce(){
-            force = Vector(0.0, 0.0, 0.0);
-        }
         /*
-            Calculating the distance vector
-            vector r = vector r_other - vector r_self
-            or 
-            vector r = (x2-x1,y2-y1,z2-z1)
+            Body Constructor
+            1) Give it everything
+            2) Default constructors
+                Dont have to feed it but it can generate itself
+                Random mass, random positions
 
-            where r_other is the vector position of the other body
-            where r_self is the position of the current body
+            every time we need:
+                radius
+                mass
+                force
 
+            we dont need every time:
+                acceleration
 
-
-            Newton's Law of Universal Graitation
-            F=G * (M1M2/r^2)
-
-            Magnitude of the Distance
-            double r = SQRT((x2 - x1)^2 + (y2-y1)^2+(z2-z1)^2)
-
-            Unit direction Vector
-            vector r = (x2-x1/r,y2-y1/r,z2-z1/r)
-            We will divide each component of the vector by the total distance to get the direction of force
+            default:
+                no feed
         */
-        void applyForce(Body p2){
-            //step one is to compute the distance between 2 bodys
-            dist = findDist( *this, p2);
-
-            Vector mag = sqrt(pow(p2.position.x - this->position.x,2)+ 
-                              pow(p2.position.y - this->position.y,2)+
-                              pow(p2.position.z - this->position.z,2));
-
+        Body(Vector pos, Vector vel, Vector accel, Vector angularV, double mass, double roll, double pitch,double yaw, double density, double radius,
+             int oblateness, string type){
+            this->position = pos;
+            this->velocity = vel;
+            this->acceleration = accel;
+            this->angular_velocity = angularV;
+            this->mass = mass;
+            this->roll = roll;
+            this->pitch = pitch;
+            this->yaw = yaw;
+            this->density = density;
+            this->radius = radius;
+            this->oblateness = oblateness;
+            this->type = type;
 
         }
 
-        Vector findDist(Body p1, Body p2){
-            Vector dist = Vector((p2.position.x - p1.position.x),
-                                 (p2.position.y - p1.position.y),
-                                 (p2.position.z - p1.position.z));
-            return dist;
+        void setPos(Vector pos){
+            this->position = pos;
+        }
+        void setVel(Vector vel){
+            this->velocity = vel;
         }
 
-        void updatePosition(){
-            // calculate acceleration (a = F/m)
-            Vector accel = Vector(
-                force.x / mass,
-                force.y / mass,
-                force.z / mass
-            );
+        /*
+            Calculate forces
 
-            /* update position
-                position formula:
-                let s = position,
-                    s = s0 + v0*t + (0.5*a*t^2)
-            */
-            position.x += velocity.x * timeStep + (0.5 * accel.x * timeStep * timeStep);
-            position.y += velocity.y * timeStep + (0.5 * accel.x * timeStep * timeStep);
-            position.z += velocity.z * timeStep + (0.5 * accel.x * timeStep * timeStep);
+            Gravitational force
 
-            /* update velocity
-                velocity formula:
-                    v = v0 + a*t
-            */
-           velocity.x += accel.x * timeStep;
-           velocity.y += accel.y * timeStep;
-           velocity.z += accel.z * timeStep;
-        }
+            Param: Gravitational const, mass of B1, mass of B2, Distance between 2 bodys r, softening param e
+
+            F = G(m1*m2/(pow(r,2)+ pow(e,2))
+
+            Return : Vectored Force
+        */
         
 
+       /*
+            Calculate vectored gravitational force
+
+            Param: Position of Body 1, Position of Body 2
+
+            Return : Vectored Magnitude
+       */
+
+      /*
+            Sum the accumulated forces
+
+            Params : 
+
+                Vectered F = Sum of all Forces acting on body 1, between body 1 and all other bodys
+
+            Return : Vectored Force
+      */
+
+     /*
+            Apply vectored forces to acceleration
+
+            Params : Vectored Force, Mass
+
+            Vectored Acceleration  = Vector force / mass
+
+            Return vectore acceleration
+     */
+
+    /*
+            Apply acceleration to velocity and position using timestep
+    */
 };
 
-vector<Body> createBodyLibrary() {
-    vector<Body> bodyLibrary;
-
-    // Add some bodies to the library
-    bodyLibrary.emplace_back(5.97e24, Vector(1.496e11, 0, 0), Vector(0, 29780, 0));  // Earth
-    bodyLibrary.emplace_back(7.35e22, Vector(1.496e11 + 3.844e8, 0, 0), Vector(0, 29780 + 1022, 0));  // Moon
-    bodyLibrary.emplace_back(1.989e30, Vector(0, 0, 0), Vector(0, 0, 0));  // Sun
-    bodyLibrary.emplace_back(6.39e23, Vector(2.279e11, 0, 0), Vector(0, 24007, 0));  // Mars
-
-    return bodyLibrary;
-}
-
 int main() {
-    // Step 1: Create body objects with proper vector initialization
-    Body earth(5.97e24, Vector(1.496e11, 0, 0), Vector(0, 29780, 0));  // Earth's mass, position, and velocity
-    Body moon(7.35e22, Vector(1.496e11 + 3.844e8, 0, 0), Vector(0, 29780 + 1022, 0));  // Moon's mass, position, and velocity
 
-    // Step 2: Find the distance between earth and moon
-    Vector distanceVector = earth.findDist(earth, moon);
-    double distanceMagnitude = distanceVector.magnitude();
-
-    // Step 3: Display the distance
-    cout << "Distance from Earth to Moon: " << distanceMagnitude << " meters" << endl;
-
-    return 0;
 }
