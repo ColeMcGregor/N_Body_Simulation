@@ -15,13 +15,14 @@ class Vector{
             return sqrt((x * x) + (y * y) + (z * z));
         }
 
-        Vector operator-(const Vector& other) const{
-            return Vector(x - other.x , y-other.y, z-other.z);
-        }
+        // Vector operator-(const Vector& other) const{
+        //     return Vector(x - other.x , y-other.y, z-other.z);
+        // }
 
-        void print() const{
-            cout <<"("<<x>>","<<y<<","<<z<<")";
-        }
+    void print() const {
+        cout << "(" << x << ", " << y << ", " << z << ")";
+}
+
 };
 /*
     Body class:
