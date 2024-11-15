@@ -81,13 +81,61 @@ class Body{
 
         }
 
+        /*
+            Setter functions
+        */
         void setPos(Vector pos){
             this->position = pos;
         }
         void setVel(Vector vel){
             this->velocity = vel;
         }
+        void setAcceleration(Vector accl){
+            this->acceleration = accl;
+        }
+        void setAngularV(Vector angV){
+            this->angular_velocity = angV;
+        }
+        void setMass(double m){
+            this->mass = m;
+        }
+        void setRoll(double r){
+            this->roll = r;
+        }
+        void setPitch(double p){
+            this->pitch = p;
+        }
+        void setYaw(double y){
+            this->yaw = y;
+        }
+        void setDensity(double d){
+            this->density = d;
+        }
+        void setRadius(double r){
+            this->radius = r;
+        }
+        void setOblateness(int o){
+            this->oblateness = o;
+        }
+        void setType(string t){
+            this->type = t;
+        }
 
+        /*
+            Getter Functions
+        */
+        Vector getPos(){return this->position;}
+        Vector getVel(){return this->velocity;}
+        Vector getAccel(){return this->acceleration;}
+        Vector getAngular(){return this->angular_velocity;}
+        double getMass(){return this->mass;}
+        double getRoll(){return this->roll;}
+        double getPitch(){return this->pitch;}
+        double getYaw(){return this->yaw;}
+        double getDensity(){return this->density}
+        double getRadius(){return this->radius}
+        int getOblateness(){return this->oblateness;}
+        string getType(){return this->type;}
         /*
             Calculate forces
 
@@ -99,6 +147,18 @@ class Body{
 
             Return : Vectored Force
         */
+       Vector gravForce(Body p1, Body p2, double r){
+       const double GRAVITATIONAL_CONSTANT = 6.67430e-11; // m^3 kg^-1 s^-2
+
+        //step one is find the dist
+        /*
+            Find the dist
+            use p1, x1,y1,z1 and p2, x2,y2,z2 to get the distance
+        */
+        double dist = sqrt(pow(p2.position.x - p1.position.x,2) + pow(p2.position.y - p1.position.y,2) + pow(p2.position.z - p1.position.z,2));
+
+        return GRAVITATIONAL_CONSTANT((p1.mass * p2.mass)/pow(r,2));
+       }
         
 
        /*
@@ -135,5 +195,27 @@ class Body{
 };
 
 int main() {
+    // Test Case 1: Earth and Moon
+    Body earth(Vector(0, 0, 0), Vector(), Vector(), Vector(), 5.97e24, 0, 0, 0, 5514, 6371e3, 0, "planet");
+    Body moon(Vector(3.84e8, 0, 0), Vector(), Vector(), Vector(), 7.35e22, 0, 0, 0, 3344, 1737e3, 0, "moon");
 
+    Vector forceEarthOnMoon = earth.gravForce(moon);
+    cout << "Gravitational Force on Moon by Earth: "
+         << "Fx: " << forceEarthOnMoon.x << " N, "
+         << "Fy: " << forceEarthOnMoon.y << " N, "
+         << "Fz: " << forceEarthOnMoon.z << " N" << endl;
+
+    // Test Case 2: Sun and Earth
+    Body sun(Vector(0, 0, 0), Vector(), Vector(), Vector(), 1.989e30, 0, 0, 0, 1408, 695700e3, 0, "star");
+    Vector forceSunOnEarth = sun.gravForce(earth);
+    cout << "Gravitational Force on Earth by Sun: "
+         << "Fx: " << forceSunOnEarth.x << " N, "
+         << "Fy: " << forceSunOnEarth.y << " N, "
+         << "Fz: " << forceSunOnEarth.z << " N" << endl;
+
+    // Test Case 3: Identical position (should return error)
+    Body samePosition(Vector(0, 0, 0), Vector(), Vector(), Vector(), 1e5, 0, 0, 0, 1000, 1e3, 0, "test");
+    Vector forceError = earth.gravForce(samePosition); // Expect error output
+
+    return 0;
 }
