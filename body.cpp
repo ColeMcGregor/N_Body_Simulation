@@ -156,7 +156,7 @@ class Body{
             use p1, x1,y1,z1 and p2, x2,y2,z2 to get the distance
         */
         double dist = sqrt(pow(p2.position.x - this->position.x,2) + pow(p2.position.y - this->position.y,2) + pow(p2.position.z - this->position.z,2));
-        vector temp = GRAVITATIONAL_CONSTANT((this->mass * p2.mass)/pow(dist,2));
+        vector temp = GRAVITATIONAL_CONSTANT * ((this->mass * p2.mass)/pow(dist,2));
         return temp;
        }
         
@@ -199,7 +199,7 @@ int main() {
     Body earth(Vector(0, 0, 0), Vector(), Vector(), Vector(), 5.97e24, 0, 0, 0, 5514, 6371e3, 0, "planet");
     Body moon(Vector(3.84e8, 0, 0), Vector(), Vector(), Vector(), 7.35e22, 0, 0, 0, 3344, 1737e3, 0, "moon");
 
-    Vector forceEarthOnMoon = earth.gravForce(moon, earth);
+    Vector forceEarthOnMoon = earth.gravForce(moon);
     cout << "Gravitational Force on Moon by Earth: "
          << "Fx: " << forceEarthOnMoon.x << " N, "
          << "Fy: " << forceEarthOnMoon.y << " N, "
@@ -207,7 +207,7 @@ int main() {
 
     // Test Case 2: Sun and Earth
     Body sun(Vector(0, 0, 0), Vector(), Vector(), Vector(), 1.989e30, 0, 0, 0, 1408, 695700e3, 0, "star");
-    Vector forceSunOnEarth = sun.gravForce(earth, moon);
+    Vector forceSunOnEarth = sun.gravForce(earth);
     cout << "Gravitational Force on Earth by Sun: "
          << "Fx: " << forceSunOnEarth.x << " N, "
          << "Fy: " << forceSunOnEarth.y << " N, "
