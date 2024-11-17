@@ -203,7 +203,7 @@ int main() {
     Body moon(Vector(3.84e8, 0, 0), Vector(), Vector(), Vector(), 7.35e22, 0, 0, 0, 3344, 1737e3, 0, "moon");
 
     double forceEarthOnMoon = earth.gravForce(moon);
-    cout << "Gravitational Force on Moon by Earth: " << forceEarthOnMoon;
+    cout << "Gravitational Force on Moon by Earth: " << forceEarthOnMoon << endl;
 
 
     return 0;
