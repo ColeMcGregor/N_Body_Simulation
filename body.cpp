@@ -4,27 +4,28 @@ using namespace std;
 
 
 /*
-    This will have all the properties of a planet body
+    Vector struct for holding x,y,z coordinates, has a magnitude function, and a constructor that defaults to 0
 */
-class Vector{
-    public:
-        double x,y,z; // these will be where the planets are moving
-        Vector(double x_ = 0.0 ,double y_ = 0.0,double z_ = 0.0): x(x_),y(y_),z(z_){} //if no params are given, default is zero
-        
-        double magnitude() const {
-            return sqrt((x * x) + (y * y) + (z * z));
-        }
+struct Vector {
+    double x, y, z;
 
+    Vector(double x_ = 0.0, double y_ = 0.0, double z_ = 0.0)
+        : x(x_), y(y_), z(z_) {}
+
+    double magnitude() const {
+        return sqrt((x * x) + (y * y) + (z * z));
+    }
 };
+
 /*
     Body class:
         Define a spheroid
-            Vecored position
-            vecored velocity
-            vecored acceleration
+            Vectored position
+            Vectored velocity
+            Vectored acceleration
             double mass
             double radius
-            int oblateness (How squished or oblonged)
+            double oblateness (How squished or oblonged)
             (3 doubles Roll, pitch, yaw) represent Orientation
             Vectored angular velocity
             String type (Include moon, planet, star, blackhole)
@@ -33,40 +34,25 @@ class Vector{
 */
 class Body{
     public:
-        Vector position;
-        Vector velocity;
-        Vector acceleration;
-        Vector angular_velocity;
-        double mass;
-        double roll;
-        double pitch;
-        double yaw;
-        double density;
-        double radius;
-        int oblateness;
-        string type;
+        Vector position; //where the body is
+        Vector velocity; //how fast it is moving in a given direction
+        Vector acceleration; //how fast it is accelerating in a given direction
+        Vector angular_velocity; //how fast it is rotating
+        double mass; //how much stuff it is made of
+        double roll; //how much it is tilted around the x axis
+        double pitch; //how much it is tilted around the y axis
+        double yaw; //how much it is tilted around the z axis
+        double density; //how much mass is in a given volume
+        double radius; //how big it is from center to edge
+        double oblateness; //how much it is squished from the poles to the equator
+        string type; //what type of body it is(moon, planet, star, blackhole)
 
 
         /*
-            Body Constructor
-            1) Give it everything
-            2) Default constructors
-                Dont have to feed it but it can generate itself
-                Random mass, random positions
-
-            every time we need:
-                radius
-                mass
-                force
-
-            we dont need every time:
-                acceleration
-
-            default:
-                no feed
+            Constructor for the Body class
         */
         Body(Vector pos, Vector vel, Vector accel, Vector angularV, double mass, double roll, double pitch,double yaw, double density, double radius,
-             int oblateness, string type){
+             double oblateness, string type){
             this->position = pos;
             this->velocity = vel;
             this->acceleration = accel;
@@ -135,7 +121,7 @@ class Body{
         double getYaw(){return this->yaw;}
         double getDensity(){return this->density;}
         double getRadius(){return this->radius;}
-        int getOblateness(){return this->oblateness;}
+        double getOblateness(){return this->oblateness;}
         string getType(){return this->type;}
         /*
             Calculate forces
