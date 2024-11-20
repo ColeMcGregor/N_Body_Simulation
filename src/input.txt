@@ -1,0 +1,7 @@
+timestep 1.0
+iterations 100
+N 2
+gravitationalMultiplier 1.0
+placement Distributed
+body 0  "planet"
+body 1  "planet"
