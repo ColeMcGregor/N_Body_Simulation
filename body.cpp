@@ -16,6 +16,7 @@ using namespace std;
 struct Vector {
     double x, y, z;
 
+    //constructor for the Vector struct, defaults to 0 (0,0,0) the origin
     Vector(double x_ = 0.0, double y_ = 0.0, double z_ = 0.0)
         : x(x_), y(y_), z(z_) {}
 
@@ -185,7 +186,8 @@ class Body{
     
         /**
          * Apply a force to the body, used to calculate acceleration
-         * 
+         * will use vector math to apply the force
+         * acceleration(vectored) = force(vectored) / mass(Scalar)
          * 
          * 
          * @param force the force to apply
@@ -194,7 +196,7 @@ class Body{
         void applyForce(const Vector& force) {
             acceleration = force / mass;
     }
-
+        //update the velocity and position of the body using a timestep(we define the time step to accelerate the simulation)
         void update(double timestep) {
             velocity = velocity + acceleration * timestep;
             position = position + velocity * timestep;
