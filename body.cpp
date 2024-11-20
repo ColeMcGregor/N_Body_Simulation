@@ -4,7 +4,14 @@ using namespace std;
 
 
 /*
-    Vector struct for holding x,y,z coordinates, has a magnitude function, and a constructor that defaults to 0
+    Vector struct for holding x,y,z coordinates, 
+    has a magnitude function, and a constructor that defaults to 0
+    has operator overloading for +, -, *, and / to allow for vector math
+
+    Vector is used to represent position, velocity, acceleration, and force
+    as they are all vectored quantities
+
+
 */
 struct Vector {
     double x, y, z;
@@ -12,8 +19,27 @@ struct Vector {
     Vector(double x_ = 0.0, double y_ = 0.0, double z_ = 0.0)
         : x(x_), y(y_), z(z_) {}
 
+    /*
+        Calculate the magnitude of the vector(length of space between the origin and the point, ignoring direction)
+    */
     double magnitude() const {
         return sqrt((x * x) + (y * y) + (z * z));
+    }
+    //perform vector addition, returns a new vector
+    Vector operator+(const Vector& other) const {
+        return {x + other.x, y + other.y, z + other.z};
+    }
+    //perform vector subtraction, returns a new vector
+    Vector operator-(const Vector& other) const {
+        return {x - other.x, y - other.y, z - other.z};
+    }
+    //perform scalar multiplication, returns a new vector, a scalar is a single number(not a vector) used to "scale" the vector
+    Vector operator*(double scalar) const {
+        return {x * scalar, y * scalar, z * scalar};
+    }
+    //perform scalar division, returns a new vector, a scalar is a single number(not a vector) used to "scale" the vector
+    Vector operator/(double scalar) const {
+        return {x / scalar, y / scalar, z / scalar};
     }
 };
 
@@ -47,12 +73,15 @@ class Body{
         double oblateness; //how much it is squished from the poles to the equator
         string type; //what type of body it is(moon, planet, star, blackhole)
 
+        //special variables
+        double gravitationalMultiplier; //allows for different multiples of gravitational constants to see the effects of universal gravity scaling
+
 
         /*
             Constructor for the Body class
         */
         Body(Vector pos, Vector vel, Vector accel, Vector angularV, double mass, double roll, double pitch,double yaw, double density, double radius,
-             double oblateness, string type){
+             double oblateness, string type, double gravitationalMultiplier){
             this->position = pos;
             this->velocity = vel;
             this->acceleration = accel;
@@ -65,7 +94,7 @@ class Body{
             this->radius = radius;
             this->oblateness = oblateness;
             this->type = type;
-
+            this->gravitationalMultiplier = gravitationalMultiplier;
         }
 
         /*
@@ -101,11 +130,14 @@ class Body{
         void setRadius(double r){
             this->radius = r;
         }
-        void setOblateness(int o){
+        void setOblateness(double o){
             this->oblateness = o;
         }
         void setType(string t){
             this->type = t;
+        }
+        void setGravitationalMultiplier(double gm){
+            this->gravitationalMultiplier = gm;
         }
 
         /*
@@ -123,6 +155,7 @@ class Body{
         double getRadius(){return this->radius;}
         double getOblateness(){return this->oblateness;}
         string getType(){return this->type;}
+        double getGravitationalMultiplier(){return this->gravitationalMultiplier;}
         /*
             Calculate forces
 
@@ -134,21 +167,38 @@ class Body{
 
             Return : Vectored Force
         */
-       double gravForce( Body p2){
-       const double GRAVITATIONAL_CONSTANT = 6.67430e-11; // m^3 kg^-1 s^-2
+        Vector gravForce(const Body& p2) const {
+            const double G = 6.67430e-11; // Gravitational constant
+            const double epsilon = 1e-5;  // Softening parameter
 
-        //step one is find the dist
-        /*
-            Find the dist
-            use p1, x1,y1,z1 and p2, x2,y2,z2 to get the distance
-        */
-        double dist = sqrt(pow(p2.position.x - this->position.x,2) + pow(p2.position.y - this->position.y,2) + pow(p2.position.z - this->position.z,2));
+            // Compute the distance vector
+            Vector r = {p2.position.x - position.x, p2.position.y - position.y, p2.position.z - position.z};
+            double dist = r.magnitude();
 
-        double gravityForce = GRAVITATIONAL_CONSTANT * (this->mass * p2.mass /(pow(dist,2)));
-        return gravityForce;
+            // Compute gravitational force magnitude
+            double forceMag = (G* gravitationalMultiplier) * (mass * p2.mass) / ((dist * dist) + (epsilon * epsilon));
 
-       }
-        
+            // Normalize r and scale by force magnitude
+            return {r.x / dist * forceMag, r.y / dist * forceMag, r.z / dist * forceMag};
+        }
+
+    
+        /**
+         * Apply a force to the body, used to calculate acceleration
+         * 
+         * 
+         * 
+         * @param force the force to apply
+         * @return void
+         */
+        void applyForce(const Vector& force) {
+            acceleration = force / mass;
+    }
+
+        void update(double timestep) {
+            velocity = velocity + acceleration * timestep;
+            position = position + velocity * timestep;
+        }
 
        /*
             Calculate vectored gravitational force
