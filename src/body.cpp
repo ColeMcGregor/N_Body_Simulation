@@ -50,6 +50,7 @@ struct Vector {
             Vectored position
             Vectored velocity
             Vectored acceleration
+            Vectored net force
             double mass
             double radius
             double oblateness (How squished or oblonged)
@@ -73,6 +74,7 @@ class Body{
         double radius; //how big it is from center to edge
         double oblateness; //how much it is squished from the poles to the equator
         string type; //what type of body it is(moon, planet, star, blackhole)
+        Vector net_force; //the net force acting on the body
 
         //special variables
         double gravitationalMultiplier; //allows for different multiples of gravitational constants to see the effects of universal gravity scaling
@@ -82,7 +84,7 @@ class Body{
             Constructor for the Body class
         */
         Body(Vector pos, Vector vel, Vector accel, Vector angularV, double mass, double roll, double pitch,double yaw, double density, double radius,
-             double oblateness, string type, double gravitationalMultiplier){
+             double oblateness, string type, Vector net_force, double gravitationalMultiplier){
             this->position = pos;
             this->velocity = vel;
             this->acceleration = accel;
@@ -95,6 +97,7 @@ class Body{
             this->radius = radius;
             this->oblateness = oblateness;
             this->type = type;
+            this->net_force = net_force;
             this->gravitationalMultiplier = gravitationalMultiplier;
         }
 
@@ -137,6 +140,9 @@ class Body{
         void setType(string t){
             this->type = t;
         }
+        void setNetForce(double f) {
+            this->net_force = f;
+        }
         void setGravitationalMultiplier(double gm){
             this->gravitationalMultiplier = gm;
         }
@@ -156,6 +162,7 @@ class Body{
         double getRadius(){return this->radius;}
         double getOblateness(){return this->oblateness;}
         string getType(){return this->type;}
+        Vector getNetForce(){return this->net_force;}
         double getGravitationalMultiplier(){return this->gravitationalMultiplier;}
         /*
             Calculate forces
@@ -216,10 +223,19 @@ class Body{
             Params : 
 
                 Vectered F = Sum of all Forces acting on body 1, between body 1 and all other bodys
-
-            Return : Vectored Force
       */
-
+        void sumForces(const vector<Body>& bodies) {
+            // always reset the net force before each calculation
+            net_force = Vector(0, 0, 0);
+            // loop through all bodies and calculate the force between this body and the other bodies
+            for (const Body& body : bodies) {
+                // avoid calculating the force between itself
+                if (this != &body) {
+                    // accumulate the force to the net force
+                    net_force = net_force + gravForce(body);
+                }
+            }
+        }
      /*
             Apply vectored forces to acceleration
 
@@ -229,7 +245,6 @@ class Body{
 
             Return vectore acceleration
      */
-
     /*
             Apply acceleration to velocity and position using timestep
     */
