@@ -141,28 +141,30 @@ class Body{
         void applyForce(const Vector& force) {
             acceleration = force / mass;
     }
-        //update the velocity and position of the body using a timestep(we define the time step to accelerate the simulation)
+        /**update the velocity and position of the body using a timestep(we define the time step to accelerate the simulation)
+         * This will be used to update the position of the body over time
+         * THIS IS A VERY IMPORTANT FUNCTION
+         * 
+         * 
+         * @param timestep the amount of time to update the body over
+         * @return void
+         */
+
         void update(double timestep) {
             velocity = velocity + acceleration * timestep;
             position = position + velocity * timestep;
         }
 
-       /*
-            Calculate vectored gravitational force
 
-            Param: Position of Body 1, Position of Body 2
-
-            Return : Vectored Magnitude
-       */
 
       /*
             Sum the accumulated forces
 
-            Params : 
+            Params : Vector of all bodys
 
-                Vectered F = Sum of all Forces acting on body 1, between body 1 and all other bodys
+            Return : Vectored Sum of all Forces acting on body n, between body n and all other bodys
       */
-        void sumForces(const vector<Body>& bodies) {
+        Vector sumForces(const vector<Body>& bodies) {
             // always reset the net force before each calculation
             net_force = Vector(0, 0, 0);
             // loop through all bodies and calculate the force between this body and the other bodies
@@ -173,6 +175,7 @@ class Body{
                     net_force = net_force + gravForce(body);
                 }
             }
+            return net_force;
         }
      /*
             Apply vectored forces to acceleration

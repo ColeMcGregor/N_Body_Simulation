@@ -11,5 +11,12 @@
  * @dependencies: body.cpp, filemanager.cpp
  */
 
+#include <vector>
+#include <string>
+#include "Body.h" // Include your Body class header
+#include "FileManager.h" // Include your FileManager class header
+
+using namespace std;
+
 
 
