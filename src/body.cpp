@@ -101,69 +101,7 @@ class Body{
             this->gravitationalMultiplier = gravitationalMultiplier;
         }
 
-        /*
-            Setter functions
-        */
-        void setPos(Vector pos){
-            this->position = pos;
-        }
-        void setVel(Vector vel){
-            this->velocity = vel;
-        }
-        void setAcceleration(Vector accl){
-            this->acceleration = accl;
-        }
-        void setAngularV(Vector angV){
-            this->angular_velocity = angV;
-        }
-        void setMass(double m){
-            this->mass = m;
-        }
-        void setRoll(double r){
-            this->roll = r;
-        }
-        void setPitch(double p){
-            this->pitch = p;
-        }
-        void setYaw(double y){
-            this->yaw = y;
-        }
-        void setDensity(double d){
-            this->density = d;
-        }
-        void setRadius(double r){
-            this->radius = r;
-        }
-        void setOblateness(double o){
-            this->oblateness = o;
-        }
-        void setType(string t){
-            this->type = t;
-        }
-        void setNetForce(double f) {
-            this->net_force = f;
-        }
-        void setGravitationalMultiplier(double gm){
-            this->gravitationalMultiplier = gm;
-        }
-
-        /*
-            Getter Functions
-        */
-        Vector getPos(){return this->position;}
-        Vector getVel(){return this->velocity;}
-        Vector getAccel(){return this->acceleration;}
-        Vector getAngular(){return this->angular_velocity;}
-        double getMass(){return this->mass;}
-        double getRoll(){return this->roll;}
-        double getPitch(){return this->pitch;}
-        double getYaw(){return this->yaw;}
-        double getDensity(){return this->density;}
-        double getRadius(){return this->radius;}
-        double getOblateness(){return this->oblateness;}
-        string getType(){return this->type;}
-        Vector getNetForce(){return this->net_force;}
-        double getGravitationalMultiplier(){return this->gravitationalMultiplier;}
+        
         /*
             Calculate forces
 
