@@ -14,6 +14,8 @@
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
+#include "body.h"
+using namespace std;
 
 
 /**
@@ -62,7 +64,6 @@ void FileManager::loadConfig(const string& filePath, vector<Body>& bodies, doubl
 
     file.close();
 }
-
 /**
  * @brief This function is used to output the locations of the bodies as the simulation runs, allowing for visualizations of the simulation
  * @param filePath: the path to the output file

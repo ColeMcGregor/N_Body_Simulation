@@ -6,16 +6,30 @@
 #include <string>
 #include <vector>
 
+class Body;
+
+/*
+    Vector struct for holding x,y,z coordinates,
+    has a magnitude function, and a constructor that defaults to 0
+    has operator overloading for +, -, *, and / to allow for vector math
+
+    Vector is used to represent position, velocity, acceleration, and force
+    as they are all vectored quantities
 
 
+*/
 struct Vector{
     double x,y,z;
-    Vector(double x_ , double y_ , double z_);
+    std::vector<Body> relatedBodies;
+    Vector(double x_ = 0.0, double y_ = 0.0, double z_ = 0.0)
+        : x(x_), y(y_), z(z_) {}
     double magnitude()const;
     Vector operator+(const Vector& other)const;
     Vector operator-(const Vector& other)const;
     Vector operator*(double scalar)const;
     Vector operator/(double scalar)const;
+    void addBody(const Body& body);
+    void clearBodies();
 
 };
 class Body{
@@ -31,19 +45,20 @@ class Body{
         double density; //how much mass is in a given volume
         double radius; //how big it is from center to edge
         double oblateness; //how much it is squished from the poles to the equator
-        string type; //what type of body it is(moon, planet, star, blackhole)
+        std::string type; //what type of body it is(moon, planet, star, blackhole)
         Vector net_force; //the net force acting on the body
 
         //special variables
         double gravitationalMultiplier; //allows for different multiples of gravitational constants to see the effects of universal gravity scaling
 
         Body(Vector pos, Vector vel, Vector accel, Vector angularV, double mass, double roll, double pitch,double yaw, double density, double radius,
-             double oblateness, string type, Vector net_force, double gravitationalMultiplier);
+             double oblateness, std::string type, Vector net_force, double gravitationalMultiplier);
             
         Vector gravForce(const Body& p2) const;
         void applyForce(const Vector& force);
         void update(double timestep);
-        Vector sumForces(const vector<Body>& bodies);
+        Vector sumForces(const std::vector<Body>& bodies);
+        void printState() const;
 
 
 };
