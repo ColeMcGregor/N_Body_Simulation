@@ -54,25 +54,49 @@ struct Vector {
             Vectored position
             Vectored velocity
             Vectored acceleration
+            Vectored angular velocity
             Vectored net force
-            double mass
+            double mass          
+            double density
             double radius
             double oblateness (How squished or oblonged)
             (3 doubles Roll, pitch, yaw) represent Orientation
-            Vectored angular velocity
             String type (Include moon, planet, star, blackhole)
-            double density
 
 */
 /*
     Constructor for the Body class
 */
-Body::Body(Vector pos, Vector vel, Vector accel, Vector angularV, Vector net_force,
-            double mass,  double density, double radius, double oblateness, double gravitationalMultiplier,
-            double roll, double pitch, double yaw, string type)
-        : position(pos), velocity(vel), acceleration(accel), angular_velocity(angularV),
-        mass(mass), roll(roll), pitch(pitch), yaw(yaw), density(density), radius(radius),
-        oblateness(oblateness), type(type), net_force(net_force), gravitationalMultiplier(gravitationalMultiplier) {}
+Body::Body( Vector pos, 
+            Vector vel,
+            Vector accel, 
+            Vector angularV, 
+            Vector net_force,
+            double mass,  
+            double density,
+            double radius, 
+            double oblateness, 
+            double gravitationalMultiplier,
+            double roll, 
+            double pitch, 
+            double yaw, 
+            string type)
+            :   
+            position(pos), 
+            velocity(vel), 
+            acceleration(accel), 
+            angular_velocity(angularV),
+            net_force(net_force), 
+            mass(mass), 
+            density(density), 
+            radius(radius),
+            oblateness(oblateness), 
+            gravitationalMultiplier(gravitationalMultiplier),
+            roll(roll), 
+            pitch(pitch), 
+            yaw(yaw), 
+            type(type) {}
+
 
 /*
     Calculate forces
@@ -83,8 +107,8 @@ Body::Body(Vector pos, Vector vel, Vector accel, Vector angularV, Vector net_for
 */
 Vector Body::gravForce(const Body &p2) const
 {
-    const double G = 6.67430e-11; // Gravitational constant
-    const double epsilon = 1e-5;  // Softening parameter
+    const double G = 6.67430e-11; // Predefined and recognized Gravitational constant
+    const double epsilon = 1e-5;  // Softening parameter to limit the force at very close distances
 
     // Compute the distance vector
     Vector r(p2.position.x - position.x, p2.position.y - position.y, p2.position.z - position.z); //the vectored distance between the two bodies
@@ -163,9 +187,13 @@ Vector Body::sumForces(const vector<Body> &bodies)
 // debug method for testing
 void Body::printState() const
 {
-    cout << "Type: " << type << ", Position: (" << position.x << ", " << position.y << ", " << position.z
-         << "), Velocity: (" << velocity.x << ", " << velocity.y << ", " << velocity.z
-         << "), Acceleration: (" << acceleration.x << ", " << acceleration.y << ", " << acceleration.z << ")\n";
+    //will print the state of the body to the console using the vector print method
+    cout << "Type: " << type << ", Position: ";
+    position.print();
+    cout << "Velocity: ";
+    velocity.print();
+    cout << "Acceleration: ";
+    acceleration.print();
 }
 
 int main()
