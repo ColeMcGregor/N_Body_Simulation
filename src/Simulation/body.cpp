@@ -5,43 +5,48 @@
 #include "body.h"
 using namespace std;
 
-/*
-    Calculate the magnitude of the vector(length of space between the origin and the point, ignoring direction)
-*/
-double Vector::magnitude() const
-{
-    return sqrt((x * x) + (y * y) + (z * z));
-}
-// perform vector addition, returns a new vector
-Vector Vector::operator+(const Vector &other) const
-{
-    return Vector(x + other.x, y + other.y, z + other.z);
-}
-// perform vector subtraction, returns a new vector
-Vector Vector::operator-(const Vector &other) const
-{
-    return Vector(x - other.x, y - other.y, z - other.z);
-}
-// perform scalar multiplication, returns a new vector, a scalar is a single number(not a vector) used to "scale" the vector
-Vector Vector::operator*(double scalar) const
-{
-    return Vector(x * scalar, y * scalar, z * scalar);
-}
-// perform scalar division, returns a new vector, a scalar is a single number(not a vector) used to "scale" the vector
-Vector Vector::operator/(double scalar) const
-{
-    return Vector(x / scalar, y / scalar, z / scalar);
-}
-// add a body to the relatedBodies vector
-void Vector::addBody(const Body &body)
-{
-    relatedBodies.push_back(body);
-}
-// clear the relatedBodies vector
-void Vector::clearBodies()
-{
-    relatedBodies.clear();
-}
+/**
+ *  A VECTOR IS NOT THE SAME AS THE CPP VECTOR CLASS
+ * IT HOLDS X Y Z COORDINATES AND HAS METHODS TO MANIPULATE THEM
+ * A CPP vector is a dynamic array of objects
+ * PLEASE DO NOT CONFUSE THE TWO
+ * 
+ * 
+ */
+
+struct Vector {
+    double x, y, z;
+    //constructor for the Vector struct, defaults to 0 (0,0,0) the origin
+    Vector(double x_ = 0.0, double y_ = 0.0, double z_ = 0.0)
+        : x(x_), y(y_), z(z_) {}
+    /*
+        Calculate the magnitude of the vector(length of space between the origin and the point, ignoring direction)
+    */
+    double magnitude() const {
+        return sqrt((x * x) + (y * y) + (z * z));
+    }
+    //perform vector addition, returns a new vector
+    Vector operator+(const Vector& other) const {
+        return {x + other.x, y + other.y, z + other.z};
+    }
+    //perform vector subtraction, returns a new vector
+    Vector operator-(const Vector& other) const {
+        return {x - other.x, y - other.y, z - other.z};
+    }
+    //perform scalar multiplication, returns a new vector, a scalar is a single number(not a vector) used to "scale" the vector
+    Vector operator*(double scalar) const {
+        return {x * scalar, y * scalar, z * scalar};
+    }
+    //perform scalar division, returns a new vector, a scalar is a single number(not a vector) used to "scale" the vector
+    Vector operator/(double scalar) const {
+        return {x / scalar, y / scalar, z / scalar};
+    }
+    //print the vector with commas between the values
+    void print() const {
+        cout << x << "," << y << "," << z << endl;
+    }
+
+};
 
 /*
     Body class:
@@ -49,50 +54,71 @@ void Vector::clearBodies()
             Vectored position
             Vectored velocity
             Vectored acceleration
+            Vectored angular velocity
             Vectored net force
-            double mass
+            double mass          
+            double density
             double radius
             double oblateness (How squished or oblonged)
             (3 doubles Roll, pitch, yaw) represent Orientation
-            Vectored angular velocity
             String type (Include moon, planet, star, blackhole)
-            double density
 
 */
 /*
     Constructor for the Body class
 */
-Body::Body(Vector pos, Vector vel, Vector accel, Vector angularV, double mass, double roll, double pitch, double yaw, double density, double radius,
-            double oblateness, string type, Vector net_force, double gravitationalMultiplier)
-      : position(pos), velocity(vel), acceleration(accel), angular_velocity(angularV),
-        mass(mass), roll(roll), pitch(pitch), yaw(yaw), density(density), radius(radius),
-        oblateness(oblateness), type(type), net_force(net_force), gravitationalMultiplier(gravitationalMultiplier) {}
+Body::Body( Vector pos, 
+            Vector vel,
+            Vector accel, 
+            Vector angularV, 
+            Vector net_force,
+            double mass,  
+            double density,
+            double radius, 
+            double oblateness, 
+            double gravitationalMultiplier,
+            double roll, 
+            double pitch, 
+            double yaw, 
+            string type)
+            :   
+            position(pos), 
+            velocity(vel), 
+            acceleration(accel), 
+            angular_velocity(angularV),
+            net_force(net_force), 
+            mass(mass), 
+            density(density), 
+            radius(radius),
+            oblateness(oblateness), 
+            gravitationalMultiplier(gravitationalMultiplier),
+            roll(roll), 
+            pitch(pitch), 
+            yaw(yaw), 
+            type(type) {}
+
 
 /*
     Calculate forces
-
     Gravitational force between two bodies
-
     Param: Gravitational const, mass of B1, mass of B2, Distance between 2 bodys r, softening param e
-
     F = G( (m1*m2) / ((r*r) + (e*e)))
-
     Return : Vectored Force
 */
 Vector Body::gravForce(const Body &p2) const
 {
-    const double G = 6.67430e-11; // Gravitational constant
-    const double epsilon = 1e-5;  // Softening parameter
+    const double G = 6.67430e-11; // Predefined and recognized Gravitational constant
+    const double epsilon = 1e-5;  // Softening parameter to limit the force at very close distances
 
     // Compute the distance vector
-    Vector r(p2.position.x - position.x, p2.position.y - position.y, p2.position.z - position.z);
-    double dist = r.magnitude();
+    Vector r(p2.position.x - position.x, p2.position.y - position.y, p2.position.z - position.z); //the vectored distance between the two bodies
+    double dist = r.magnitude(); //the magnitude of the distance between the two bodies
 
     // Compute gravitational force magnitude
     double forceMag = (G * gravitationalMultiplier) * (mass * p2.mass) / ((dist * dist) + (epsilon * epsilon));
 
     // Normalize r and scale by force magnitude
-    return Vector(r.x / dist * forceMag, r.y / dist * forceMag, r.z / dist * forceMag);
+    return Vector(r.x / dist * forceMag, r.y / dist * forceMag, r.z / dist * forceMag); //the vectored force between the two bodies
 }
 
 /**
@@ -153,15 +179,7 @@ Vector Body::sumForces(const vector<Body> &bodies)
     }
     return net_force;
 }
-/*
-       Apply vectored forces to acceleration
 
-       Params : Vectored Force, Mass
-
-       Vectored Acceleration  = Vector force / mass
-
-       Return vectore acceleration
-*/
 /*
         Apply acceleration to velocity and position using timestep
 */
@@ -169,9 +187,13 @@ Vector Body::sumForces(const vector<Body> &bodies)
 // debug method for testing
 void Body::printState() const
 {
-    cout << "Type: " << type << ", Position: (" << position.x << ", " << position.y << ", " << position.z
-         << "), Velocity: (" << velocity.x << ", " << velocity.y << ", " << velocity.z
-         << "), Acceleration: (" << acceleration.x << ", " << acceleration.y << ", " << acceleration.z << ")\n";
+    //will print the state of the body to the console using the vector print method
+    cout << "Type: " << type << ", Position: ";
+    position.print();
+    cout << "Velocity: ";
+    velocity.print();
+    cout << "Acceleration: ";
+    acceleration.print();
 }
 
 int main()
