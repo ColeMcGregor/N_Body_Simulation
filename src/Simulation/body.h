@@ -30,6 +30,7 @@ struct Vector{
     Vector operator/(double scalar)const;
     void addBody(const Body& body);
     void clearBodies();
+    void print()const;
 
 };
 class Body{

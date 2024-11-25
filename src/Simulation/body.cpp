@@ -14,39 +14,35 @@ using namespace std;
  * 
  */
 
-struct Vector {
-    double x, y, z;
-    //constructor for the Vector struct, defaults to 0 (0,0,0) the origin
-    Vector(double x_ = 0.0, double y_ = 0.0, double z_ = 0.0)
+//constructor for the Vector struct, defaults to 0 (0,0,0) the origin
+    Vector::Vector(double x_ = 0.0, double y_ = 0.0, double z_ = 0.0)
         : x(x_), y(y_), z(z_) {}
     /*
         Calculate the magnitude of the vector(length of space between the origin and the point, ignoring direction)
     */
-    double magnitude() const {
+    double Vector::magnitude() const {
         return sqrt((x * x) + (y * y) + (z * z));
     }
     //perform vector addition, returns a new vector
-    Vector operator+(const Vector& other) const {
+    Vector Vector::operator+(const Vector& other) const {
         return {x + other.x, y + other.y, z + other.z};
     }
     //perform vector subtraction, returns a new vector
-    Vector operator-(const Vector& other) const {
+    Vector Vector::operator-(const Vector& other) const {
         return {x - other.x, y - other.y, z - other.z};
     }
     //perform scalar multiplication, returns a new vector, a scalar is a single number(not a vector) used to "scale" the vector
-    Vector operator*(double scalar) const {
+    Vector Vector::operator*(double scalar) const {
         return {x * scalar, y * scalar, z * scalar};
     }
     //perform scalar division, returns a new vector, a scalar is a single number(not a vector) used to "scale" the vector
-    Vector operator/(double scalar) const {
+    Vector Vector::operator/(double scalar) const {
         return {x / scalar, y / scalar, z / scalar};
     }
     //print the vector with commas between the values
-    void print() const {
+    void Vector::print() const {
         cout << x << "," << y << "," << z << endl;
     }
-
-};
 
 /*
     Body class:
@@ -192,11 +188,11 @@ void Body::printState() const
 {
     //will print the state of the body to the console using the vector print method
     cout << "Type: " << type << ", Position: ";
-    printf("%.2f, %.2f, %.2f", position.x, position.y, position.z);
+    position.print();
     cout << "Velocity: ";
-    printf("%.2f, %.2f, %.2f", velocity.x, velocity.y, velocity.z);
+    velocity.print();
     cout << "Acceleration: ";
-    printf("%.2f, %.2f, %.2f", acceleration.x, acceleration.y, acceleration.z);
+    acceleration.print();
 }
 
 int main()

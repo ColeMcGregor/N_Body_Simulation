@@ -3,6 +3,8 @@
   "configurations": [
       {
           "name": "Mac",
+          "cStandard": "c11",
+          "cppStandard": "c++11",
           "includePath": [
               "${workspaceFolder}/include",  // Your project's include folder
               "/usr/local/include",         // Homebrew include folder (Intel Macs)
