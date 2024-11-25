@@ -51,6 +51,9 @@ class Simulation {
                         bodies[i].update(timeStep);
                     }
 
+                    // synchronize threads before outputting results
+                    #pragma omp barrier
+                    
                     // a single thread will output the results to the output file every 100 steps
                     #pragma omp single
                     {
