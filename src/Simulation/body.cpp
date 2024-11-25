@@ -192,11 +192,11 @@ void Body::printState() const
 {
     //will print the state of the body to the console using the vector print method
     cout << "Type: " << type << ", Position: ";
-    position.print();
+    printf("%.2f, %.2f, %.2f", position.x, position.y, position.z);
     cout << "Velocity: ";
-    velocity.print();
+    printf("%.2f, %.2f, %.2f", velocity.x, velocity.y, velocity.z);
     cout << "Acceleration: ";
-    acceleration.print();
+    printf("%.2f, %.2f, %.2f", acceleration.x, acceleration.y, acceleration.z);
 }
 
 int main()
