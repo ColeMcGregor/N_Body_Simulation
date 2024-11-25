@@ -179,6 +179,9 @@ Vector Body::sumForces(const vector<Body> &bodies)
     }
     return net_force;
 }
+void Body::resetForce() {
+    net_force = Vector(0, 0, 0);
+}
 
 /*
         Apply acceleration to velocity and position using timestep
@@ -199,8 +202,8 @@ void Body::printState() const
 int main()
 {
     // Test Case 1: Earth and Moon
-    Body earth(Vector(0, 0, 0), Vector(), Vector(), Vector(), 5.97e24, 0, 0, 0, 5514, 6371e3, 0, "planet", Vector(0, 0, 0), 1.0);
-    Body moon(Vector(3.84e8, 0, 0), Vector(), Vector(), Vector(), 7.35e22, 0, 0, 0, 3344, 1737e3, 0, "moon", Vector(0, 0, 0), 1.0);
+    Body earth(Vector(), Vector(), Vector(), Vector(), 5.972e24, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, "earth");
+    Body moon(Vector(3.84e8, 0, 0), Vector(), Vector(), Vector(), 7.35e22, 0, 0, 0, 3344, 1.0, 1737e3, 0.0, 0.0, "moon");
 
     vector<Body> bodies = {earth, moon};
 
