@@ -5,6 +5,6 @@
 
 class FileManager {
 public:
-    void loadConfig(const string& filePath, vector<Body>& bodies, double& timestep, double& gravityMultiplier, int& iterations);
-    void FileManager::outputResults(const string& filePath);
+    void loadConfig(const std::string& filePath, std::vector<Body>& bodies, double& timestep, double& gravityMultiplier, int& iterations);
+    void FileManager::outputResults(const std::string& filePath, const std::vector<Body>& bodies, double timestep);
 };

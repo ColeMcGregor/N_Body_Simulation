@@ -22,15 +22,18 @@ using namespace std;
 
 class Simulation {
     public:
-        vector<Body> bodies; // vector of bodies in the simulation
+        Vector<Body> bodies; // vector of bodies in the simulation
         string inputFile; // input file for the simulation
         string outputFile; // output file for the simulation
+        double timestep; // timestep of the simulation
+        double gravityMultiplier; // gravity multiplier of the simulation
+        int iterations; // number of iterations of the simulation
         FileManager fileManager; // file manager for the simulation
 
         Simulation(const string& inputFile, const string& outputFile)
             : inputFile(inputFile), outputFile(outputFile) {
-                // load the bodies from the input file
-                bodies = fileManager.loadConfig(inputFile);
+                // load the configuration file
+                fileManager.loadConfig(inputFile, bodies, timestep, gravityMultiplier, iterations);
             }
         
         void run(double timeStep, int numSteps) {
@@ -67,6 +70,7 @@ class Simulation {
                             fileManager.outputResults(outputFile, bodies, step);
                         }
                     }
+                }
             }
         }
 };
@@ -76,7 +80,7 @@ int main() {
     const string outputFile = "output.txt";
 
     // create the sim
-    Simulation sim(inputFile, outputFile);
+    Simulation sim(inputFile, outputFile, bodies, timestep, gravityMultiplier, iterations);
     // set number of threads (default is number of cores)
     omp_set_num_threads(omp_get_max_threads());
     // run the sim
