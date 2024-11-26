@@ -196,23 +196,23 @@ void Body::printState() const
     acceleration.print();
 }
 
-int main()
-{
-    // Test Case 1: Earth and Moon
-    Body earth(Vector(), Vector(), Vector(), Vector(), 5.972e24, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, "earth");
-    Body moon(Vector(3.84e8, 0, 0), Vector(), Vector(), Vector(), 7.35e22, 0, 0, 0, 3344, 1.0, 1737e3, 0.0, 0.0, "moon");
+// int main()
+// {
+//     // Test Case 1: Earth and Moon
+//     Body earth(Vector(), Vector(), Vector(), Vector(), 5.972e24, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, "earth");
+//     Body moon(Vector(3.84e8, 0, 0), Vector(), Vector(), Vector(), 7.35e22, 0, 0, 0, 3344, 1.0, 1737e3, 0.0, 0.0, "moon");
 
-    vector<Body> bodies = {earth, moon};
+//     vector<Body> bodies = {earth, moon};
 
-    for (Body &body : bodies)
-    {
-        body.sumForces(bodies);
-    }
+//     for (Body &body : bodies)
+//     {
+//         body.sumForces(bodies);
+//     }
 
-    for (const Body &body : bodies)
-    {
-        body.printState();
-    }
+//     for (const Body &body : bodies)
+//     {
+//         body.printState();
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
