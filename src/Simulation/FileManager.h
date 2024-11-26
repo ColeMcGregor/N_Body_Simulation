@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include "Body.h"
+#include "vector.h"
 
 class FileManager {
 public:

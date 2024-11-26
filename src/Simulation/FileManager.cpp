@@ -15,6 +15,7 @@
 #include <sstream>
 #include <stdexcept>
 #include "body.h"
+#include "vector.h"
 using namespace std;
 
 

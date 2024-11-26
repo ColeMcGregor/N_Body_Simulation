@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include "body.h"
+#include "vector.h"
 using namespace std;
 
 /**
