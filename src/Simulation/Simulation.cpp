@@ -14,7 +14,8 @@
 #include <vector>
 #include <string>
 #include <omp.h>
-#include "Body.h" // Include your Body class header
+#include "vector.h" // Include your Vector class header
+#include "body.h" // Include your Body class header
 #include "FileManager.h" // Include your FileManager class header
 
 using namespace std;
@@ -39,11 +40,14 @@ class Simulation {
                     // divide the work among threads
                     #pragma omp for
                     for (int i = 0; i < bodies.size(); i++) {
-                        /**
-                         * calculate forces on each body
-                        */
-                        }
+                        // reset force before each calculation
+                        bodies[i].resetForce();
+                        // calculate the total force on each body
+                        Vector totalForce = bodies[i].sumForces(bodies);
+                        // apply the force to the body
+                        bodies[i].applyForce(totalForce);
                     }
+
 
                     // update the bodies' positions and velocities
                     #pragma omp for
@@ -63,6 +67,10 @@ class Simulation {
                     }
             }
         }
+        void outputResults(const string& outputFile, const vector<Body>& bodies) {
+                // output the results to the output file
+                fileManager.outputResults(outputFile, bodies);
+            }
 };
 
 int main() {
