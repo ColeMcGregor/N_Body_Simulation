@@ -85,13 +85,13 @@ Body::Body( Vector pos,
             angular_velocity(angularV),
             net_force(net_force), 
             mass(mass), 
-            density(density), 
+            roll(roll),
+            pitch(pitch),
+            yaw(yaw),
+            density(density),
             radius(radius),
-            oblateness(oblateness), 
+            oblateness(oblateness),
             gravitationalMultiplier(gravitationalMultiplier),
-            roll(roll), 
-            pitch(pitch), 
-            yaw(yaw), 
             type(type) {}
 
 
