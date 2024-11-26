@@ -3,5 +3,27 @@ iterations 100
 N 2
 gravitationalMultiplier 1.0
 placement Distributed
+
 body 0  "planet"
+position 0.0 0.0 0.0
+velocity 0.0 0.0 0.0
+mass 1.0e24
+radius 6.371e6
+density 5514.0
+angular_velocity 0.0 0.0 0.0
+roll 0.0
+pitch 0.0
+yaw 0.0
+oblateness 0.0034
+
 body 1  "planet"
+position 1.0e8 0.0 0.0
+velocity 0.0 1000.0 0.0
+mass 1.0e24
+radius 6.371e6
+density 5514.0
+angular_velocity 0.0 0.0 0.0
+roll 0.0
+pitch 0.0
+yaw 0.0
+oblateness 0.0034

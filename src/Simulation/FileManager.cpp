@@ -69,7 +69,7 @@ void FileManager::loadConfig(const string& filePath, vector<Body>& bodies, doubl
  * @brief This function is used to output the locations of the bodies as the simulation runs, allowing for visualizations of the simulation
  * @param filePath: the path to the output file
  */
-void FileManager::outputResults(const string& filePath) {
+void FileManager::outputResults(const string& filePath, const vector<Body>& bodies, double currentTimestep) {
     // open the file
     ofstream file(filePath);
     // check if the file is open
@@ -77,5 +77,26 @@ void FileManager::outputResults(const string& filePath) {
         throw runtime_error("Unable to open file: " + filePath);
     }
     // output the locations of the bodies to the file as the simulation runs(sets of "NValue x,y,z" coordinates)
+
+    /// output current timestep
+    file << "Timestep: " << currentTimestep << endl;
+
+    // output the locations of the bodies to the file
+    for (const Body& body : bodies) {
+        file << body.position.x << " " << body.position.y << " " << body.position.z << " "  // Position vector
+     << body.velocity.x << " " << body.velocity.y << " " << body.velocity.z << " "  // Velocity vector
+     << body.acceleration.x << " " << body.acceleration.y << " " << body.acceleration.z << " "  // Acceleration vector
+     << body.angular_velocity.x << " " << body.angular_velocity.y << " " << body.angular_velocity.z << " "  // Angular velocity vector
+     << body.mass << " "  // Mass
+     << body.roll << " "  // Roll angle
+     << body.pitch << " "  // Pitch angle
+     << body.yaw << " "  // Yaw angle
+     << body.density << " "  // Density
+     << body.radius << " "  // Radius
+     << body.oblateness << " "  // Oblateness
+     << body.type;  // Type string
+    }
+
+    file.close();
 
 }

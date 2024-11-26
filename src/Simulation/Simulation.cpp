@@ -48,6 +48,8 @@ class Simulation {
                         bodies[i].applyForce(totalForce);
                     }
 
+                    // synchronize threads before updating positions
+                    #pragma omp barrier
 
                     // update the bodies' positions and velocities
                     #pragma omp for
@@ -62,15 +64,11 @@ class Simulation {
                     #pragma omp single
                     {
                         if (step % 100 == 0) {
-                            fileManager.outputResults(outputFile, bodies);
+                            fileManager.outputResults(outputFile, bodies, step);
                         }
                     }
             }
         }
-        void outputResults(const string& outputFile, const vector<Body>& bodies) {
-                // output the results to the output file
-                fileManager.outputResults(outputFile, bodies);
-            }
 };
 
 int main() {
