@@ -94,6 +94,7 @@ void FileManager::outputResults(const string& filePath, const vector<Body>& bodi
      << body.density << " "  // Density
      << body.radius << " "  // Radius
      << body.oblateness << " "  // Oblateness
+     << body.gravitationalMultiplier << " "  // Gravitational multiplier
      << body.type;  // Type string
     }
 
