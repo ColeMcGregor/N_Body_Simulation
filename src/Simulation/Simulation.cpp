@@ -22,7 +22,7 @@ using namespace std;
 
 class Simulation {
     public:
-        Vector<Body> bodies; // vector of bodies in the simulation
+        vector<Body> bodies; // vector of bodies in the simulation
         string inputFile; // input file for the simulation
         string outputFile; // output file for the simulation
         double timestep; // timestep of the simulation
@@ -80,7 +80,7 @@ int main() {
     const string outputFile = "output.txt";
 
     // create the sim
-    Simulation sim(inputFile, outputFile, bodies, timestep, gravityMultiplier, iterations);
+    Simulation sim(inputFile, outputFile);
     // set number of threads (default is number of cores)
     omp_set_num_threads(omp_get_max_threads());
     // run the sim
