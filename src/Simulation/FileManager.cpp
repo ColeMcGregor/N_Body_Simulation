@@ -26,7 +26,7 @@ using namespace std;
  * @param timestep: the timestep of the simulation
  * @param iterations: the number of iterations of the simulation
  */
-void FileManager::loadConfig(const string& filePath, vector<Body>& bodies, double& timestep, double& gravityMultiplier, int& iterations) {
+void FileManager::loadConfig(const string& filePath, vector<Body>& bodies, double& timestep, double& gravitationalMultiplier, int& iterations) {
     // open the file
     ifstream file(filePath);
     // check if the file is open
@@ -48,18 +48,18 @@ void FileManager::loadConfig(const string& filePath, vector<Body>& bodies, doubl
         else if (line.find("iterations") != string::npos) {
             ss >> iterations;
         }
-        else if (line.find("gravityMultiplier") != string::npos) {
-            ss >> gravityMultiplier;
+        else if (line.find("gravitationalMultiplier") != string::npos) {
+            ss >> gravitationalMultiplier;
         }
         // Parse body data
         else if (line.find("body") != string::npos) {
-            double x, y, z, vx, vy, vz, mass, radius, oblateness;
+            double x, y, z, vx, vy, vz, mass, density, radius, oblateness;
             string type;
-            ss >> x >> y >> z >> vx >> vy >> vz >> mass >> radius >> oblateness >> type;
+            ss >> x >> y >> z >> vx >> vy >> vz >> mass >> density >> radius >> oblateness >> gravitationalMultiplier >> type;
 
             // Create a Body object and add it to the vector
             //emplace_back is used to add a new element to the end of the vector, emplace_front is used to add a new element to the beginning of the vector
-            bodies.emplace_back(Vector(x, y, z), Vector(vx, vy, vz), Vector(), Vector(), mass, 0, 0, 0, 0, radius, oblateness, type);
+            bodies.emplace_back(Vector(x, y, z), Vector(vx, vy, vz), Vector(), Vector(), Vector(), mass, 0, 0, 0, density, radius, oblateness, gravitationalMultiplier, type);
         }
     }
 
