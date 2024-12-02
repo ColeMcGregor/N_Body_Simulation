@@ -17,7 +17,7 @@ using namespace std;
             double mass          
             double density
             double radius
-            String type (Include moon, planet, star, blackhole)
+            String type (Include moon, planet, star, blackhole maybe)
             int[] childrenIndices
             std::vector<Vector> trajectory
 
@@ -25,36 +25,30 @@ using namespace std;
 /*
     Constructor for the Body class
 */
-Body::Body( Vector pos, 
-            Vector vel,
-            Vector accel, 
-            Vector net_force,
-            double mass,  
-            double density,
-            double radius, 
-            double gravitationalMultiplier,
-            // double roll, 
-            // double pitch, 
-            // double yaw, 
-            string type,
-            int childrenIndices[], //children indices(which bodies are children of this body)
-            std::vector<Vector> trajectory = std::vector<Vector>() //trajectory starts empty
-            )
-            :   
-            position(pos), 
-            velocity(vel), 
-            acceleration(accel), 
-            net_force(net_force), 
-            mass(mass), 
-            density(density),
-            radius(radius),
-            gravitationalMultiplier(gravitationalMultiplier),
-            // roll(roll), 
-            // pitch(pitch), 
-            // yaw(yaw), 
-            type(type),
-            childrenIndices(childrenIndices),
-            trajectory(trajectory) {}
+Body::Body(
+    const Vector& pos,                                                              // Position
+    const Vector& vel,                                                              // Velocity
+    const Vector& accel = Vector(),                                                 // Acceleration defaults to (0, 0, 0)
+    const Vector& net_force = Vector(),                                             // Net force defaults to (0, 0, 0)
+    double mass,                                                                    // Mass
+    double density,                                                                 // Density
+    double radius,                                                                  // Radius
+    double gravitationalMultiplier,                                                 // Gravitational multiplier
+    const std::string& type,                                                        // Type of body
+    const std::vector<int>& childrenIndices = {},                                   // Default empty vector for children indices
+    const std::vector<Vector>& trajectory = {}                                      // Default empty trajectory
+)
+    : position(pos),
+      velocity(vel),
+      acceleration(accel),
+      net_force(net_force),
+      mass(mass),
+      density(density),
+      radius(radius),
+      gravitationalMultiplier(gravitationalMultiplier),
+      type(type),
+      childrenIndices(childrenIndices),
+      trajectory(trajectory) {}
 
 
 /*
@@ -67,16 +61,18 @@ Body::Body( Vector pos,
 Vector Body::gravForce(const Body &p2) const
 {
     const double G = 6.67430e-11; // Predefined and recognized Gravitational constant
-    const double epsilon = 1e-5;  // Softening parameter to limit the force at very close distances
+    const double epsilon = 1e-5;  // Softening parameter to limit the force at very close distances (0.00001)
 
     // Compute the distance vector
     Vector r(p2.position.x - position.x, p2.position.y - position.y, p2.position.z - position.z); //the vectored distance between the two bodies
     double dist = r.magnitude(); //the magnitude of the distance between the two bodies
-
+    if (dist < epsilon) {
+        dist = epsilon; // Prevent divide-by-zero or extremely large forces
+    }
     // Compute gravitational force magnitude
     double forceMag = (G * gravitationalMultiplier) * (mass * p2.mass) / ((dist * dist) + (epsilon * epsilon));
 
-    // Normalize r and scale by force magnitude
+    // Normalize r(distance from one body to the other, ignoring dimensions) and scale by force magnitude
     return Vector(r.x / dist * forceMag, r.y / dist * forceMag, r.z / dist * forceMag); //the vectored force between the two bodies
 }
 

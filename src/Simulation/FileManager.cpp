@@ -42,13 +42,13 @@ void FileManager::loadConfig(const string& filePath, vector<Body>& bodies, doubl
 
         // Parse timestep and iterations
         //if the line contains the word "timestep", then parse the timestep
-        if (line.find("timestep") != string::npos) {
+        if (line.find("Timestep") != string::npos) {
             stringReader >> timestep;
         } //else if the line contains the word "iterations", then parse the iterations
-        else if (line.find("iterations") != string::npos) {
+        else if (line.find("Iterations") != string::npos) {
             stringReader >> iterations;
         }
-        else if (line.find("gravitationalMultiplier") != string::npos) {
+        else if (line.find("Gravitational Multiplier") != string::npos) {
             stringReader >> gravitationalMultiplier;
         }
         // Parse body data
