@@ -77,7 +77,9 @@ Body::Body( Vector pos,
             // double roll, 
             // double pitch, 
             // double yaw, 
-            string type)
+            string type,
+            int[] childrenIndices
+            )
             :   
             position(pos), 
             velocity(vel), 
@@ -91,7 +93,8 @@ Body::Body( Vector pos,
             // roll(roll), 
             // pitch(pitch), 
             // yaw(yaw), 
-            type(type) {}
+            type(type),
+            childrenIndices(childrenIndices) {}
 
 
 /*
