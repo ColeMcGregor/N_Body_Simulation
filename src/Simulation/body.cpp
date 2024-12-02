@@ -15,37 +15,6 @@ using namespace std;
  * 
  */
 
-//constructor for the Vector struct, defaults to 0 (0,0,0) the origin
-    Vector::Vector(double x_, double y_, double z_)
-    : x(x_), y(y_), z(z_) {}
-    /*
-        Calculate the magnitude of the vector(length of space between the origin and the point, ignoring direction)
-    */
-    double Vector::magnitude() const {
-        return sqrt((x * x) + (y * y) + (z * z));
-    }
-    //perform vector addition, returns a new vector
-    Vector Vector::operator+(const Vector& other) const {
-        return {x + other.x, y + other.y, z + other.z};
-    }
-    //perform vector subtraction, returns a new vector
-    Vector Vector::operator-(const Vector& other) const {
-        return {x - other.x, y - other.y, z - other.z};
-    }
-    //perform scalar multiplication, returns a new vector, a scalar is a single number(not a vector) used to "scale" the vector
-    Vector Vector::operator*(double scalar) const {
-        return {x * scalar, y * scalar, z * scalar};
-    }
-    //perform scalar division, returns a new vector, a scalar is a single number(not a vector) used to "scale" the vector
-    Vector Vector::operator/(double scalar) const {
-        return {x / scalar, y / scalar, z / scalar};
-    }
-    //print the vector with commas between the values
-    void Vector::print() const {
-        cout << x << "," << y << "," << z << endl;
-    }
-
-};
 
 /*
     Body class:
