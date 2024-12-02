@@ -12,7 +12,6 @@ class Body{
         Vector position; //where the body is
         Vector velocity; //how fast it is moving in a given direction
         Vector acceleration; //how fast it is accelerating in a given direction
-        Vector angular_velocity; //how fast it is rotating
         Vector net_force; //the net force acting on the body
         double mass; //how much stuff it is made of
         double density; //how much mass is in a given volume
@@ -28,7 +27,6 @@ class Body{
         Body(   Vector pos, 
                 Vector vel, 
                 Vector accel, 
-                Vector angularV, 
                 Vector net_force, 
                 double mass, 
                 double density, 

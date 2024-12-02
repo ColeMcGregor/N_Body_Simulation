@@ -22,7 +22,6 @@ using namespace std;
             Vectored position
             Vectored velocity
             Vectored acceleration
-            Vectored angular velocity
             Vectored net force
             double mass          
             double density
@@ -38,7 +37,6 @@ using namespace std;
 Body::Body( Vector pos, 
             Vector vel,
             Vector accel, 
-            Vector angularV, 
             Vector net_force,
             double mass,  
             double density,
@@ -55,7 +53,6 @@ Body::Body( Vector pos,
             position(pos), 
             velocity(vel), 
             acceleration(accel), 
-            angular_velocity(angularV),
             net_force(net_force), 
             mass(mass), 
             density(density),

@@ -38,28 +38,36 @@ void FileManager::loadConfig(const string& filePath, vector<Body>& bodies, doubl
     // while there is a line to read, read it
     while (getline(file, line)) {
         // create a stringstream object to parse the line
-        stringstream ss(line);
+        stringstream stringReader(line);
 
         // Parse timestep and iterations
         //if the line contains the word "timestep", then parse the timestep
         if (line.find("timestep") != string::npos) {
-            ss >> timestep;
+            stringReader >> timestep;
         } //else if the line contains the word "iterations", then parse the iterations
         else if (line.find("iterations") != string::npos) {
-            ss >> iterations;
+            stringReader >> iterations;
         }
         else if (line.find("gravitationalMultiplier") != string::npos) {
-            ss >> gravitationalMultiplier;
+            stringReader >> gravitationalMultiplier;
         }
         // Parse body data
         else if (line.find("body") != string::npos) {
-            double x, y, z, vx, vy, vz, mass, density, radius, oblateness;
+            double x, y, z, vx, vy, vz, mass, density, radius;
             string type;
-            ss >> x >> y >> z >> vx >> vy >> vz >> mass >> density >> radius >> oblateness >> gravitationalMultiplier >> type;
+            stringReader >> x >> y >> z >> vx >> vy >> vz >> mass >> density >> radius >> gravitationalMultiplier >> type;
 
             // Create a Body object and add it to the vector
             //emplace_back is used to add a new element to the end of the vector, emplace_front is used to add a new element to the beginning of the vector
-            bodies.emplace_back(Vector(x, y, z), Vector(vx, vy, vz), Vector(), Vector(), Vector(), mass, 0, 0, 0, density, radius, oblateness, gravitationalMultiplier, type);
+            bodies.emplace_back(Vector(x, y, z), 
+                                Vector(vx, vy, vz), 
+                                Vector(), //acceleration
+                                Vector(), //net force
+                                mass, 
+                                density, 
+                                radius, 
+                                gravitationalMultiplier, 
+                                type);
         }
     }
 
