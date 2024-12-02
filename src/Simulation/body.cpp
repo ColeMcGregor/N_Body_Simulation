@@ -60,6 +60,7 @@ using namespace std;
             double radius
             (3 doubles Roll, pitch, yaw) represent Orientation
             String type (Include moon, planet, star, blackhole)
+            int[] childrenIndices
 
 */
 /*
