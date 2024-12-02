@@ -90,11 +90,17 @@ void FileManager::outputResults(const string& filePath, const vector<Body>& bodi
             for (int j = 0; j < bodies[i].childrenIndices.size(); j++) {            // output the indices of the children of the body
                 file << bodies[i].childrenIndices[j] << " ";
             }
-            file << endl;                                                           // end the line
+            file << endl;                                                           
         }
     }
     //output block style trajectories 
-    
+    for (int i = 0; i < bodies.size(); i++) {                                       // for each body
+        // body number, body type, body radius
+        file << i << " " << bodies[i].type << " " << bodies[i].radius << endl;      //output the body number, type, and radius
+        for (int j = 0; j < bodies[i].trajectory.size(); j++) {                     // for each timestep
+            file << bodies[i].trajectory[j].print() << endl;                        // output the trajectory of the body
+        }
+    }
 
     // output the locations of the bodies to the file
 
