@@ -79,24 +79,24 @@ void FileManager::outputResults(const string& filePath, const vector<Body>& bodi
     // output the locations of the bodies to the file as the simulation runs(sets of "NValue x,y,z" coordinates)
 
     /// output current timestep
-    file << "Timestep: " << currentTimestep << endl;
+    file << "Timestep: " << currentTimestep << endl;                                // Timestep: 1
+    file << "N: " << bodies.size() << endl;                                         // N: 10    
+    file << "NS: " <<  << endl;                                                     // NS: 1
+    file << "NP: " <<  << endl;                                                     // NP: 1
+    file << "NM: " <<  << endl;                                                     // NM: 1
+    for (int i = 0; i < bodies.size(); i++) {
+        if (bodies[i].childrenIndices.size() > 0) {                                 // if the body has children
+            file << i << " ";                                                       // output the index of the body
+            for (int j = 0; j < bodies[i].childrenIndices.size(); j++) {            // output the indices of the children of the body
+                file << bodies[i].childrenIndices[j] << " ";
+            }
+            file << endl;                                                           // end the line
+        }
+    }
+    //output block style trajectories 
+    
 
     // output the locations of the bodies to the file
-    for (const Body& body : bodies) {
-        file << body.position.x << " " << body.position.y << " " << body.position.z << " "  // Position vector
-     << body.velocity.x << " " << body.velocity.y << " " << body.velocity.z << " "  // Velocity vector
-     << body.acceleration.x << " " << body.acceleration.y << " " << body.acceleration.z << " "  // Acceleration vector
-     << body.angular_velocity.x << " " << body.angular_velocity.y << " " << body.angular_velocity.z << " "  // Angular velocity vector
-     << body.mass << " "  // Mass
-     << body.roll << " "  // Roll angle
-     << body.pitch << " "  // Pitch angle
-     << body.yaw << " "  // Yaw angle
-     << body.density << " "  // Density
-     << body.radius << " "  // Radius
-     << body.oblateness << " "  // Oblateness
-     << body.gravitationalMultiplier << " "  // Gravitational multiplier
-     << body.type;  // Type string
-    }
 
     file.close();
 

@@ -48,7 +48,8 @@ Body::Body( Vector pos,
             // double pitch, 
             // double yaw, 
             string type,
-            int[] childrenIndices
+            int childrenIndices[],
+            std::vector<Vector> trajectory
             )
             :   
             position(pos), 
@@ -64,7 +65,8 @@ Body::Body( Vector pos,
             // pitch(pitch), 
             // yaw(yaw), 
             type(type),
-            childrenIndices(childrenIndices) {}
+            childrenIndices(childrenIndices),
+            trajectory(trajectory) {}
 
 
 /*

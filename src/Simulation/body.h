@@ -15,14 +15,16 @@ class Body{
         Vector angular_velocity; //how fast it is rotating
         Vector net_force; //the net force acting on the body
         double mass; //how much stuff it is made of
-
         double density; //how much mass is in a given volume
         double radius; //how big it is from center to edge
-
         // special variables
         double gravitationalMultiplier; //allows for different multiples of gravitational constants to see the effects of universal gravity scaling
         std::string type; //what type of body it is(moon, planet, star, blackhole)
         int[] childrenIndices; //the indices of the bodies that are children of this body
+        Vector[] trajectory; //the trajectory of the body through time
+
+
+
         Body(   Vector pos, 
                 Vector vel, 
                 Vector accel, 
@@ -33,7 +35,9 @@ class Body{
                 double radius, 
                 double gravitationalMultiplier, 
                 std::string type,
-                int[] childrenIndices);
+                int[] childrenIndices,
+                Vector[] trajectory
+                );
             
         Vector gravForce(const Body& p2) const;
         void applyForce(const Vector& force);
