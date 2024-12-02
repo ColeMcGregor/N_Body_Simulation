@@ -27,6 +27,7 @@ struct Vector{
     Vector operator-(const Vector& other)const;
     Vector operator*(double scalar)const;
     Vector operator/(double scalar)const;
+    void reset();
     void print()const;
 
 

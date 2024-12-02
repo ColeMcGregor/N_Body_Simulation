@@ -37,6 +37,13 @@ struct Vector {
         return {x / scalar, y / scalar, z / scalar};
     }
 
+    // Reset the vector to (0, 0, 0)
+    void reset() {
+        x = 0;
+        y = 0;
+        z = 0;
+    }
+
     // Print the vector (x, y, z)
     void print() const {
         std::cout << x << "," << y << "," << z << std::endl;

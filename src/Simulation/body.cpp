@@ -6,15 +6,6 @@
 #include "vector.h"
 using namespace std;
 
-/**
- *  A VECTOR IS NOT THE SAME AS THE CPP VECTOR CLASS
- * IT HOLDS X Y Z COORDINATES AND HAS METHODS TO MANIPULATE THEM
- * A CPP vector is a dynamic array of objects
- * PLEASE DO NOT CONFUSE THE TWO
- * 
- * 
- */
-
 
 /*
     Body class:
@@ -26,9 +17,9 @@ using namespace std;
             double mass          
             double density
             double radius
-            (3 doubles Roll, pitch, yaw) represent Orientation
             String type (Include moon, planet, star, blackhole)
             int[] childrenIndices
+            std::vector<Vector> trajectory
 
 */
 /*
@@ -46,8 +37,8 @@ Body::Body( Vector pos,
             // double pitch, 
             // double yaw, 
             string type,
-            int childrenIndices[],
-            std::vector<Vector> trajectory
+            int childrenIndices[], //children indices(which bodies are children of this body)
+            std::vector<Vector> trajectory = std::vector<Vector>() //trajectory starts empty
             )
             :   
             position(pos), 
@@ -148,7 +139,7 @@ Vector Body::sumForces(const vector<Body> &bodies)
     return net_force;
 }
 void Body::resetForce() {
-    net_force = Vector(0, 0, 0);
+    net_force.reset(); //reset the net force to (0, 0, 0) using the reset method in vector.h
 }
 
 
