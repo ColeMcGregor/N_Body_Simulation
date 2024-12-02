@@ -45,7 +45,6 @@ struct Vector {
     void print() const {
         cout << x << "," << y << "," << z << endl;
     }
-
 };
 
 /*
@@ -59,7 +58,6 @@ struct Vector {
             double mass          
             double density
             double radius
-            double oblateness (How squished or oblonged)
             (3 doubles Roll, pitch, yaw) represent Orientation
             String type (Include moon, planet, star, blackhole)
 
@@ -75,11 +73,10 @@ Body::Body( Vector pos,
             double mass,  
             double density,
             double radius, 
-            double oblateness, 
             double gravitationalMultiplier,
-            double roll, 
-            double pitch, 
-            double yaw, 
+            // double roll, 
+            // double pitch, 
+            // double yaw, 
             string type)
             :   
             position(pos), 
@@ -90,11 +87,10 @@ Body::Body( Vector pos,
             mass(mass), 
             density(density), 
             radius(radius),
-            oblateness(oblateness), 
             gravitationalMultiplier(gravitationalMultiplier),
-            roll(roll), 
-            pitch(pitch), 
-            yaw(yaw), 
+            // roll(roll), 
+            // pitch(pitch), 
+            // yaw(yaw), 
             type(type) {}
 
 
@@ -180,6 +176,7 @@ Vector Body::sumForces(const vector<Body> &bodies)
     return net_force;
 }
 
+
 /*
         Apply acceleration to velocity and position using timestep
 */
@@ -194,25 +191,4 @@ void Body::printState() const
     velocity.print();
     cout << "Acceleration: ";
     acceleration.print();
-}
-
-int main()
-{
-    // Test Case 1: Earth and Moon
-    Body earth(Vector(0, 0, 0), Vector(), Vector(), Vector(), 5.97e24, 0, 0, 0, 5514, 6371e3, 0, "planet", Vector(0, 0, 0), 1.0);
-    Body moon(Vector(3.84e8, 0, 0), Vector(), Vector(), Vector(), 7.35e22, 0, 0, 0, 3344, 1737e3, 0, "moon", Vector(0, 0, 0), 1.0);
-
-    vector<Body> bodies = {earth, moon};
-
-    for (Body &body : bodies)
-    {
-        body.sumForces(bodies);
-    }
-
-    for (const Body &body : bodies)
-    {
-        body.printState();
-    }
-
-    return 0;
 }
