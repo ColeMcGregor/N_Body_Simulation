@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include "body.h"
+#include "vector.h"
 using namespace std;
 
 /**
@@ -14,37 +15,36 @@ using namespace std;
  * 
  */
 
-struct Vector {
-    double x, y, z;
-    //constructor for the Vector struct, defaults to 0 (0,0,0) the origin
-    Vector(double x_ = 0.0, double y_ = 0.0, double z_ = 0.0)
-        : x(x_), y(y_), z(z_) {}
+//constructor for the Vector struct, defaults to 0 (0,0,0) the origin
+    Vector::Vector(double x_, double y_, double z_)
+    : x(x_), y(y_), z(z_) {}
     /*
         Calculate the magnitude of the vector(length of space between the origin and the point, ignoring direction)
     */
-    double magnitude() const {
+    double Vector::magnitude() const {
         return sqrt((x * x) + (y * y) + (z * z));
     }
     //perform vector addition, returns a new vector
-    Vector operator+(const Vector& other) const {
+    Vector Vector::operator+(const Vector& other) const {
         return {x + other.x, y + other.y, z + other.z};
     }
     //perform vector subtraction, returns a new vector
-    Vector operator-(const Vector& other) const {
+    Vector Vector::operator-(const Vector& other) const {
         return {x - other.x, y - other.y, z - other.z};
     }
     //perform scalar multiplication, returns a new vector, a scalar is a single number(not a vector) used to "scale" the vector
-    Vector operator*(double scalar) const {
+    Vector Vector::operator*(double scalar) const {
         return {x * scalar, y * scalar, z * scalar};
     }
     //perform scalar division, returns a new vector, a scalar is a single number(not a vector) used to "scale" the vector
-    Vector operator/(double scalar) const {
+    Vector Vector::operator/(double scalar) const {
         return {x / scalar, y / scalar, z / scalar};
     }
     //print the vector with commas between the values
-    void print() const {
+    void Vector::print() const {
         cout << x << "," << y << "," << z << endl;
     }
+
 };
 
 /*
@@ -85,7 +85,7 @@ Body::Body( Vector pos,
             angular_velocity(angularV),
             net_force(net_force), 
             mass(mass), 
-            density(density), 
+            density(density),
             radius(radius),
             gravitationalMultiplier(gravitationalMultiplier),
             // roll(roll), 
@@ -175,6 +175,9 @@ Vector Body::sumForces(const vector<Body> &bodies)
     }
     return net_force;
 }
+void Body::resetForce() {
+    net_force = Vector(0, 0, 0);
+}
 
 
 /*
@@ -192,3 +195,5 @@ void Body::printState() const
     cout << "Acceleration: ";
     acceleration.print();
 }
+
+

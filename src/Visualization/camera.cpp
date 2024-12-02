@@ -1,7 +1,10 @@
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 /*
     This is the camera program for visualizing the simulation. The bodies will stay stationary, and the camera will move around and have
@@ -12,6 +15,13 @@
     To run:
         ./app
 */
+
+// Camera position and orientation
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);  // Starting position
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f); // Direction camera is facing
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);    // Up vector
+float cameraSpeed = 0.05f;                           // Movement speed
+
 // Callback function to resize the OpenGL viewport
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -21,18 +31,17 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 float xOffset = 0.0f;
 float yOffset = 0.0f;
 
-// Process input to move the object
 void processInput(GLFWwindow* window) {
-    const float moveSpeed = 0.01f; // Movement speed
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        yOffset += moveSpeed;
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        yOffset -= moveSpeed;
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-        xOffset -= moveSpeed;
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-        xOffset += moveSpeed;
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        cameraPos += cameraSpeed * cameraFront; // Move forward
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        cameraPos -= cameraSpeed * cameraFront; // Move backward
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed; // Strafe left
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed; // Strafe right
 }
+
 
 int main() {
     // Initialize GLFW
@@ -95,13 +104,18 @@ int main() {
 
     // Shader source
     const char* vertexShaderSource = R"(
-        #version 330 core
-        layout (location = 0) in vec2 aPos;
-        uniform vec2 offset;
-        void main() {
-            gl_Position = vec4(aPos + offset, 0.0, 1.0);
-        }
-    )";
+    #version 330 core
+    layout (location = 0) in vec3 aPos;
+
+    uniform mat4 model;
+    uniform mat4 view;
+    uniform mat4 projection;
+
+    void main() {
+        gl_Position = projection * view * model * vec4(aPos, 1.0);
+    }
+)";
+
 
     const char* fragmentShaderSource = R"(
         #version 330 core
@@ -129,23 +143,40 @@ int main() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    // Main render loop
-    while (!glfwWindowShouldClose(window)) {
-        processInput(window);
+while (!glfwWindowShouldClose(window)) {
+    processInput(window);
 
-        // Clear the screen
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+    // Clear the screen
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
-        // Render the object
-        glUseProgram(shaderProgram);
-        glUniform2f(glGetUniformLocation(shaderProgram, "offset"), xOffset, yOffset);
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    // Use the shader program
+    glUseProgram(shaderProgram);
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
+    // Model matrix (object remains stationary)
+    glm::mat4 model = glm::mat4(1.0f);
+
+    // View matrix (camera transformation)
+    glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+
+    // Projection matrix (perspective projection)
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+
+    // Send matrices to the shader
+    unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+    unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
+    unsigned int projLoc = glGetUniformLocation(shaderProgram, "projection");
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+    // Draw the object
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+}
 
     // Cleanup
     glDeleteVertexArrays(1, &VAO);
@@ -156,3 +187,4 @@ int main() {
     glfwTerminate();
     return 0;
 }
+

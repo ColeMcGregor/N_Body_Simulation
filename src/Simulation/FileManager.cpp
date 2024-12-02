@@ -15,6 +15,7 @@
 #include <sstream>
 #include <stdexcept>
 #include "body.h"
+#include "vector.h"
 using namespace std;
 
 
@@ -25,7 +26,7 @@ using namespace std;
  * @param timestep: the timestep of the simulation
  * @param iterations: the number of iterations of the simulation
  */
-void FileManager::loadConfig(const string& filePath, vector<Body>& bodies, double& timestep, double& gravityMultiplier, int& iterations) {
+void FileManager::loadConfig(const string& filePath, vector<Body>& bodies, double& timestep, double& gravitationalMultiplier, int& iterations) {
     // open the file
     ifstream file(filePath);
     // check if the file is open
@@ -47,18 +48,18 @@ void FileManager::loadConfig(const string& filePath, vector<Body>& bodies, doubl
         else if (line.find("iterations") != string::npos) {
             ss >> iterations;
         }
-        else if (line.find("gravityMultiplier") != string::npos) {
-            ss >> gravityMultiplier;
+        else if (line.find("gravitationalMultiplier") != string::npos) {
+            ss >> gravitationalMultiplier;
         }
         // Parse body data
         else if (line.find("body") != string::npos) {
-            double x, y, z, vx, vy, vz, mass, radius, oblateness;
+            double x, y, z, vx, vy, vz, mass, density, radius, oblateness;
             string type;
-            ss >> x >> y >> z >> vx >> vy >> vz >> mass >> radius >> oblateness >> type;
+            ss >> x >> y >> z >> vx >> vy >> vz >> mass >> density >> radius >> oblateness >> gravitationalMultiplier >> type;
 
             // Create a Body object and add it to the vector
             //emplace_back is used to add a new element to the end of the vector, emplace_front is used to add a new element to the beginning of the vector
-            bodies.emplace_back(Vector(x, y, z), Vector(vx, vy, vz), Vector(), Vector(), mass, 0, 0, 0, 0, radius, oblateness, type);
+            bodies.emplace_back(Vector(x, y, z), Vector(vx, vy, vz), Vector(), Vector(), Vector(), mass, 0, 0, 0, density, radius, oblateness, gravitationalMultiplier, type);
         }
     }
 
@@ -68,7 +69,7 @@ void FileManager::loadConfig(const string& filePath, vector<Body>& bodies, doubl
  * @brief This function is used to output the locations of the bodies as the simulation runs, allowing for visualizations of the simulation
  * @param filePath: the path to the output file
  */
-void FileManager::outputResults(const string& filePath) {
+void FileManager::outputResults(const string& filePath, const vector<Body>& bodies, double currentTimestep) {
     // open the file
     ofstream file(filePath);
     // check if the file is open
@@ -76,5 +77,27 @@ void FileManager::outputResults(const string& filePath) {
         throw runtime_error("Unable to open file: " + filePath);
     }
     // output the locations of the bodies to the file as the simulation runs(sets of "NValue x,y,z" coordinates)
+
+    /// output current timestep
+    file << "Timestep: " << currentTimestep << endl;
+
+    // output the locations of the bodies to the file
+    for (const Body& body : bodies) {
+        file << body.position.x << " " << body.position.y << " " << body.position.z << " "  // Position vector
+     << body.velocity.x << " " << body.velocity.y << " " << body.velocity.z << " "  // Velocity vector
+     << body.acceleration.x << " " << body.acceleration.y << " " << body.acceleration.z << " "  // Acceleration vector
+     << body.angular_velocity.x << " " << body.angular_velocity.y << " " << body.angular_velocity.z << " "  // Angular velocity vector
+     << body.mass << " "  // Mass
+     << body.roll << " "  // Roll angle
+     << body.pitch << " "  // Pitch angle
+     << body.yaw << " "  // Yaw angle
+     << body.density << " "  // Density
+     << body.radius << " "  // Radius
+     << body.oblateness << " "  // Oblateness
+     << body.gravitationalMultiplier << " "  // Gravitational multiplier
+     << body.type;  // Type string
+    }
+
+    file.close();
 
 }

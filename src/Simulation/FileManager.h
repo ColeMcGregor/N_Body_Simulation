@@ -1,9 +1,10 @@
 #include <vector>
 #include <string>
-#include "Body.h"
+#include "body.h"
+#include "vector.h"
 
 class FileManager {
 public:
-    void loadConfig(const string& filePath, vector<Body>& bodies, double& timestep, double& gravityMultiplier, int& iterations);
-    void FileManager::outputResults(const string& filePath);
+    void loadConfig(const std::string& filePath, std::vector<Body>& bodies, double& timestep, double& gravityMultiplier, int& iterations);
+    void outputResults(const std::string& filePath, const std::vector<Body>& bodies, double timestep);
 };
