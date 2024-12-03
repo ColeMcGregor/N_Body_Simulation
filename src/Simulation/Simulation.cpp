@@ -141,7 +141,7 @@ Vector calculateOrbitalVelocity(const Vector& parentPos, const Vector& childPos,
 
     // Normalize and scale to orbital speed
     velocity = velocity * speed;
-
+    // return the orbital velocity of the body
     return velocity;
 }
 
@@ -152,11 +152,11 @@ int main() {
     const string inputFile = "input.txt";
     const string outputFile = "output.txt";
 
-    // create the sim
+    // create the simulation
     Simulation sim(inputFile, outputFile);
     // set number of threads (default is number of cores)
     omp_set_num_threads(omp_get_max_threads());
-    // run the sim
+    // run the simulation
     sim.run(0.01, 1000);
 
     return 0;
