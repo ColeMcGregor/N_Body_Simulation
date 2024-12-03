@@ -77,7 +77,7 @@ void FileManager::loadConfig(const string& filePath, vector<Body>& bodies, doubl
  * @brief This function is used to output the locations of the bodies as the simulation runs, allowing for visualizations of the simulation
  * @param filePath: the path to the output file
  */
-void FileManager::outputResults(const string& filePath, const vector<Body>& bodies, double currentTimestep) {
+void FileManager::outputResults(const string& filePath, const vector<Body>& bodies, double timeStep) {
     // open the file
     ofstream file(filePath);
     // check if the file is open
@@ -86,12 +86,33 @@ void FileManager::outputResults(const string& filePath, const vector<Body>& bodi
     }
     // output the locations of the bodies to the file as the simulation runs(sets of "NValue x,y,z" coordinates)
 
+    //create throwaway variables for the number of stars, planets, and moons
+    int NS = 0; //number of stars
+    int NP = 0; //number of planets
+    int NM = 0; //number of moons
+    int NB = 0; //number of blackholes
+    //look through the bodies vector and count the number of stars, planets, and moons
+    for (int i = 0; i < bodies.size(); i++) {
+        if (bodies[i].type == "star") {
+            NS++;
+        }
+        else if (bodies[i].type == "planet") {
+            NP++;
+        }
+        else if (bodies[i].type == "moon") {
+            NM++;
+        }
+        else if (bodies[i].type == "blackhole") {
+            NB++;
+        }
+    }
     /// output current timestep
-    file << "Timestep: " << currentTimestep << endl;                                // Timestep: 1
+    file << "Timestep: " << timeStep << endl;                                // Timestep: 1
     file << "N: " << bodies.size() << endl;                                         // N: 10    
-    file << "NS: " <<  << endl;                                                     // NS: 1
-    file << "NP: " <<  << endl;                                                     // NP: 1
-    file << "NM: " <<  << endl;                                                     // NM: 1
+    file << "NS: " << NS << endl;                                                     // NS: 1
+    file << "NP: " << NP << endl;                                                     // NP: 1
+    file << "NM: " << NM << endl;                                                     // NM: 1
+    file << "NB: " << NB << endl;                                                     // NB: 1
     for (int i = 0; i < bodies.size(); i++) {
         if (bodies[i].childrenIndices.size() > 0) {                                 // if the body has children
             file << i << " ";                                                       // output the index of the body
