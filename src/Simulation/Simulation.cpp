@@ -153,29 +153,29 @@ Vector calculateOrbitalVelocity(const Vector& parentPos, const Vector& childPos,
  * @brief this algorithm is used to set the correct positions, velocities, and orbital velocities of the bodies
  * @details:
  * @param bodies the vector of bodies in the simulation
- * @param bodyCount the array of body counts
+ * @param bodyCount the array of body counts ([0]: N, [1]: NS, [2]: NP, [3]: NM, [4]: NB)
  */
 void initiateHeavenscape(vector<Body>& bodies, int bodyCount[5]) {
     /*
  * Determine the hierarchical structure and spatial arrangement of celestial bodies in the simulation:
  * 
- * 1. Identify if black holes are present:
+ * 1. Identify if black holes are present: (bodyCount[4] > 0)
  *    - If present, the black hole is(are) the heaviest body(ies) and serves as the center of the simulation.
  *    - Analyze the black hole's children (stars, planets, or both) and assign them appropriately.
  * 
- * 2. If no black holes are present:
+ * 2. If no black holes are present: (bodyCount[4] == 0)
  *    - Designate the most massive body as the center of the simulation.
  * 
- * 3. Arrange stars:
+ * 3. Arrange stars: (bodyCount[1] > 0)
  *    - Determine the number of stars and ensure sufficient spacing between them to accommodate their planetary systems.
  *    - Place stars in stable orbits around the black hole or the center of the simulation.
  *    - If multiple stars exist, ensure they are spaced apart to allow for planetary systems.
  * 
- * 4. Assign planets:
+ * 4. Assign planets: (bodyCount[2] > 0)
  *    - Determine the number of planets and assign each to the correct parent (star or black hole).
  *    - Ensure sufficient spacing between planets to allow for moon systems.
  * 
- * 5. Handle moons:
+ * 5. Handle moons: (bodyCount[3] > 0)
  *    - Identify all moons and assign them to their appropriate parent planets.
  *    - Position moons after planets, ensuring their orbital radii are correctly assigned.
  * 
