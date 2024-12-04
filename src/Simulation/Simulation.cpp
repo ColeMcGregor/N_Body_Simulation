@@ -38,7 +38,7 @@ class Simulation {
             }
 
         //this algorithm is used to set the correct positions, velocities, and orbital velocities of the bodies
-        initiateHeavenscape(bodies);
+        initiateHeavenscape(bodies, bodyCount);
 
         
         void run(double timeStep, int numSteps) {
@@ -149,8 +149,37 @@ Vector calculateOrbitalVelocity(const Vector& parentPos, const Vector& childPos,
     // return the orbital velocity of the body
     return velocity;
 }
-
-void initiateHeavenscape(vector<Body>& bodies) {
+/**
+ * @brief this algorithm is used to set the correct positions, velocities, and orbital velocities of the bodies
+ * @details:
+ * @param bodies the vector of bodies in the simulation
+ * @param bodyCount the array of body counts
+ */
+void initiateHeavenscape(vector<Body>& bodies, int bodyCount[5]) {
+    /*
+ * Determine the hierarchical structure and spatial arrangement of celestial bodies in the simulation:
+ * 
+ * 1. Identify if black holes are present:
+ *    - If present, the black hole is(are) the heaviest body(ies) and serves as the center of the simulation.
+ *    - Analyze the black hole's children (stars, planets, or both) and assign them appropriately.
+ * 
+ * 2. If no black holes are present:
+ *    - Designate the most massive body as the center of the simulation.
+ * 
+ * 3. Arrange stars:
+ *    - Determine the number of stars and ensure sufficient spacing between them to accommodate their planetary systems.
+ *    - Place stars in stable orbits around the black hole or the center of the simulation.
+ *    - If multiple stars exist, ensure they are spaced apart to allow for planetary systems.
+ * 
+ * 4. Assign planets:
+ *    - Determine the number of planets and assign each to the correct parent (star or black hole).
+ *    - Ensure sufficient spacing between planets to allow for moon systems.
+ * 
+ * 5. Handle moons:
+ *    - Identify all moons and assign them to their appropriate parent planets.
+ *    - Position moons after planets, ensuring their orbital radii are correctly assigned.
+ * 
+ */
 
 }
 
