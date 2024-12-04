@@ -25,54 +25,91 @@ using namespace std;
  * @param bodies: the vector(datastructure that acts as a dynamic array) of bodies to be created
  * @param timestep: the timestep of the simulation
  * @param iterations: the number of iterations of the simulation
+ * @param bodyCount: an array of integers that store the number of bodies of each type
  */
-void FileManager::loadConfig(const string& filePath, vector<Body>& bodies, double& timestep, double& gravitationalMultiplier, int& iterations) {
-    // open the file
+void FileManager::loadConfig(
+    const string& filePath, 
+    vector<Body>& bodies, 
+    double& timestep, 
+    double& gravitationalMultiplier, 
+    int& iterations, 
+    int bodyCount[5]) 
+{
+    // Open the input file
     ifstream file(filePath);
-    // check if the file is open
     if (!file.is_open()) {
         throw runtime_error("Unable to open file: " + filePath);
     }
-    // read the file line by line
+
     string line;
-    // while there is a line to read, read it
+
+    // Parse the file line by line
     while (getline(file, line)) {
-        // create a stringstream object to parse the line
-        stringstream stringReader(line);
+        stringstream StringFileReader(line);
+        string keyword;
+        StringFileReader >> keyword;
 
-        // Parse timestep and iterations
-        //if the line contains the word "timestep", then parse the timestep
-        if (line.find("Timestep") != string::npos) {
-            stringReader >> timestep;
-        } //else if the line contains the word "iterations", then parse the iterations
-        else if (line.find("Iterations") != string::npos) {
-            stringReader >> iterations;
-        }
-        else if (line.find("Gravitational Multiplier") != string::npos) {
-            stringReader >> gravitationalMultiplier;
-        }
-        // Parse body data
-        else if (line.find("body") != string::npos) {
-            double x, y, z, vx, vy, vz, mass, density, radius;
+        if (keyword == "Timestep") {
+            StringFileReader >> timestep;
+        } else if (keyword == "Iterations") {
+            StringFileReader >> iterations;
+        } else if (keyword == "N") {
+            StringFileReader >> bodyCount[0]; // Total number of bodies
+        } else if (keyword == "NS") {
+            StringFileReader >> bodyCount[1]; // Number of stars
+        } else if (keyword == "NP") {
+            StringFileReader >> bodyCount[2]; // Number of planets
+        } else if (keyword == "NM") {
+            StringFileReader >> bodyCount[3]; // Number of moons
+        } else if (keyword == "NB") {
+            StringFileReader >> bodyCount[4]; // Number of blackholes
+        } else if (keyword == "gravitationalMultiplier") {
+            StringFileReader >> gravitationalMultiplier;
+        } else if (keyword == "body") {
+            // Parse body information
+            int id;
+            StringFileReader >> id;
+
+            Vector position, velocity;
+            double mass, density, radius;
             string type;
-            stringReader >> x >> y >> z >> vx >> vy >> vz >> mass >> density >> radius >> gravitationalMultiplier >> type;
+            vector<int> children;
 
-            // Create a Body object and add it to the vector
-            //emplace_back is used to add a new element to the end of the vector, emplace_front is used to add a new element to the beginning of the vector
-            bodies.emplace_back(Vector(x, y, z), 
-                                Vector(vx, vy, vz), 
-                                Vector(), //acceleration
-                                Vector(), //net force
-                                mass, 
-                                density, 
-                                radius, 
-                                gravitationalMultiplier, 
-                                type);
+            // Read subsequent lines for body details
+            while (getline(file, line) && !line.empty()) { //while there is a line in the file and the line is not empty, stop reading for a body at a new line
+                stringstream BodyStringFileReader(line);    //create a stringstream object to read the line
+                string attribute;                           //create a string to store the attribute of the body
+                BodyStringFileReader >> attribute;           //read the attribute of the body and put it in the string
+
+                if (attribute == "children") {              //if the attribute is children 
+                    int childId;
+                    while (BodyStringFileReader >> childId) {  //while there is an integer to read
+                        children.push_back(childId);          //add the integer to the children vector
+                    }
+                } else if (attribute == "position") {       //if the attribute is position
+                    BodyStringFileReader >> position.x >> position.y >> position.z; //read the position of the body and put it in the vector
+                } else if (attribute == "velocity") {       //if the attribute is velocity
+                    BodyStringFileReader >> velocity.x >> velocity.y >> velocity.z; //read the velocity of the body and put it in the vector
+                } else if (attribute == "mass") {             //if the attribute is mass
+                    BodyStringFileReader >> mass;              //read the mass of the body and put it in the double
+                } else if (attribute == "density") {            //if the attribute is density
+                    BodyStringFileReader >> density;             //read the density of the body and put it in the double
+                } else if (attribute == "radius") {             //if the attribute is radius
+                    BodyStringFileReader >> radius;              //read the radius of the body and put it in the double
+                } else if (attribute == "star" || attribute == "planet" || attribute == "moon" || attribute == "blackhole") {
+                    type = attribute;                           //if the attribute is a type of body, set the type of the body to the attribute
+                }
+            }
+
+            // Create and store the body, using the constructor of the Body class
+            bodies.emplace_back(position, velocity, Vector(), Vector(), mass, density, radius, gravitationalMultiplier, type); //create the body and add it to the vector
+            bodies.back().childrenIndices = children; // Assign parsed children indices for each body
         }
     }
 
-    file.close();
+    file.close(); //close the file
 }
+
 /**
  * @brief This function is used to output the locations of the bodies as the simulation runs, allowing for visualizations of the simulation
  * @param filePath: the path to the output file

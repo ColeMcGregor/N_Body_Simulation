@@ -28,13 +28,18 @@ class Simulation {
         double timestep; // timestep of the simulation
         double gravityMultiplier; // gravity multiplier of the simulation
         int iterations; // number of iterations of the simulation
+        int bodyCount[5]; // information about the simulation bodies: 0: N, 1: NS, 2: NP, 3: NM, 4: NB, stored in the corresponding index of the array
         FileManager fileManager; // file manager for the simulation
 
         Simulation(const string& inputFile, const string& outputFile)
             : inputFile(inputFile), outputFile(outputFile) {
                 // load the configuration file
-                fileManager.loadConfig(inputFile, bodies, timestep, gravityMultiplier, iterations);
+                fileManager.loadConfig(inputFile, bodies, timestep, gravityMultiplier, iterations, bodyCount);
             }
+
+        //this algorithm is used to set the correct positions, velocities, and orbital velocities of the bodies
+        initiateHeavenscape(bodies);
+
         
         void run(double timeStep, int numSteps) {
             #pragma omp parallel
@@ -143,6 +148,10 @@ Vector calculateOrbitalVelocity(const Vector& parentPos, const Vector& childPos,
     velocity = velocity * speed;
     // return the orbital velocity of the body
     return velocity;
+}
+
+void initiateHeavenscape(vector<Body>& bodies) {
+
 }
 
 

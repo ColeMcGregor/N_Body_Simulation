@@ -1,12 +1,10 @@
-Timestep 3600
+Timestep 60
 Iterations 10000
 N 5
 NS 1
 NP 3
 NM 1
 NB 0
-0 1 2 3
-2 4
 gravitationalMultiplier 1.0
 
 body 0  
@@ -27,6 +25,7 @@ radius 6371000
 planet
 
 body 2
+children 4
 position 0.0 0.0 0.0
 velocity 0.0 0.0 0.0
 mass 6.0e24
