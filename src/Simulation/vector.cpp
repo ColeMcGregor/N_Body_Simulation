@@ -37,7 +37,12 @@ Vector Vector::operator/(double scalar) const
 {
   return Vector(x / scalar, y / scalar, z / scalar);
 }
-
+/**
+ * Overload the << operator to output the vector to a file
+ * @param file the file to output the vector to
+ * @param vec the vector to output
+ * @return the file with the vector appended(or written if it's a new file)
+ */
 std::ofstream& operator<<(std::ofstream& file, const Vector& vec)
 {
     file << vec.x << "," << vec.y << "," << vec.z;
