@@ -215,6 +215,7 @@ void initiateHeavenscape(vector<Body> &bodies, int bodyCount[5])
      *    - The above bounds for the distances between bodies can be toggled off to create unstable interactions, this will result in the bodies spiraling into eachother, or out of the system
      *    - Additionally, the gravitional multiplier when not set at 1 will create unstable interactions, as the force of gravity will be too great or too small, causing the bodies to behave erratically
      *        - it should be noted that the bounds do not work at all for stable orbits when the gravitational multiplier is not 1.00
+     *    - the stable flag in the input file can be toggled to allow for stable orbits when the gravitational multiplier is set to 1.00, otherwise it is irrelevant
      */
 }
 
