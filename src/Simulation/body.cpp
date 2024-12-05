@@ -6,7 +6,6 @@
 #include "vector.h"
 using namespace std;
 
-
 /*
     Body class:
         Define a spheroid
@@ -14,7 +13,7 @@ using namespace std;
             Vectored velocity
             Vectored acceleration
             Vectored net force
-            double mass          
+            double mass
             double density
             double radius
             String type (Include moon, planet, star, blackhole maybe)
@@ -26,30 +25,31 @@ using namespace std;
     Constructor for the Body class
 */
 Body::Body(
-    Vector& pos,                                                                    // Position
-    Vector& vel,                                                                    // Velocity
-    Vector& accel,                                                                  // Acceleration
-    Vector& net_force,                                                              // Net force
-    const double mass,                                                                    // Mass
-    const double density,                                                                 // Density
-    const double radius,                                                                  // Radius
-    const double gravitationalMultiplier,                                                 // Gravitational multiplier
-    const string& type,                                                                   // Type of body
-    const vector<int>& childrenIndices,                                                   // Vector of indices of children
-    vector<Vector>& trajectory                                                      // Trajectory of body
-)
+    Vector &pos,                          // Position
+    Vector &vel,                          // Velocity
+    Vector &accel,                        // Acceleration
+    Vector &net_force,                    // Net force
+    const double mass,                    // Mass
+    const double density,                 // Density
+    const double radius,                  // Radius
+    const double gravitationalMultiplier, // Gravitational multiplier
+    const string &type,                   // Type of body
+    const vector<int> &childrenIndices,   // Vector of indices of children
+    vector<Vector> &trajectory            // Trajectory of body
+    )
     : position(pos),
       velocity(vel),
-      acceleration(accel),                                              
-      net_force(net_force),                                              
+      acceleration(accel),
+      net_force(net_force),
       mass(mass),
       density(density),
       radius(radius),
       gravitationalMultiplier(gravitationalMultiplier),
       type(type),
-      childrenIndices(childrenIndices),                                      
-      trajectory(trajectory) {}                                                
-
+      childrenIndices(childrenIndices),
+      trajectory(trajectory)
+{
+}
 
 /*
     Calculate forces
@@ -64,16 +64,17 @@ Vector Body::gravForce(const Body &p2) const
     const double epsilon = 1e-5;  // Softening parameter to limit the force at very close distances (0.00001)
 
     // Compute the distance vector
-    Vector r(p2.position.x - position.x, p2.position.y - position.y, p2.position.z - position.z); //the vectored distance between the two bodies
-    double dist = r.magnitude(); //the magnitude of the distance between the two bodies
-    if (dist < epsilon) {
+    Vector r(p2.position.x - position.x, p2.position.y - position.y, p2.position.z - position.z); // the vectored distance between the two bodies
+    double dist = r.magnitude();                                                                  // the magnitude of the distance between the two bodies
+    if (dist < epsilon)
+    {
         dist = epsilon; // Prevent divide-by-zero or extremely large forces
     }
     // Compute gravitational force magnitude
     double forceMag = (G * gravitationalMultiplier) * (mass * p2.mass) / ((dist * dist) + (epsilon * epsilon));
 
     // Normalize r(distance from one body to the other, ignoring dimensions) and scale by force magnitude
-    return Vector(r.x / dist * forceMag, r.y / dist * forceMag, r.z / dist * forceMag); //the vectored force between the two bodies
+    return Vector(r.x / dist * forceMag, r.y / dist * forceMag, r.z / dist * forceMag); // the vectored force between the two bodies
 }
 
 /**
@@ -107,7 +108,6 @@ void Body::update(double timestep)
     this->velocity = this->velocity + (this->acceleration * timestep);
     this->position = this->position + this->velocity * timestep;
 
-
     this->trajectory.push_back(this->position);
     // reset acceleration for next timestep
     this->acceleration = Vector(0, 0, 0);
@@ -136,10 +136,10 @@ Vector Body::sumForces(const vector<Body> &bodies)
     }
     return net_force;
 }
-void Body::resetForce() {
-    net_force.reset(); //reset the net force to (0, 0, 0) using the reset method in vector.h
+void Body::resetForce()
+{
+    net_force.reset(); // reset the net force to (0, 0, 0) using the reset method in vector.h
 }
-
 
 /*
         Apply acceleration to velocity and position using timestep
@@ -148,7 +148,7 @@ void Body::resetForce() {
 // debug method for testing
 void Body::printState() const
 {
-    //will print the state of the body to the console using the vector print method
+    // will print the state of the body to the console using the vector print method
     cout << "Type: " << type << ", Position: ";
     position.print();
     cout << "Velocity: ";
@@ -156,5 +156,3 @@ void Body::printState() const
     cout << "Acceleration: ";
     acceleration.print();
 }
-
-

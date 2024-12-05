@@ -18,19 +18,18 @@ class Body;
 
 
 */
-struct Vector{
-    double x,y,z;
+struct Vector
+{
+    double x, y, z;
     std::vector<Body> relatedBodies;
     Vector(double x_ = 0.0, double y_ = 0.0, double z_ = 0.0);
-    double magnitude()const;
-    Vector operator+(const Vector& other)const;
-    Vector operator-(const Vector& other)const;
-    Vector operator*(double scalar)const;
-    Vector operator/(double scalar)const;
+    double magnitude() const;
+    Vector operator+(const Vector &other) const;
+    Vector operator-(const Vector &other) const;
+    Vector operator*(double scalar) const;
+    Vector operator/(double scalar) const;
     void reset();
-    void print()const;
-
-
+    void print() const;
 };
 
 #endif
