@@ -22,7 +22,18 @@ using namespace std;
  *     will check that none of the children are more massive than the parent, and that no children are assigned to themselves, or more than one parent
  */
 void generateRandomBodies() {
+    int N;
+    cout << "Enter the total number of bodies (N): ";
+    cin >> N;
 
+    // Validate input
+    if (N <= 0) {
+        cerr << "Error: Number of bodies must be greater than 0." << endl;
+        return;
+    }
+
+    // Generate random bodies (logic to be implemented)
+    cout << "Generating " << N << " random bodies with random child assignments..." << endl;
 }
 
 /**
@@ -34,7 +45,34 @@ void generateRandomBodies() {
  *     will check that none of the children are more massive than the parent, and that no children are assigned to themselves, or more than one parent
  */
 void generateCustomBodies() {
+    int N;
+    cout << "Enter the total number of bodies (N): ";
+    cin >> N;
 
+    if (N <= 0) {
+        cerr << "Error: Number of bodies must be greater than 0." << endl;
+        return;
+    }
+
+    cout << "Define the number of each type of body (star, planet, moon, black hole):" << endl;
+    int stars, planets, moons, blackHoles;
+    cout << "Stars: ";
+    cin >> stars;
+    cout << "Planets: ";
+    cin >> planets;
+    cout << "Moons: ";
+    cin >> moons;
+    cout << "Black holes: ";
+    cin >> blackHoles;
+
+    // Validate counts
+    if (stars + planets + moons + blackHoles != N) {
+        cerr << "Error: Total body count must match N." << endl;
+        return;
+    }
+
+    // Custom child assignment (logic to be implemented)
+    cout << "Define child assignments for each body..." << endl;
 }
 
 /**
@@ -46,7 +84,33 @@ void generateCustomBodies() {
  *     will check that none of the children are more massive than the parent, and that no children are assigned to themselves, or more than one parent
  */
 void generateCustomRandomBodies() {
+    int N;
+    cout << "Enter the total number of bodies (N): ";
+    cin >> N;
 
+    if (N <= 0) {
+        cerr << "Error: Number of bodies must be greater than 0." << endl;
+        return;
+    }
+
+    cout << "Define the number of each type of body (star, planet, moon, black hole):" << endl;
+    int stars, planets, moons, blackHoles;
+    cout << "Stars: ";
+    cin >> stars;
+    cout << "Planets: ";
+    cin >> planets;
+    cout << "Moons: ";
+    cin >> moons;
+    cout << "Black holes: ";
+    cin >> blackHoles;
+
+    if (stars + planets + moons + blackHoles != N) {
+        cerr << "Error: Total body count must match N." << endl;
+        return;
+    }
+
+    // Random child assignment (logic to be implemented)
+    cout << "Randomly assigning children..." << endl;
 }
 
 /**
@@ -65,7 +129,10 @@ void generateCustomRandomBodies() {
  * no black holes or other bodies
  */
 void generatePresetBodies() {
+    cout << "Generating preset system based on the Solar System..." << endl;
 
+    // Predefined body setup (logic to be implemented)
+    cout << "1 Star, 8 Planets, and their moons." << endl;
 }
 
 int main(int argc, char *argv[]) {
