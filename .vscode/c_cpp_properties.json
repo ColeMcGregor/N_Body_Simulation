@@ -1,26 +1,20 @@
-
 {
   "configurations": [
-      {
-          "name": "Mac",
-          "cStandard": "c11",
-          "cppStandard": "c++11",
-          "includePath": [
-              "${workspaceFolder}/include",  // Your project's include folder
-              "/usr/local/include",         // Homebrew include folder (Intel Macs)
-              "/opt/homebrew/include",      // Homebrew include folder (M1/M2 Macs)
-              "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include" // System includes
-          ],
-          "defines": [],
-          "macFrameworkPath": [
-              "/System/Library/Frameworks",
-              "/Library/Frameworks"
-          ],
-          "compilerPath": "/usr/bin/clang",
-          "cStandard": "c11",
-          "cppStandard": "c++17",
-          "intelliSenseMode": "macos-clang-x64"
-      }
+    {
+      "name": "macos-gcc-x64",
+      "cStandard": "${default}",
+      "cppStandard": "${default}",
+      "includePath": [
+        "${workspaceFolder}/**"
+      ],
+      "defines": [],
+      "macFrameworkPath": [
+        "/System/Library/Frameworks",
+        "/Library/Frameworks"
+      ],
+      "compilerPath": "/usr/bin/gcc",
+      "intelliSenseMode": "macos-gcc-x64"
+    }
   ],
   "version": 4
 }
