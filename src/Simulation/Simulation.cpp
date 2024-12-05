@@ -26,19 +26,21 @@ class Simulation {
         string inputFile; // input file for the simulation
         string outputFile; // output file for the simulation
         double timestep; // timestep of the simulation
-        double gravityMultiplier; // gravity multiplier of the simulation
+        double gravitationalMultiplier; // gravity multiplier of the simulation
         int iterations; // number of iterations of the simulation
         int bodyCount[5]; // information about the simulation bodies: 0: N, 1: NS, 2: NP, 3: NM, 4: NB, stored in the corresponding index of the array
         FileManager fileManager; // file manager for the simulation
 
         Simulation(const string& inputFile, const string& outputFile)
             : inputFile(inputFile), outputFile(outputFile) {
-                // load the configuration file
-                fileManager.loadConfig(inputFile, bodies, timestep, gravityMultiplier, iterations, bodyCount);
-            }
-
-        //this algorithm is used to set the correct positions, velocities, and orbital velocities of the bodies
-        initiateHeavenscape(bodies, bodyCount);
+	  // load the configuration file
+	  try {
+            fileManager.loadConfig(inputFile, bodies, timestep, gravitationalMultiplier, iterations, bodyCount);
+          } catch (const exception& e) {
+            cout << "Error loading configuration file" << e.what() << endl;
+              exit(1);
+          }
+	}
 
         /**
          * @brief runs the simulation
@@ -199,6 +201,7 @@ int main() {
 
     // create the simulation
     Simulation sim(inputFile, outputFile);
+    initiateHeavenscape(sim.bodies, sim.bodyCount);
     // set number of threads (default is number of cores)
     omp_set_num_threads(omp_get_max_threads());
     // run the simulation
