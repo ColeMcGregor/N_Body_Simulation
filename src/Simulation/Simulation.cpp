@@ -207,7 +207,13 @@ void initiateHeavenscape(vector<Body> &bodies, int bodyCount[5])
      * 5. Handle moons: (bodyCount[3] > 0)
      *    - Identify all moons and assign them to their appropriate parent planets.
      *    - Position moons after planets, ensuring their orbital radii are correctly assigned.
+     *    - the closest moon to any planet in our solar system is phobos to mars, at an astonishly low 6000 km, or 6 x 10^6 meters, which can be used to average the minimum distance between moons and planets
+     *    - the moon farthest from its host body is Neso from neptune, at 4.96 x 10^10 meters, which can be used to average the maximum distance between moons and planets
      *
+     *  6. Special distribution cases (UNSTABLE INTERACTIONS)
+     *    - The above bounds for the distances between bodies can be toggled off to create unstable interactions, this will result in the bodies spiraling into eachother, or out of the system
+     *    - Additionally, the gravitional multiplier when not set at 1 will create unstable interactions, as the force of gravity will be too great or too small, causing the bodies to behave erratically
+     *        - it should be noted that the bounds do not work at all for stable orbits when the gravitational multiplier is not 1.00
      */
 }
 
