@@ -29,6 +29,7 @@ public:
     double timestep;                // timestep of the simulation
     double gravitationalMultiplier; // gravity multiplier of the simulation
     int iterations;                 // number of iterations of the simulation
+    bool stable;                    // flag to toggle bounds for stable interactions(if gravity multiplier is not 1.00, this is irrelevant)
     int bodyCount[5];               // information about the simulation bodies: 0: N, 1: NS, 2: NP, 3: NM, 4: NB, stored in the corresponding index of the array
     FileManager fileManager;        // file manager for the simulation
 
@@ -38,7 +39,7 @@ public:
         // load the configuration file
         try
         {
-            fileManager.loadConfig(inputFile, bodies, timestep, gravitationalMultiplier, iterations, bodyCount);
+            fileManager.loadConfig(inputFile, bodies, timestep, gravitationalMultiplier, stable, iterations, bodyCount);
         }
         catch (const exception &e)
         {

@@ -6,6 +6,7 @@ NP 3
 NM 1
 NB 0
 gravitationalMultiplier 1.0
+stable true
 
 body 0  
 children 1 2 3
