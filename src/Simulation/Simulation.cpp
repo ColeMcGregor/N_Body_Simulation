@@ -40,7 +40,16 @@ class Simulation {
         //this algorithm is used to set the correct positions, velocities, and orbital velocities of the bodies
         initiateHeavenscape(bodies, bodyCount);
 
-        
+        /**
+         * @brief runs the simulation
+         * 
+         * @details: will use openMP to parallelize the simulation, assigning a single thread to calculate the forces on each body,
+         * and a single thread to output the results to the output file every 100 steps
+         * 
+         * @param timeStep the timestep of the simulation
+         * @param numSteps the number of steps to run the simulation
+         * 
+         */
         void run(double timeStep, int numSteps) {
             #pragma omp parallel
             {   
@@ -68,12 +77,10 @@ class Simulation {
                     // synchronize threads before outputting results
                     #pragma omp barrier
                     
-                    // a single thread will output the results to the output file every 100 steps
+                    // a single thread will output the results to the output file
                     #pragma omp single
                     {
-                        if (step % 100 == 0) {
-                            fileManager.outputResults(outputFile, bodies, step);
-                        }
+                        fileManager.outputResults(outputFile, bodies, step);
                     }
                 }
             }
