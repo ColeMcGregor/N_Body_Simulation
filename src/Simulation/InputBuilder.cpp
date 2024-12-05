@@ -9,10 +9,35 @@
 
 #include <iostream>
 #include <string>
+#include <utility> // For std::pair
 #include <vector>
 
 using namespace std;
 
+
+/**
+ * defintions for generating bodies, will be used throughout
+ * 
+ * will hold the minimum and maximum mass for each body type, to be used in random body generation, to limit unusual or impossible values
+ * 
+ * mass ranges are in kg, and are gleened from internet research, uncited...
+ */
+
+constexpr std::pair<double, double> STAR_MASS_RANGE = {1.5912e29, 3.0e32}; 
+constexpr std::pair<double, double> PLANET_MASS_RANGE = {3.3e23, 4.7e27};
+constexpr std::pair<double, double> MOON_MASS_RANGE = {7.5e15, 1.5e23};
+constexpr std::pair<double, double> BLACKHOLE_MASS_RANGE = {6.0e30, 1.2e41};
+
+const double GRAVITATIONAL_CONSTANT = 6.67430e-11;  //G baby
+const double SPEED_OF_LIGHT = 2.99792458e8;       //meters per second
+
+
+/**
+ * function used to generate radius of black holes, based on mass, as they have a defined radius based on their mass to be a black hole
+ */
+double generateSchwarzchildRadius(double mass) {
+    return (2 * GRAVITATIONAL_CONSTANT * mass) / (SPEED_OF_LIGHT * SPEED_OF_LIGHT);
+}
 
 /**
  * generate random bodies, which will have random body counts, and random assignments of children
@@ -22,7 +47,7 @@ using namespace std;
  *     will check that none of the children are more massive than the parent, and that no children are assigned to themselves, or more than one parent
  */
 void generateRandomBodies() {
-    int N;
+    int N, stars, planets, moons, blackHoles;
     cout << "Enter the total number of bodies (N): ";
     cin >> N;
 
@@ -34,6 +59,9 @@ void generateRandomBodies() {
 
     // Generate random bodies (logic to be implemented)
     cout << "Generating " << N << " random bodies with random child assignments..." << endl;
+
+    //generate random number of stars, planets, moons, and black holes, summed to N, with planets always being the most numerous
+    //will assign random, bound values to each body, so that no planet is bigger than any star, and no moon bigger than any planet
 }
 
 /**
