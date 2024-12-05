@@ -13,6 +13,61 @@
 
 using namespace std;
 
+
+/**
+ * generate random bodies, which will have random body counts, and random assignments of children
+ * 
+ * must input N, the total number of bodies
+ * will have random assignment of bodies as children to each other, following hierarchy of mass
+ *     will check that none of the children are more massive than the parent, and that no children are assigned to themselves, or more than one parent
+ */
+void generateRandomBodies() {
+
+}
+
+/**
+ * generate custom bodies, which requires user to input numbers for bodies and numbers for each child assignment(should only be used for small systems)
+ * 
+ * must input N, the total number of bodies
+ * must input the number of each type of body(star, planet, moon, black hole)
+ * must input the number of children for each body( body number: children numbers, separated by spaces)
+ *     will check that none of the children are more massive than the parent, and that no children are assigned to themselves, or more than one parent
+ */
+void generateCustomBodies() {
+
+}
+
+/**
+ * generate custom random bodies, which will have custom body counts, but random assignments of children
+ * 
+ * must input N, the total number of bodies
+ * must input the number of each type of body(star, planet, moon, black hole)
+ * will have random assignment of bodies as children to each other, following hierarchy of mass
+ *     will check that none of the children are more massive than the parent, and that no children are assigned to themselves, or more than one parent
+ */
+void generateCustomRandomBodies() {
+
+}
+
+/**
+ * generate preset bodies, similar to the solar system
+ * N = 297
+ * 1 star, the sun
+ * 8 planets, with moons
+ *    -Mercury, no moons
+ *    -Venus, no moons
+ *    -Earth, 1 moon
+ *    -Mars, 2 moons
+ *    -Jupiter, 95 moons
+ *    -Saturn, 146 moons
+ *    -Uranus, 28 moons
+ *    -Neptune, 16 moons
+ * no black holes or other bodies
+ */
+void generatePresetBodies() {
+
+}
+
 int main(int argc, char *argv[]) {
     // Check the number of arguments
     if (argc < 2 || argc > 3) {
@@ -39,7 +94,9 @@ int main(int argc, char *argv[]) {
     // Assign the mode to a local variable
     cout << "Mode selected: " << mode << endl;
 
-    // You can now handle each mode appropriately
+    /**
+     * each of these will call a separate function to generate the input file
+     */
     if (mode == "random") {
         cout << "Random mode selected. Generating random bodies..." << endl;
         // Add logic for random mode
