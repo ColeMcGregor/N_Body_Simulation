@@ -26,29 +26,29 @@ using namespace std;
     Constructor for the Body class
 */
 Body::Body(
-    const Vector& pos,                                                              // Position
-    const Vector& vel,                                                              // Velocity
-    const Vector& accel = Vector(),                                                 // Acceleration defaults to (0, 0, 0)
-    const Vector& net_force = Vector(),                                             // Net force defaults to (0, 0, 0)
-    double mass,                                                                    // Mass
-    double density,                                                                 // Density
-    double radius,                                                                  // Radius
-    double gravitationalMultiplier,                                                 // Gravitational multiplier
-    const std::string& type,                                                        // Type of body
-    const std::vector<int>& childrenIndices = {},                                   // Default empty vector for children indices
-    const std::vector<Vector>& trajectory = {}                                      // Default empty trajectory
+    Vector& pos,                                                                    // Position
+    Vector& vel,                                                                    // Velocity
+    Vector& accel,                                                                  // Acceleration
+    Vector& net_force,                                                              // Net force
+    const double mass,                                                                    // Mass
+    const double density,                                                                 // Density
+    const double radius,                                                                  // Radius
+    const double gravitationalMultiplier,                                                 // Gravitational multiplier
+    const string& type,                                                                   // Type of body
+    const vector<int>& childrenIndices,                                                   // Vector of indices of children
+    vector<Vector>& trajectory                                                      // Trajectory of body
 )
     : position(pos),
       velocity(vel),
-      acceleration(accel),
-      net_force(net_force),
+      acceleration(accel),                                              
+      net_force(net_force),                                              
       mass(mass),
       density(density),
       radius(radius),
       gravitationalMultiplier(gravitationalMultiplier),
       type(type),
-      childrenIndices(childrenIndices),
-      trajectory(trajectory) {}
+      childrenIndices(childrenIndices),                                      
+      trajectory(trajectory) {}                                                
 
 
 /*
@@ -107,6 +107,8 @@ void Body::update(double timestep)
     this->velocity = this->velocity + (this->acceleration * timestep);
     this->position = this->position + this->velocity * timestep;
 
+
+    this->trajectory.push_back(this->position);
     // reset acceleration for next timestep
     this->acceleration = Vector(0, 0, 0);
 }

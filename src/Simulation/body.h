@@ -19,22 +19,21 @@ class Body{
         // special variables
         double gravitationalMultiplier; //allows for different multiples of gravitational constants to see the effects of universal gravity scaling
         std::string type; //what type of body it is(moon, planet, star, blackhole)
-        int[] childrenIndices; //the indices of the bodies that are children of this body
-        Vector[] trajectory; //the trajectory of the body through time
+        std::vector<int> childrenIndices; //the indices of the bodies that are children of this body
+        std::vector<Vector> trajectory; //the trajectory of the body through time
 
 
-
-        Body(   Vector pos, 
-                Vector vel, 
-                Vector accel, 
-                Vector net_force, 
-                double mass, 
-                double density, 
-                double radius, 
-                double gravitationalMultiplier, 
-                std::string type,
-                int[] childrenIndices,
-                Vector[] trajectory
+        Body(   Vector& pos, 
+                Vector& vel, 
+                Vector& accel, 
+                Vector& net_force,
+                const double mass, 
+                const double density, 
+                const double radius, 
+                const double gravitationalMultiplier, 
+                const std::string& type,
+                const std::vector<int>& childrenIndices,
+                std::vector<Vector>& trajectory
                 );
             
         Vector gravForce(const Body& p2) const;
@@ -43,7 +42,6 @@ class Body{
         Vector sumForces(const std::vector<Body>& bodies);
         void resetForce();
         void printState() const;
-
-
 };
+
 #endif
