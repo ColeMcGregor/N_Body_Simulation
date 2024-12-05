@@ -70,10 +70,11 @@ void FileManager::loadConfig(
             int id;
             StringFileReader >> id;
 
-            Vector position, velocity;
-            double mass, density, radius;
-            string type;
-            vector<int> children;
+            Vector position, velocity, accel, net_force = Vector(0, 0, 0);
+            double mass, density, radius = 0.0;
+            string type = "";
+            vector<int> children = {};
+            vector<Vector> trajectory = {};
 
             // Read subsequent lines for body details
             while (getline(file, line) && !line.empty()) { //while there is a line in the file and the line is not empty, stop reading for a body at a new line
@@ -102,8 +103,8 @@ void FileManager::loadConfig(
             }
 
             // Create and store the body, using the constructor of the Body class
-            bodies.emplace_back(position, velocity, Vector(), Vector(), mass, density, radius, gravitationalMultiplier, type); //create the body and add it to the vector
-            bodies.back().childrenIndices = children; // Assign parsed children indices for each body
+            bodies.emplace_back(position, velocity, accel, net_force, mass, density, radius, gravitationalMultiplier, type, children, trajectory); //create the body and add it to the vector
+            //bodies.back().childrenIndices = children; // Assign parsed children indices for each body
         }
     }
 
@@ -159,12 +160,12 @@ void FileManager::outputResults(const string& filePath, const vector<Body>& bodi
             file << endl;                                                           
         }
     }
-    //output block style trajectories 
+    //output block style trajectories
     for (int i = 0; i < bodies.size(); i++) {                                       // for each body
         // body number, body type, body radius
         file << i << " " << bodies[i].type << " " << bodies[i].radius << endl;      //output the body number, type, and radius
         for (int j = 0; j < bodies[i].trajectory.size(); j++) {                     // for each timestep
-            file << bodies[i].trajectory[j].print() << endl;                        // output the trajectory of the body
+            file << bodies[i].trajectory[j].x << endl;                        // output the trajectory of the body
         }
     }
 
