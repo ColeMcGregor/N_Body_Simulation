@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <fstream>
 #include "vector.h"
 #include "body.h"
 
@@ -37,6 +38,13 @@ Vector Vector::operator/(double scalar) const
   return Vector(x / scalar, y / scalar, z / scalar);
 }
 
+void Vector::operator<<(std::ofstream& file) const
+{
+  file << "[" << x << "]" << std::endl;
+  file << "[" << y << "]" << std::endl;
+  file << "[" << z << "]" << std::endl;
+  file << std::endl;
+}
 // Reset the vector to (0, 0, 0)
 void Vector::reset()
 {

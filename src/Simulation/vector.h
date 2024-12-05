@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 
 class Body;
 
@@ -28,6 +29,7 @@ struct Vector
     Vector operator-(const Vector &other) const;
     Vector operator*(double scalar) const;
     Vector operator/(double scalar) const;
+    void operator<<(std::ofstream& file) const;
     void reset();
     void print() const;
 };
