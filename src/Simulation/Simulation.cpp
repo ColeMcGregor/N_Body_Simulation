@@ -129,7 +129,7 @@ double generateUniqueRadius(double minRadius, double maxRadius, const std::vecto
 /**
  * @brief calculates the orbital position of a body, depending on the parent body's position and the orbital radius
  * @param parentPos the position of the parent body
- * @param orbitalRadius the orbital radius of the body
+ * @param orbitalRadius the orbital radius of the body(this is the distance from the parent body you want to be away from)
  * @return the orbital position of the body
  */
 Vector calculateOrbitalPosition(const Vector &parentPos, double orbitalRadius)
@@ -161,7 +161,7 @@ Vector calculateOrbitalVelocity(const Vector &parentPos, const Vector &childPos,
     double distance = r.magnitude();
 
     // Orbital speed
-    double speed = sqrt(G * parentMass / distance);
+    double speed = sqrt((G * parentMass) / distance);
 
     // Calculate a perpendicular velocity vector
     Vector unitR = r / distance;           // Unit vector of position
@@ -186,6 +186,7 @@ void initiateHeavenscape(vector<Body> &bodies, int bodyCount[5])
      * 1. Identify if black holes are present: (bodyCount[4] > 0)
      *    - If present, the black hole is(are) the heaviest body(ies) and serves as the center of the simulation.
      *    - Analyze the black hole's children (stars, planets, or both) and assign them appropriately.
+     *    - the closest black hole to us is 1560 light years away, or 1.4759e+19 meters, which can be used to average the distance between black holes, if more than one
      *
      * 2. If no black holes are present: (bodyCount[4] == 0)
      *    - Designate the most massive body as the center of the simulation.
@@ -194,10 +195,14 @@ void initiateHeavenscape(vector<Body> &bodies, int bodyCount[5])
      *    - Determine the number of stars and ensure sufficient spacing between them to accommodate their planetary systems.
      *    - Place stars in stable orbits around the black hole or the center of the simulation.
      *    - If multiple stars exist, ensure they are spaced apart to allow for planetary systems.
+     *    - the closest star from sol is Alpha Centauri at 4.37 light years away, or 3.8 x 10^16 meters, which can be used to average the distance between stars
      *
      * 4. Assign planets: (bodyCount[2] > 0)
      *    - Determine the number of planets and assign each to the correct parent (star or black hole).
      *    - Ensure sufficient spacing between planets to allow for moon systems.
+     *    - the closest planet to sol is Mercury at 57 million kilometers, or 5.7 x 10^10 meters, which can be used to bind the distance from a planet to a star
+     *    - the shortest distance between any two planets is 0.28 AU, or 4.1887e+10, which can be used to average the minimum distance between planets
+     *    - the longest distance between two planets in our solar system is 13.2 AU, or 1.9747e+12 meters, which can be used to average the maximum distance between planets around a star
      *
      * 5. Handle moons: (bodyCount[3] > 0)
      *    - Identify all moons and assign them to their appropriate parent planets.
