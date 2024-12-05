@@ -38,12 +38,10 @@ Vector Vector::operator/(double scalar) const
   return Vector(x / scalar, y / scalar, z / scalar);
 }
 
-void Vector::operator<<(std::ofstream& file) const
+std::ofstream& operator<<(std::ofstream& file, const Vector& vec)
 {
-  file << "[" << x << "]" << std::endl;
-  file << "[" << y << "]" << std::endl;
-  file << "[" << z << "]" << std::endl;
-  file << std::endl;
+    file << vec.x << "," << vec.y << "," << vec.z;
+    return file;
 }
 // Reset the vector to (0, 0, 0)
 void Vector::reset()

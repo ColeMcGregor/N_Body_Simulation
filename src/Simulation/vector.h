@@ -29,7 +29,7 @@ struct Vector
     Vector operator-(const Vector &other) const;
     Vector operator*(double scalar) const;
     Vector operator/(double scalar) const;
-    void operator<<(std::ofstream& file) const;
+    friend std::ofstream& operator<<(std::ofstream& file, const Vector& vec);
     void reset();
     void print() const;
 };
