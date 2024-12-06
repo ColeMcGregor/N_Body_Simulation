@@ -1,7 +1,7 @@
-// #include <GL/glut.h>
-// #include <glm/glm.hpp>
-// #include <glm/gtc/matrix_transform.hpp>
-// #include <glm/gtc/type_ptr.hpp>
+#include <GL/glut.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
 #include <vector>
@@ -18,7 +18,34 @@
 
 using namespace std;
 
-int main() {
+void display() {
+    // Clear color and depth buffers
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    
+    // Set camera view
+    gluLookAt(0.0, 0.0, 50.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+
+    // Render stars (for demonstration, you can add better rendering here)
+    glColor3f(1.0, 1.0, 0.0); // Yellow color for stars
+        glutSolidSphere(1.0, 20, 20); // Draw a small sphere representing a star
+        glPopMatrix();
+    
+
+    // You can do similar rendering for planets, moons, and black holes here...
+
+    glutSwapBuffers(); // Swap the buffers for smooth rendering
+}
+
+void reshape(int w, int h) {
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0, (double)w / (double)h, 1.0, 1000.0);
+    glMatrixMode(GL_MODELVIEW);
+} 
+
+int main(int argc, char** argv) {
     // Vector containers for each type of body
     vector<Vector> stars;
     vector<Vector> planets;
@@ -37,6 +64,16 @@ int main() {
         cout << "Number of moons: " << moons.size() << endl;
         cout << "Number of black holes: " << blackholes.size() << endl;
 
+        glutInit(&argc,argv);
+        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+        glutInitWindowSize(800, 600);
+        glutCreateWindow("N-Body Simulation");
+        glutReshapeFunc(reshape);    
+
+        glutReshapeFunc(reshape);
+        glutDisplayFunc(display); // Register display callback
+        glutMainLoop();
+        
     } catch (const std::exception& e) {
         cerr << "Error: " << e.what() << endl;
     }
