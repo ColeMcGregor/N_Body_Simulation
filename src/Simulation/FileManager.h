@@ -3,23 +3,24 @@
 
 
 #include "vector.h"
+#include "body.h"
 
 class FileManager
 {
 
     private :
-        string fileName;    //name of the file we are reading
+        std::string fileName;    //name of the file we are reading
     public:
-        FileManager(const string fileName);
+        FileManager(const std::string fileName);
 
         void loadConfig( const string &filePath,
-                        vector<Body> &bodies,
+                        std::vector<Body> &bodies,
                         double &timestep,
                         double &gravitationalMultiplier,
                         bool &stable,int &iterations,
                         int bodyCount[5]);
 
-        void outputResults(const string &filePath,
-                           const vector<Body> &bodies, 
+        void outputResults(const std::string &filePath,
+                           const std::vector<Body> &bodies, 
                            double timeStep);
 };
