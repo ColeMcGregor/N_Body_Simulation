@@ -1,3 +1,6 @@
+#ifndef FILE_MANAGER_H
+#define FILE_MANAGER_H
+
 #include <vector>
 #include <string>
 
@@ -5,15 +8,18 @@
 #include "vector.h"
 #include "body.h"
 
+struct Vector;
+class Body;
+
 class FileManager
 {
 
-    private :
+    private:
         std::string fileName;    //name of the file we are reading
     public:
         FileManager(const std::string fileName);
 
-        void loadConfig( const string &filePath,
+  void loadConfig(const std::string &filePath,
                         std::vector<Body> &bodies,
                         double &timestep,
                         double &gravitationalMultiplier,
@@ -24,3 +30,5 @@ class FileManager
                            const std::vector<Body> &bodies, 
                            double timeStep);
 };
+
+#endif
