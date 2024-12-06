@@ -25,9 +25,10 @@
  *      4. generateCustomRandomBodies
  *      5. generatePresetBodies
  *      6. generateUniqueRadius
- *      7. calculateOrbitalPosition
- *      8. calculateOrbitalVelocity
- *      9. initiateHeavenscape
+ *      7. generateBoundedDouble
+ *      8. calculateOrbitalPosition
+ *      9. calculateOrbitalVelocity
+ *      10. initiateHeavenscape
  * 3. main function
  */
 
@@ -120,6 +121,12 @@ void generateRandomBodies() {
 
     //now that we have the counts, we can make the random bodies, with default positions, velocities, and radii, to be set in initiateHeavenscape
     //we will also need to make a vector of used radii, to check against when generating unique radii
+    //first generate the black holes
+    if (blackHoles > 0) {
+        for (int i = 0; i < blackHoles; i++) {
+        }
+    }
+
     
 }
 
@@ -247,6 +254,19 @@ double generateUniqueRadius(double minRadius, double maxRadius, const std::vecto
         }
     } while (!unique);
     return radius;
+}
+
+/**
+ * @brief will generate a double value between a given range
+ * @param minValue the minimum value of the range
+ * @param maxValue the maximum value of the range
+ * @return the double value
+ */
+double generateBoundedDouble(double minValue, double maxValue) {
+    double value;
+    //does not have to be unique, as it is used for radii, and not positions
+    value = minValue + (maxValue - minValue) * ((double)rand() / RAND_MAX); // Random within bounds
+    return value;
 }
 
 /**
