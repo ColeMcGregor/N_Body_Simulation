@@ -13,6 +13,20 @@
  * will output the input file, and the bodies to the console
  * 
  * for body generation, it will determine position, and orbital velocity based on the hierarchy of mass. 
+ * 
+ * Table of contents:
+ * 1. definitions for generating bodies
+ * 2. function prototypes for body generation
+ *      1. generateSchwarzchildRadius
+ *      2. generateRandomBodies
+ *      3. generateCustomBodies
+ *      4. generateCustomRandomBodies
+ *      5. generatePresetBodies
+ *      6. generateUniqueRadius
+ *      7. calculateOrbitalPosition
+ *      8. calculateOrbitalVelocity
+ *      9. initiateHeavenscape
+ * 3. main function
  */
 
 #include <iostream>
@@ -70,6 +84,35 @@ void generateRandomBodies() {
 
     //generate random number of stars, planets, moons, and black holes, summed to N, with planets always being the most numerous
     //will assign random, bound values to each body, so that no planet is bigger than any star, and no moon bigger than any planet
+
+     // Seed the random number generator
+    srand(static_cast<unsigned int>(time(0)));
+
+    // Determine the number of black holes (rare, typically 0-3)
+    blackHoles = rand() % 4;
+
+    // Determine the number of stars (10-20% of total bodies)
+    stars = max(1, static_cast<int>(N * (0.1 + static_cast<double>(rand()) / RAND_MAX * 0.1))); // 10-20% range
+
+    // Determine the number of planets (most numerous)
+    planets = max(1, static_cast<int>(N * (0.4 + static_cast<double>(rand()) / RAND_MAX * 0.2))); // 40-60% range
+
+    // Remaining bodies are moons
+    moons = N - (blackHoles + stars + planets);
+
+    // Ensure moons have at least 0 count
+    moons = max(0, moons);
+
+     // Output the generated counts
+    cout << "Generated random distribution of bodies:\n";
+    cout << "Black Holes: " << blackHoles << "\n";
+    cout << "Stars: " << stars << "\n";
+    cout << "Planets: " << planets << "\n";
+    cout << "Moons: " << moons << endl;
+
+    //now that we have the counts, we can make the random bodies, with default positions, velocities, and radii, to be set in initiateHeavenscape
+    //we will also need to make a vector of used radii, to check against when generating unique radii
+    
 }
 
 /**
