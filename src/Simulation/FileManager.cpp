@@ -212,7 +212,7 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
         file << i << " " << bodies[i].type << " " << bodies[i].radius << endl; // output the body number, type, and radius
         for (size_t j = 0; j < bodies[i].trajectory.size(); j++)
         {                                             
-            file << bodies[i].trajectory[j]; // Using the overloaded << operator
+            operator<<(file, bodies[i].trajectory[j]); // Using the overloaded << operator
         }
     }
 
