@@ -163,22 +163,16 @@ void generatePresetBodies() {
     cout << "1 Star, 8 Planets, and their moons." << endl;
 }
 
-int main(int argc, char *argv[]) {
-    // Check the number of arguments
-    if (argc < 2 || argc > 3) {
-        cerr << "Usage: " << argv[0] << " <mode> [random children option]" << endl;
-        cerr << "Modes: random, custom, custom random, preset" << endl;
-        return 1;
-    }
+/**
+ * main function, which will prompt the user for the mode, timestep, iterations, gravitational multiplier, and stability, and call the appropriate function
+ */
 
-    // Parse the first argument
-    string mode = argv[1];
-    string secondWord = argc == 3 ? argv[2] : "";
+int main() {
+    string mode;
 
-    // Combine mode and second word if provided via concatenation
-    if (!secondWord.empty()) {
-        mode += " " + secondWord;
-    }
+    // Prompt user for the mode
+    cout << "Enter mode (random, custom, custom random, preset): ";
+    getline(cin, mode); // Allow for "custom random" input
 
     // Validate mode
     if (mode != "random" && mode != "custom" && mode != "custom random" && mode != "preset") {
@@ -186,24 +180,50 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    // Assign the mode to a local variable
-    cout << "Mode selected: " << mode << endl;
+    // Prompt user for timestep, iterations, gravitational multiplier, and stability
+    double gravitationalMultiplier;
+    int timestep, iterations;
+    bool stable;
+    cout << "Enter timestep: ";
+    cin >> timestep;
+    cout << "Enter iterations: ";
+    cin >> iterations;
+    cout << "Enter gravitational multiplier: ";
+    cin >> gravitationalMultiplier;
+    cout << "Enter stability (true or false): ";
+    cin >> stable;
 
     /**
-     * each of these will call a separate function to generate the input file
+     * validate inputs and reprompt if necessary
      */
+
+    if (timestep <= 0) {
+        cout << "Timestep must be greater than 0, Enter Timestep: " << endl;
+        cin >> timestep;
+    }
+    if (iterations <= 0) {
+        cout << "Iterations must be greater than 0, Enter Iterations: " << endl;
+        cin >> iterations;
+    }
+    if (gravitationalMultiplier <= 0) {
+        cout << "Gravitational multiplier must be greater than 0, Enter Gravitational Multiplier: " << endl;
+        cin >> gravitationalMultiplier;
+    }
+    if (stable != true && stable != false) {
+        cout << "Stability must be true or false, Enter Stability: " << endl;
+        cin >> stable;
+    }
+
+
+    // Delegate tasks based on mode
     if (mode == "random") {
-        cout << "Random mode selected. Generating random bodies..." << endl;
-        // Add logic for random mode
+        generateRandomBodies();
     } else if (mode == "custom") {
-        cout << "Custom mode selected. Awaiting user input..." << endl;
-        // Add logic for custom mode
+        generateCustomBodies();
     } else if (mode == "custom random") {
-        cout << "Custom Random mode selected. Partially randomized setup..." << endl;
-        // Add logic for custom random mode
+        generateCustomRandomBodies();
     } else if (mode == "preset") {
-        cout << "Preset mode selected. Loading predefined system..." << endl;
-        // Add logic for preset mode
+        generatePresetBodies();
     }
 
     return 0;
