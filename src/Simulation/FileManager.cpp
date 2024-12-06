@@ -218,8 +218,8 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
         // body number, body type, body radius
         file << i << " " << bodies[i].type << " " << bodies[i].radius << endl; // output the body number, type, and radius
         for (int j = 0; j < bodies[i].trajectory.size(); j++)
-        {                                             // for each timestep
-            operator<<(file, bodies[i].trajectory[j]); // output the location of the body at the timestep
+        {                                             
+            file << bodies[i].trajectory[j]; // Using the overloaded << operator
         }
     }
 
