@@ -11,7 +11,12 @@
 
 
 
-#include "body.h"
+#include "Body.h"
+#include "Star.h"
+#include "Planet.h"
+#include "Moon.h"
+#include "BlackHole.h"
+
 using namespace std;    //no more std::
 
 
@@ -27,9 +32,7 @@ int main() {
         auto bodies = reader.readBodies();
 
         for (const auto& body : bodies) {
-            std::cout << "Body: Mass=" << body.getMass() 
-                      << ", Position=" << body.getPosition() 
-                      << ", Velocity=" << body.getVelocity() << std::endl;
+
         }
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;

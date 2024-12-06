@@ -4,15 +4,16 @@
 #include "Body.h"
 #include <string>
 
-using namespace std;
-
-class Star : public Body{
+class Star : public Body {
     private:
-        double luminosity;      //luminosity of a star
+        double luminosity; // Luminosity of the star
 
     public:
-        Star(double radius, Vector position, string type):
-            Body(radius,position,type),luminosity(luminosity){}
+        // Constructor
+        Star(double radius, double mass, const Vector& position, const std::string& type, double luminosity);
+
+        // Accessor for luminosity
+        double getLuminosity() const { return luminosity; }
 };
 
 #endif

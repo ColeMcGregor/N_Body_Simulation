@@ -9,11 +9,10 @@ using namespace std;
 class Planet : public Body{
     protected:
         //texture
-        string name;//temp
+        string material;    //rocky, gas
 
     public:
-        Planet(double radius,Vector position, string type):
-            Body(radius,position,type),name(name){}
+        Planet(double radius,Vector position, string type,string material);
 
 };
 

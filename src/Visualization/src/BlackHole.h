@@ -11,8 +11,7 @@ class BlackHole : public Body{
         double gravityMultiplier;
 
     public:
-        BlackHole(double radius, Vector position, string type):
-            Body(radius,position,type),gravityMultiplier(gravityMultiplier){}
+        BlackHole(double radius, double mass,Vector position, string type);
 };
 
 #endif
