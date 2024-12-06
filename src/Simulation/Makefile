@@ -1,6 +1,8 @@
-CXX = clang++
+LDFLAGS = -fopenmp
+
+CXX = g++
 CXXFLAGS = -Xpreprocessor -fopenmp -std=c++17 -Wall
-LDFLAGS = -lomp
+LDFLAGS = -fopenmp
 TARGET = Simulation
 SOURCES = Simulation.cpp FileManager.cpp body.cpp vector.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
@@ -15,5 +17,4 @@ $(TARGET): $(OBJECTS)
 
 clean:
 	rm -f $(TARGET) $(OBJECTS)
-
 .PHONY: all clean
