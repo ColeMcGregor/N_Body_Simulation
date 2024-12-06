@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <tuple>
+#include "vector.h"
 #include "Body.h"
 #include "Star.h"
 #include "Planet.h"
@@ -17,7 +18,7 @@ public:
     FileReader(const std::string& fileName);
 
     // Reads file and initializes bodies
-    std::tuple<std::vector<Body>, std::vector<Star>, std::vector<Planet>, std::vector<Moon>, std::vector<BlackHole> > FileReader::readBodies();
+    std::tuple<std::vector<Body>, std::vector<Star>, std::vector<Planet>, std::vector<Moon>, std::vector<BlackHole> > readBodies();
 
 
 private:

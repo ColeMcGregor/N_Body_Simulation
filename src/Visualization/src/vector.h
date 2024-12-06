@@ -20,7 +20,7 @@ class Body;
 */
 struct Vector{
     double x,y,z;
-    std::vector<Body> relatedBodies;
+    //std::vector<Body> relatedBodies;
     Vector(double x_ = 0.0, double y_ = 0.0, double z_ = 0.0);
     double magnitude()const;
     Vector operator+(const Vector& other)const;
