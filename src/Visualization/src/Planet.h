@@ -12,7 +12,7 @@ class Planet : public Body{
         string material;    //rocky, gas
 
     public:
-        Planet(double radius,Vector position, string type,string material);
+        Planet(double radius,double mass,Vector position, string type,string material);
 
 };
 

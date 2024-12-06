@@ -11,7 +11,7 @@ class Moon : public Body{
         int planetID;       //id of the planet that it follows
 
     public:
-        Moon(double radius, double mass, Vector position, int planetID);
+        Moon(double radius,double mass, Vector position,string type, int planetID);
 
 };
 
