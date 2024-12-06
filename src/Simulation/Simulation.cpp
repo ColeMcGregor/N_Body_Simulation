@@ -29,6 +29,7 @@ public:
     double timestep;                // timestep of the simulation
     double gravitationalMultiplier; // gravity multiplier of the simulation
     int iterations;                 // number of iterations of the simulation
+    bool stable;                    // flag to toggle bounds for stable interactions(if gravity multiplier is not 1.00, this is irrelevant)
     int bodyCount[5];               // information about the simulation bodies: 0: N, 1: NS, 2: NP, 3: NM, 4: NB, stored in the corresponding index of the array
     FileManager fileManager;        // file manager for the simulation
 
@@ -38,7 +39,7 @@ public:
         // load the configuration file
         try
         {
-            fileManager.loadConfig(inputFile, bodies, timestep, gravitationalMultiplier, iterations, bodyCount);
+            fileManager.loadConfig(inputFile, bodies, timestep, gravitationalMultiplier, stable, iterations, bodyCount);
         }
         catch (const exception &e)
         {
@@ -97,114 +98,6 @@ public:
         }
     }
 };
-
-/**
- * @brief generates a unique radius for a body
- * @param minRadius the minimum radius of the body
- * @param maxRadius the maximum radius of the body
- * @param usedRadii the vector of radii that have already been used
- * @return the unique radius
- */
-
-double generateUniqueRadius(double minRadius, double maxRadius, const std::vector<double> &usedRadii)
-{
-    double radius;
-    bool unique;
-    do
-    {
-        radius = minRadius + (maxRadius - minRadius) * ((double)rand() / RAND_MAX); // Random within bounds
-        unique = true;                                                              // flag to check if the radius is unique
-        for (double r : usedRadii)
-        { // check if the radius is unique
-            if (fabs(radius - r) < 1.0e6)
-            {                   // avoid radii too close to others
-                unique = false; // set the flag to false if the radius is not unique
-                break;          // break out of the loop if the radius is not unique
-            }
-        }
-    } while (!unique);
-    return radius;
-}
-
-/**
- * @brief calculates the orbital position of a body, depending on the parent body's position and the orbital radius
- * @param parentPos the position of the parent body
- * @param orbitalRadius the orbital radius of the body
- * @return the orbital position of the body
- */
-Vector calculateOrbitalPosition(const Vector &parentPos, double orbitalRadius)
-{
-    double theta = ((double)rand() / RAND_MAX) * 2.0 * M_PI; // Azimuthal angle [0, 2π]
-    double phi = ((double)rand() / RAND_MAX) * M_PI;         // Inclination angle [0, π]
-
-    double x = orbitalRadius * sin(phi) * cos(theta); // x position
-    double y = orbitalRadius * sin(phi) * sin(theta); // y position
-    double z = orbitalRadius * cos(phi);              // z position
-
-    return Vector(parentPos.x + x, parentPos.y + y, parentPos.z + z); // return the orbital position of the body
-}
-
-/**
- * @brief calculates the orbital velocity of a body, depending on the parent body's position and the orbital radius
- * @param parentPos the position of the parent body
- * @param childPos the position of the child body
- * @param parentMass the mass of the parent body
- * @param gravitationalMultiplier the gravitational multiplier of the simulation
- * @return the orbital velocity of the body
- */
-Vector calculateOrbitalVelocity(const Vector &parentPos, const Vector &childPos, double parentMass, double gravitationalMultiplier)
-{
-    const double G = 6.67430e-11 * gravitationalMultiplier;
-
-    // Calculate the distance vector and magnitude
-    Vector r = childPos - parentPos;
-    double distance = r.magnitude();
-
-    // Orbital speed
-    double speed = sqrt(G * parentMass / distance);
-
-    // Calculate a perpendicular velocity vector
-    Vector unitR = r / distance;           // Unit vector of position
-    Vector velocity(-unitR.y, unitR.x, 0); // Perpendicular in XY-plane
-
-    // Normalize and scale to orbital speed
-    velocity = velocity * speed;
-    // return the orbital velocity of the body
-    return velocity;
-}
-/**
- * @brief this algorithm is used to set the correct positions, velocities, and orbital velocities of the bodies
- * @details:
- * @param bodies the vector of bodies in the simulation
- * @param bodyCount the array of body counts ([0]: N, [1]: NS, [2]: NP, [3]: NM, [4]: NB)
- */
-void initiateHeavenscape(vector<Body> &bodies, int bodyCount[5])
-{
-    /*
-     * Determine the hierarchical structure and spatial arrangement of celestial bodies in the simulation:
-     *
-     * 1. Identify if black holes are present: (bodyCount[4] > 0)
-     *    - If present, the black hole is(are) the heaviest body(ies) and serves as the center of the simulation.
-     *    - Analyze the black hole's children (stars, planets, or both) and assign them appropriately.
-     *
-     * 2. If no black holes are present: (bodyCount[4] == 0)
-     *    - Designate the most massive body as the center of the simulation.
-     *
-     * 3. Arrange stars: (bodyCount[1] > 0)
-     *    - Determine the number of stars and ensure sufficient spacing between them to accommodate their planetary systems.
-     *    - Place stars in stable orbits around the black hole or the center of the simulation.
-     *    - If multiple stars exist, ensure they are spaced apart to allow for planetary systems.
-     *
-     * 4. Assign planets: (bodyCount[2] > 0)
-     *    - Determine the number of planets and assign each to the correct parent (star or black hole).
-     *    - Ensure sufficient spacing between planets to allow for moon systems.
-     *
-     * 5. Handle moons: (bodyCount[3] > 0)
-     *    - Identify all moons and assign them to their appropriate parent planets.
-     *    - Position moons after planets, ensuring their orbital radii are correctly assigned.
-     *
-     */
-}
 
 int main()
 {

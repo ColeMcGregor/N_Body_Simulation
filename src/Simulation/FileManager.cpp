@@ -31,6 +31,7 @@ void FileManager::loadConfig(
     vector<Body> &bodies,
     double &timestep,
     double &gravitationalMultiplier,
+    bool &stable,
     int &iterations,
     int bodyCount[5])
 {
@@ -81,6 +82,10 @@ void FileManager::loadConfig(
         else if (keyword == "gravitationalMultiplier")
         {
             StringFileReader >> gravitationalMultiplier;
+        }
+        else if (keyword == "stable")
+        {
+            StringFileReader >> stable;
         }
         else if (keyword == "body")
         {
@@ -209,8 +214,8 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
         // body number, body type, body radius
         file << i << " " << bodies[i].type << " " << bodies[i].radius << endl; // output the body number, type, and radius
         for (int j = 0; j < bodies[i].trajectory.size(); j++)
-        {                                              // for each timestep
-            file << bodies[i].trajectory[j].x << endl; // output the trajectory of the body
+        {                                             // for each timestep
+            bodies[i].trajectory[j].operator<<(file); // output the trajectory of the body
         }
     }
 
