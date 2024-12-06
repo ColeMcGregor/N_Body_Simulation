@@ -184,13 +184,13 @@ int main() {
     double gravitationalMultiplier;
     int timestep, iterations;
     bool stable;
-    cout << "Enter timestep: ";
+    cout << "Enter timestep(whole number): ";
     cin >> timestep;
-    cout << "Enter iterations: ";
+    cout << "Enter iterations(whole number): ";
     cin >> iterations;
-    cout << "Enter gravitational multiplier: ";
+    cout << "Enter gravitational multiplier(1.0 for real world): ";
     cin >> gravitationalMultiplier;
-    cout << "Enter stability (true or false): ";
+    cout << "Enter stability (true or false)(if gravity 1.0, else irrelevant): ";
     cin >> stable;
 
     /**
@@ -215,6 +215,8 @@ int main() {
     }
 
 
+
+        
     // Delegate tasks based on mode
     if (mode == "random") {
         generateRandomBodies();
