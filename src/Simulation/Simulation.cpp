@@ -33,8 +33,8 @@ public:
     int bodyCount[5];               // information about the simulation bodies: 0: N, 1: NS, 2: NP, 3: NM, 4: NB, stored in the corresponding index of the array
     FileManager fileManager;        // file manager for the simulation
 
-    Simulation(const string &inputFile, const string &outputFile)
-        : inputFile(inputFile), outputFile(outputFile)
+  Simulation(const string &inputFile, const string &outputFile)
+    : inputFile(inputFile), outputFile(outputFile), fileManager(inputFile)
     {
         // load the configuration file
         try
@@ -43,7 +43,7 @@ public:
         }
         catch (const exception &e)
         {
-            cout << "Error loading configuration file" << e.what() << endl;
+            cout << "Error loading configuration file\n" << e.what() << endl;
             exit(1);
         }
     }
@@ -66,7 +66,7 @@ public:
             {
 // divide the work among threads
 #pragma omp for
-                for (int i = 0; i < bodies.size(); i++)
+                for (size_t i = 0; i < bodies.size(); i++)
                 {
                     // reset force before each calculation
                     bodies[i].resetForce();
@@ -81,7 +81,7 @@ public:
 
 // update the bodies' positions and velocities
 #pragma omp for
-                for (int i = 0; i < bodies.size(); i++)
+                for (size_t i = 0; i < bodies.size(); i++)
                 {
                     bodies[i].update(timeStep);
                 }
@@ -106,7 +106,7 @@ int main()
 
     // create the simulation
     Simulation sim(inputFile, outputFile);
-    initiateHeavenscape(sim.bodies, sim.bodyCount);
+    //initiateHeavenscape(sim.bodies, sim.bodyCount);
     // set number of threads (default is number of cores)
     omp_set_num_threads(omp_get_max_threads());
     // run the simulation

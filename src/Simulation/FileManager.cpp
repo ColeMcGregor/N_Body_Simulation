@@ -26,6 +26,7 @@ using namespace std;
  * @param iterations: the number of iterations of the simulation
  * @param bodyCount: an array of integers that store the number of bodies of each type
  */
+FileManager::FileManager(const string fileName) : fileName(fileName) {}
 void FileManager::loadConfig(
     const string &filePath,
     vector<Body> &bodies,
@@ -137,7 +138,7 @@ void FileManager::loadConfig(
             }
 
             // Create and store the body, using the constructor of the Body class
-            bodies.emplace_back(position, velocity, accel, net_force, mass, density, radius, gravitationalMultiplier, type, children, trajectory); // create the body and add it to the vector
+            bodies.emplace_back(position, velocity, accel, net_force, mass, radius, gravitationalMultiplier, type, children, trajectory); // create the body and add it to the vector
             // bodies.back().childrenIndices = children; // Assign parsed children indices for each body
         }
     }
@@ -166,7 +167,7 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
     int NM = 0; // number of moons
     int NB = 0; // number of blackholes
     // look through the bodies vector and count the number of stars, planets, and moons
-    for (int i = 0; i < bodies.size(); i++)
+    for (size_t i = 0; i < bodies.size(); i++)
     {
         if (bodies[i].type == "star")
         {
@@ -192,12 +193,12 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
     file << "NP: " << NP << endl;             // NP: 1
     file << "NM: " << NM << endl;             // NM: 1
     file << "NB: " << NB << endl;             // NB: 1
-    for (int i = 0; i < bodies.size(); i++)
+    for (size_t i = 0; i < bodies.size(); i++)
     {
         if (bodies[i].childrenIndices.size() > 0)
         {                     // if the body has children
             file << i << " "; // output the index of the body
-            for (int j = 0; j < bodies[i].childrenIndices.size(); j++)
+            for (size_t j = 0; j < bodies[i].childrenIndices.size(); j++)
             { // output the indices of the children of the body
                 file << bodies[i].childrenIndices[j] << " ";
             }
@@ -205,11 +206,11 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
         }
     }
     // output block style trajectories
-    for (int i = 0; i < bodies.size(); i++)
+    for (size_t i = 0; i < bodies.size(); i++)
     { // for each body
         // body number, body type, body radius
         file << i << " " << bodies[i].type << " " << bodies[i].radius << endl; // output the body number, type, and radius
-        for (int j = 0; j < bodies[i].trajectory.size(); j++)
+        for (size_t j = 0; j < bodies[i].trajectory.size(); j++)
         {                                             
             file << bodies[i].trajectory[j]; // Using the overloaded << operator
         }
