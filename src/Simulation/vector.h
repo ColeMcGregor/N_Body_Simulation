@@ -29,8 +29,8 @@ struct Vector
     Vector operator-(const Vector &other) const;
     Vector operator*(double scalar) const;
     Vector operator/(double scalar) const;
-    friend std::ofstream& operator<<(std::ofstream& file, const Vector& vec);
-    void reset();
+    friend std::ofstream& operator<<(std::ofstream& file, const Vector& vec); //also, chat says const can be in there, itll tell the compiler that << cant affect the vector
+    void reset(); 
     void print() const;
 };
 

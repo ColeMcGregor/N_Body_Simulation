@@ -14,8 +14,8 @@ using namespace std;
             Vectored acceleration
             Vectored net force
             double mass
-            double density
             double radius
+            double gravitationalMultiplier
             String type (Include moon, planet, star, blackhole maybe)
             int[] childrenIndices
             std::vector<Vector> trajectory
@@ -30,7 +30,6 @@ Body::Body(
     Vector &accel,                        // Acceleration
     Vector &net_force,                    // Net force
     const double mass,                    // Mass
-    const double density,                 // Density
     const double radius,                  // Radius
     const double gravitationalMultiplier, // Gravitational multiplier
     const string &type,                   // Type of body
@@ -42,7 +41,6 @@ Body::Body(
       acceleration(accel),
       net_force(net_force),
       mass(mass),
-      density(density),
       radius(radius),
       gravitationalMultiplier(gravitationalMultiplier),
       type(type),

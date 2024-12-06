@@ -94,9 +94,9 @@ void FileManager::loadConfig(
             StringFileReader >> id;
 
             Vector position, velocity, accel, net_force = Vector(0, 0, 0);
-            double mass, density, radius = 0.0;
+            double mass, radius = 0.0;
             string type = "";
-            vector<int> children = {};
+            vector<int> children = {};            
             vector<Vector> trajectory = {};
 
             // Read subsequent lines for body details
@@ -125,14 +125,6 @@ void FileManager::loadConfig(
                 else if (attribute == "mass")
                 {                                 // if the attribute is mass
                     BodyStringFileReader >> mass; // read the mass of the body and put it in the double
-                }
-
-                /*
-                    FOR OUTPUT DO I CARE FOR DENSITY??
-                */
-                else if (attribute == "density")
-                {                                    // if the attribute is density
-                    BodyStringFileReader >> density; // read the density of the body and put it in the double
                 }
                 else if (attribute == "radius")
                 {                                   // if the attribute is radius
@@ -218,8 +210,8 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
         // body number, body type, body radius
         file << i << " " << bodies[i].type << " " << bodies[i].radius << endl; // output the body number, type, and radius
         for (int j = 0; j < bodies[i].trajectory.size(); j++)
-        {                                             // for each timestep
-            bodies[i].trajectory[j].operator<<(file); // output the trajectory of the body
+        {                                             
+            file << bodies[i].trajectory[j]; // Using the overloaded << operator
         }
     }
 

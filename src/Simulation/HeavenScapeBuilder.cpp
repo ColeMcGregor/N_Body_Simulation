@@ -14,6 +14,8 @@
  * 
  * for body generation, it will determine position, and orbital velocity based on the hierarchy of mass. 
  * 
+ * when building out the orbits, it will have a hierarchically reduced allowed radius from parent, to ensure minimal overlap between levels
+ * 
  * Table of contents:
  * 1. definitions for generating bodies
  * 2. function prototypes for body generation
@@ -23,9 +25,10 @@
  *      4. generateCustomRandomBodies
  *      5. generatePresetBodies
  *      6. generateUniqueRadius
- *      7. calculateOrbitalPosition
- *      8. calculateOrbitalVelocity
- *      9. initiateHeavenscape
+ *      7. generateBoundedDouble
+ *      8. calculateOrbitalPosition
+ *      9. calculateOrbitalVelocity
+ *      10. initiateHeavenscape
  * 3. main function
  */
 
@@ -45,13 +48,25 @@ using namespace std;
  * mass ranges are in kg, and are gleened from internet research, uncited...
  */
 
+//mass ranges in kg
 constexpr std::pair<double, double> STAR_MASS_RANGE = {1.5912e29, 3.0e32}; 
 constexpr std::pair<double, double> PLANET_MASS_RANGE = {3.3e23, 4.7e27};
 constexpr std::pair<double, double> MOON_MASS_RANGE = {7.5e15, 1.5e23};
 constexpr std::pair<double, double> BLACKHOLE_MASS_RANGE = {6.0e30, 1.2e41};
-
+//radius ranges in meters from parent bodies, for the hierarchy of orbital radii
+constexpr std::pair<double, double> STAR_RADIUS_RANGE = {1.5e7, 2.3e15};
+constexpr std::pair<double, double> PLANET_RADIUS_RANGE = {4.8e10, 2.0e12};
+constexpr std::pair<double, double> MOON_RADIUS_RANGE = {6.0e5, 5.0e10};
+constexpr std::pair<double, double> BLACKHOLE_RADIUS_RANGE = {1.5e19, 1.5e21};
+//constants
 const double GRAVITATIONAL_CONSTANT = 6.67430e-11;  //G baby
 const double SPEED_OF_LIGHT = 2.99792458e8;       //meters per second
+
+//global variables
+double gravitationalMultiplier;
+int timestep;
+int iterations;
+bool stable;
 
 
 /**
@@ -112,6 +127,23 @@ void generateRandomBodies() {
 
     //now that we have the counts, we can make the random bodies, with default positions, velocities, and radii, to be set in initiateHeavenscape
     //we will also need to make a vector of used radii, to check against when generating unique radii
+    //first generate the black holes
+    if (blackHoles > 0) {
+        for (int i = 0; i < blackHoles; i++) {
+            Vector position = Vector(0.0, 0.0, 0.0);
+            Vector velocity = Vector(0.0, 0.0, 0.0);
+            Vector acceleration = Vector(0.0, 0.0, 0.0);
+            Vector netForce = Vector(0.0, 0.0, 0.0);
+            double mass = generateBoundedDouble(BLACKHOLE_MASS_RANGE.first, BLACKHOLE_MASS_RANGE.second);
+            double radius = generateSchwarzchildRadius(mass);
+            double gravitationalMultiplier = 1.0;
+            string type = "blackhole";
+            vector<int> childrenIndices = {};
+            vector<Vector> trajectory = {};
+            bodies.push_back(Body(position, velocity, acceleration, netForce, mass, radius, gravitationalMultiplier, type, childrenIndices, trajectory));
+        }
+    }
+
     
 }
 
@@ -242,6 +274,19 @@ double generateUniqueRadius(double minRadius, double maxRadius, const std::vecto
 }
 
 /**
+ * @brief will generate a double value between a given range
+ * @param minValue the minimum value of the range
+ * @param maxValue the maximum value of the range
+ * @return the double value
+ */
+double generateBoundedDouble(double minValue, double maxValue) {
+    double value;
+    //does not have to be unique, as it is used for radii, and not positions
+    value = minValue + (maxValue - minValue) * ((double)rand() / RAND_MAX); // Random within bounds
+    return value;
+}
+
+/**
  * @brief calculates the orbital position of a body, depending on the parent body's position and the orbital radius
  * @param parentPos the position of the parent body
  * @param orbitalRadius the orbital radius of the body(this is the distance from the parent body you want to be away from)
@@ -352,9 +397,6 @@ int main() {
     }
 
     // Prompt user for timestep, iterations, gravitational multiplier, and stability
-    double gravitationalMultiplier;
-    int timestep, iterations;
-    bool stable;
     cout << "Enter timestep(whole number): ";
     cin >> timestep;
     cout << "Enter iterations(whole number): ";
