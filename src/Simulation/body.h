@@ -15,7 +15,6 @@ public:
         Vector acceleration; // how fast it is accelerating in a given direction
         Vector net_force;    // the net force acting on the body
         double mass;         // how much stuff it is made of
-        double density;      // how much mass is in a given volume
         double radius;       // how big it is from center to edge
         // special variables
         double gravitationalMultiplier;   // allows for different multiples of gravitational constants to see the effects of universal gravity scaling
@@ -28,7 +27,6 @@ public:
              Vector &accel,
              Vector &net_force,
              const double mass,
-             const double density,
              const double radius,
              const double gravitationalMultiplier,
              const std::string &type,

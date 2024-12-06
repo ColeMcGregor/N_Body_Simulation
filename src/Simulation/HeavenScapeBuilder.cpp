@@ -62,6 +62,12 @@ constexpr std::pair<double, double> BLACKHOLE_RADIUS_RANGE = {1.5e19, 1.5e21};
 const double GRAVITATIONAL_CONSTANT = 6.67430e-11;  //G baby
 const double SPEED_OF_LIGHT = 2.99792458e8;       //meters per second
 
+//global variables
+double gravitationalMultiplier;
+int timestep;
+int iterations;
+bool stable;
+
 
 /**
  * function used to generate radius of black holes, based on mass, as they have a defined radius based on their mass to be a black hole
@@ -124,6 +130,17 @@ void generateRandomBodies() {
     //first generate the black holes
     if (blackHoles > 0) {
         for (int i = 0; i < blackHoles; i++) {
+            Vector position = Vector(0.0, 0.0, 0.0);
+            Vector velocity = Vector(0.0, 0.0, 0.0);
+            Vector acceleration = Vector(0.0, 0.0, 0.0);
+            Vector netForce = Vector(0.0, 0.0, 0.0);
+            double mass = generateBoundedDouble(BLACKHOLE_MASS_RANGE.first, BLACKHOLE_MASS_RANGE.second);
+            double radius = generateSchwarzchildRadius(mass);
+            double gravitationalMultiplier = 1.0;
+            string type = "blackhole";
+            vector<int> childrenIndices = {};
+            vector<Vector> trajectory = {};
+            bodies.push_back(Body(position, velocity, acceleration, netForce, mass, radius, gravitationalMultiplier, type, childrenIndices, trajectory));
         }
     }
 
@@ -380,9 +397,6 @@ int main() {
     }
 
     // Prompt user for timestep, iterations, gravitational multiplier, and stability
-    double gravitationalMultiplier;
-    int timestep, iterations;
-    bool stable;
     cout << "Enter timestep(whole number): ";
     cin >> timestep;
     cout << "Enter iterations(whole number): ";
