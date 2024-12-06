@@ -126,6 +126,10 @@ void FileManager::loadConfig(
                 {                                 // if the attribute is mass
                     BodyStringFileReader >> mass; // read the mass of the body and put it in the double
                 }
+
+                /*
+                    FOR OUTPUT DO I CARE FOR DENSITY??
+                */
                 else if (attribute == "density")
                 {                                    // if the attribute is density
                     BodyStringFileReader >> density; // read the density of the body and put it in the double
