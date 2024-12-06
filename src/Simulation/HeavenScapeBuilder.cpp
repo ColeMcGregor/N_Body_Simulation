@@ -14,6 +14,8 @@
  * 
  * for body generation, it will determine position, and orbital velocity based on the hierarchy of mass. 
  * 
+ * when building out the orbits, it will have a hierarchically reduced allowed radius from parent, to ensure minimal overlap between levels
+ * 
  * Table of contents:
  * 1. definitions for generating bodies
  * 2. function prototypes for body generation
@@ -45,11 +47,17 @@ using namespace std;
  * mass ranges are in kg, and are gleened from internet research, uncited...
  */
 
+//mass ranges in kg
 constexpr std::pair<double, double> STAR_MASS_RANGE = {1.5912e29, 3.0e32}; 
 constexpr std::pair<double, double> PLANET_MASS_RANGE = {3.3e23, 4.7e27};
 constexpr std::pair<double, double> MOON_MASS_RANGE = {7.5e15, 1.5e23};
 constexpr std::pair<double, double> BLACKHOLE_MASS_RANGE = {6.0e30, 1.2e41};
-
+//radius ranges in meters from parent bodies, for the hierarchy of orbital radii
+constexpr std::pair<double, double> STAR_RADIUS_RANGE = {1.5e7, 2.3e15};
+constexpr std::pair<double, double> PLANET_RADIUS_RANGE = {4.8e10, 2.0e12};
+constexpr std::pair<double, double> MOON_RADIUS_RANGE = {6.0e5, 5.0e10};
+constexpr std::pair<double, double> BLACKHOLE_RADIUS_RANGE = {1.5e19, 1.5e21};
+//constants
 const double GRAVITATIONAL_CONSTANT = 6.67430e-11;  //G baby
 const double SPEED_OF_LIGHT = 2.99792458e8;       //meters per second
 
