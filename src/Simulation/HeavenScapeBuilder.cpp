@@ -254,7 +254,7 @@ void generateRandomBodies() {
         }
     }
     cout << "All bodies generated." << endl;
-    cout << "God will now create the universe..." << endl;
+    cout << "Your new God will now create the universe..." << endl;
     //now we have our bodies, we can initiate the heavenscape
     initiateHeavenscape(bodies, bodyCount);
 }
@@ -271,14 +271,31 @@ void generateCustomBodies() {
     int N;
     cout << "Enter the total number of bodies (N): ";
     cin >> N;
-
+    
+    //check if N is valid
     if (N <= 0) {
         cerr << "Error: Number of bodies must be greater than 0." << endl;
         return;
     }
 
+    //check if N is unreasonably large for entry
+    if (N > 10) {
+        cout << "Warning: Number of bodies should be less than 10, more than 10 will take a long time for user entry" << endl;
+        cout << "Re-enter N?(y or n)" << endl;
+        char response;
+        cin >> response;
+        if (response == 'y') {
+            cout << "Okay, Re-enter N: ";
+            cin >> N;
+        }
+        else {
+            cout << "Okay, moving on..." << endl;
+        }
+    }
+
     cout << "Define the number of each type of body (star, planet, moon, black hole):" << endl;
     int stars, planets, moons, blackHoles;
+    int tries = 0;
     cout << "Stars: ";
     cin >> stars;
     cout << "Planets: ";
@@ -289,9 +306,21 @@ void generateCustomBodies() {
     cin >> blackHoles;
 
     // Validate counts
-    if (stars + planets + moons + blackHoles != N) {
-        cerr << "Error: Total body count must match N." << endl;
-        return;
+    while (stars + planets + moons + blackHoles != N) {
+        cout << "Total body count must match N. Re-enter the counts" << endl;
+        cout << "Stars: ";
+        cin >> stars;
+        cout << "Planets: ";
+        cin >> planets;
+        cout << "Moons: ";
+        cin >> moons;
+        cout << "Black holes: ";
+        cin >> blackHoles;
+        tries++;
+        if (tries > 5) {
+            cout << "Too many tries, moving on..." << endl;
+            return;
+        }
     }
 
     // Custom child assignment (logic to be implemented)
@@ -543,12 +572,28 @@ int main() {
     // Delegate tasks based on mode
     if (mode == "random") {
         generateRandomBodies();
+        if (bodies.size() != (N)) {
+            cerr << "Error: Generating Random bodies failed." << endl;
+            return 1;
+        }
     } else if (mode == "custom") {
         generateCustomBodies();
+        if (bodies.size() != (N)) {
+            cerr << "Error: Generating Custom bodies failed." << endl;
+            return 1;
+        }
     } else if (mode == "custom random") {
         generateCustomRandomBodies();
+        if (bodies.size() != (N)) {
+            cerr << "Error: Generating Custom Random bodies failed." << endl;
+            return 1;
+        }
     } else if (mode == "preset") {
         generatePresetBodies();
+        if (bodies.size() != (N)) {
+            cerr << "Error: Generating Preset bodies failed." << endl;
+            return 1;
+        }
     }
 
     return 0;
