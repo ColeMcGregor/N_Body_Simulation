@@ -99,10 +99,10 @@ public:
     }
 };
 
-int main(int argz, char *argv[])
+int main(int argc, char *argv[])
 {
     // check for correct number of arguments
-    if (argc != 4) {
+    if (argc != 5) {
         cerr << "Usage: <numthreads> <filename> <timestep> <iterations>" << endl;
     }
 
@@ -110,7 +110,7 @@ int main(int argz, char *argv[])
     const int numThreads = atoi(argv[1]);
 
     // set the input file
-    const string inputFile = "../" + argv[2];                                           // "../" is the specific path to the current input file, can be removed depending on where the input file is located
+    const string inputFile = string("../") + argv[2];                                           // "../" is the specific path to the current input file, can be removed depending on where the input file is located
     // set the timestep and iterations
     const double timestep = atof(argv[3]);
     const int iterations = atoi(argv[4]);
