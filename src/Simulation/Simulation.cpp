@@ -101,7 +101,7 @@ public:
 
 int main()
 {
-    const string inputFile = "input.txt";
+    const string inputFile = "../input.txt";
     const string outputFile = "output.txt";
 
     // create the simulation
