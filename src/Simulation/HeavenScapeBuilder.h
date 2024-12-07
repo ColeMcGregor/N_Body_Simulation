@@ -7,6 +7,7 @@
 
 // Function prototypes for body generation
 double generateUniqueRadius(double minRadius, double maxRadius, const std::vector<double> &usedRadii);
+double generateBoundedDouble(double min, double max);
 Vector calculateOrbitalPosition(const Vector &parentPos, double orbitalRadius);
 Vector calculateOrbitalVelocity(const Vector &parentPos, const Vector &childPos, double parentMass, double gravitationalMultiplier);
 void initiateHeavenscape(std::vector<Body> &bodies, int bodyCount[5]);

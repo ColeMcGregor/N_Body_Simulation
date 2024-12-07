@@ -156,38 +156,29 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
     }
     // output the locations of the bodies to the file as the simulation runs(sets of "NValue x,y,z" coordinates)
 
-    // create throwaway variables for the number of stars, planets, and moons
-    int NS = 0; // number of stars
-    int NP = 0; // number of planets
-    int NM = 0; // number of moons
-    int NB = 0; // number of blackholes
-    // look through the bodies vector and count the number of stars, planets, and moons
-    for (size_t i = 0; i < bodies.size(); i++)
-    {
-        if (bodies[i].type == "star")
-        {
-            NS++;
-        }
-        else if (bodies[i].type == "planet")
-        {
-            NP++;
-        }
-        else if (bodies[i].type == "moon")
-        {
-            NM++;
-        }
-        else if (bodies[i].type == "blackhole")
-        {
-            NB++;
-        }
-    }
-    /// output current timestep
-    file << "Timestep: " << timeStep << endl; // Timestep: 1
-    file << "N: " << bodies.size() << endl;   // N: 10
-    file << "NS: " << NS << endl;             // NS: 1
-    file << "NP: " << NP << endl;             // NP: 1
-    file << "NM: " << NM << endl;             // NM: 1
-    file << "NB: " << NB << endl;             // NB: 1
+    /**
+     * below will output the timestep of the simulation
+     * example:
+     * Timestep: 1
+     */
+
+    // file << "Timestep: " << timeStep << endl; // Timestep: 1
+
+    /**
+     * below will output the number of bodies in the simulation
+     * example:
+     * N: 10
+     */
+     file << "N: " << bodies.size() << endl;   // N: 10
+
+    /**
+         * below will make a block of parent child relationships, in order of parent index followed by child indices
+         * example:
+         * 0 1 2 3
+         * 1 4 5
+         * 2 6 7
+         * 3 8 9
+         */
     for (size_t i = 0; i < bodies.size(); i++)
     {
         if (bodies[i].childrenIndices.size() > 0)
@@ -200,6 +191,17 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
             file << endl;
         }
     }
+    
+    /**
+     * below will make a block of body number, body type, body radius, and trajectory for each body
+     * example:
+     * 0 star 100
+     * 0.002 0.123 0.456
+     * 0.003 0.124 0.457
+     * 0.004 0.125 0.458
+     * ...
+     */
+
     // output block style trajectories
     for (size_t i = 0; i < bodies.size(); i++)
     { // for each body
@@ -209,6 +211,7 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
         {                                             
             operator<<(file, bodies[i].trajectory[j]); // Using the overloaded << operator
         }
+        file << endl;
     }
 
     // output the locations of the bodies to the file

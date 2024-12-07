@@ -87,6 +87,7 @@ double generateSchwarzchildRadius(double mass) {
  */
 void generateRandomBodies() {
     int N, stars, planets, moons, blackHoles;
+    int currentBlackHoles, currentStars, currentPlanets, currentMoons;
     cout << "Enter the total number of bodies (N): ";
     cin >> N;
 
@@ -135,6 +136,12 @@ void generateRandomBodies() {
     bodyCount[3] = planets;
     bodyCount[4] = moons;
 
+    //initialize the current body counters
+    currentBlackHoles = 0;
+    currentStars = 0;
+    currentPlanets = 0;
+    currentMoons = 0;
+
     //check the bodyCount vector
     cout << "Body Counts: N:" << bodyCount[0] << " NS:" << bodyCount[1] << " NP:" << bodyCount[2] << " NM:" << bodyCount[3] << " NB:" << bodyCount[4] << endl;
     //inform user the bodies will be generated now
@@ -143,118 +150,55 @@ void generateRandomBodies() {
     //now that we have the counts, we can make the random bodies, with default positions, velocities, and radii, to be set in initiateHeavenscape
     //we will also need to make a vector of used radii, to check against when generating unique radii
     //first generate the black holes
-    if (blackHoles > 0) {
-        cout << "Generating " << blackHoles << " black holes..." << endl;
-        for (int i = 0; i < blackHoles; i++) {
-            Vector position = Vector(0.0, 0.0, 0.0);                                                        //default position
-            Vector velocity = Vector(0.0, 0.0, 0.0);                                                        //default velocity
-            Vector acceleration = Vector(0.0, 0.0, 0.0);                                                       //default acceleration
-            Vector netForce = Vector(0.0, 0.0, 0.0);                                                        //default net force
-            double mass = generateBoundedDouble(BLACKHOLE_MASS_RANGE.first, BLACKHOLE_MASS_RANGE.second);   //generate a random bounded mass
-            double radius = generateSchwarzchildRadius(mass);                                              //generate a radius based on the mass for a black hole                                                   //default gravitational multiplier
-            string type = "blackhole";
-            vector<int> childrenIndices = {};
-            vector<Vector> trajectory = {};
-            bodies.push_back(Body( position, 
-                                   velocity, 
-                                   acceleration, 
-                                   netForce, 
-                                   mass, 
-                                   radius, 
-                                   gravitationalMultiplier, 
-                                   type, 
-                                   childrenIndices, 
-                                   trajectory));
-            //print the body to the console
-            cout << "Black Hole " << i << " created." << endl;
+    for (int i = 0; i < N; i++) {
+        // Default vectors factored out of the loop as every body will have the same default values
+        Vector position(0.0, 0.0, 0.0);
+        Vector velocity(0.0, 0.0, 0.0);
+        Vector acceleration(0.0, 0.0, 0.0);
+        Vector netForce(0.0, 0.0, 0.0);
+
+        //initialize the mass, radius, type, children indices, and trajectory for each body(must be local variables)
+        double mass, radius;
+        string type;
+        vector<int> childrenIndices;
+        vector<Vector> trajectory;
+
+        //will first do blackholes, then stars, then planets, then moons, because of the if ELSE logic
+        if (currentBlackHoles < blackHoles) {
+            // Generate Black Hole
+            mass = generateBoundedDouble(BLACKHOLE_MASS_RANGE.first, BLACKHOLE_MASS_RANGE.second);
+            radius = generateSchwarzchildRadius(mass);
+            type = "blackhole";
+            currentBlackHoles++;
+            cout << "Black Hole " << currentBlackHoles << " created." << endl;
+        } else if (currentStars < stars) {
+            // Generate Star
+            mass = generateBoundedDouble(STAR_MASS_RANGE.first, STAR_MASS_RANGE.second);
+            radius = generateUniqueRadius(STAR_RADIUS_RANGE.first, STAR_RADIUS_RANGE.second, usedRadii);
+            type = "star";
+            currentStars++;
+            cout << "Star " << currentStars << " created." << endl;
+        } else if (currentPlanets < planets) {
+            // Generate Planet
+            mass = generateBoundedDouble(PLANET_MASS_RANGE.first, PLANET_MASS_RANGE.second);
+            radius = generateUniqueRadius(PLANET_RADIUS_RANGE.first, PLANET_RADIUS_RANGE.second, usedRadii);
+            type = "planet";
+            currentPlanets++;
+            cout << "Planet " << currentPlanets << " created." << endl;
+        } else if (currentMoons < moons) {
+            // Generate Moon
+            mass = generateBoundedDouble(MOON_MASS_RANGE.first, MOON_MASS_RANGE.second);
+            radius = generateUniqueRadius(MOON_RADIUS_RANGE.first, MOON_RADIUS_RANGE.second, usedRadii);
+            type = "moon";
+            currentMoons++;
+            cout << "Moon " << currentMoons << " created." << endl;
         }
-    }
-    //now stars
-    if (stars > 0) {
-        cout << "Generating " << stars << " stars..." << endl;
-        for (int i = 0; i < stars; i++) {
-            //generate the default values for the body
-            Vector position = Vector(0.0, 0.0, 0.0);                                                        //default position
-            Vector velocity = Vector(0.0, 0.0, 0.0);                                                        //default velocity
-            Vector acceleration = Vector(0.0, 0.0, 0.0);                                                       //default acceleration
-            Vector netForce = Vector(0.0, 0.0, 0.0);                                                        //default net force
-            double mass = generateBoundedDouble(STAR_MASS_RANGE.first, STAR_MASS_RANGE.second);           //generate a random bounded mass
-            double radius = generateUniqueRadius(STAR_RADIUS_RANGE.first, STAR_RADIUS_RANGE.second, usedRadii); //generate a unique radius
-            string type = "star";
-            vector<int> childrenIndices = {};
-            vector<Vector> trajectory = {};
-            bodies.push_back(Body( position, 
-                                   velocity, 
-                                   acceleration, 
-                                   netForce, 
-                                   mass, 
-                                   radius, 
-                                   gravitationalMultiplier, 
-                                   type, 
-                                   childrenIndices, 
-                                   trajectory));
-            //print the body to the console
-            cout << "Star " << i << " created." << endl;
-        }
-    }
-    //planets
-    if (planets > 0) {
-        cout << "Generating " << planets << " planets..." << endl;
-        for (int i = 0; i < planets; i++) {
-            //generate the default values for the body
-            Vector position = Vector(0.0, 0.0, 0.0);                                                        //default position
-            Vector velocity = Vector(0.0, 0.0, 0.0);                                                        //default velocity
-            Vector acceleration = Vector(0.0, 0.0, 0.0);                                                       //default acceleration
-            Vector netForce = Vector(0.0, 0.0, 0.0);                                                        //default net force
-            double mass = generateBoundedDouble(PLANET_MASS_RANGE.first, PLANET_MASS_RANGE.second);       //generate a random bounded mass
-            double radius = generateUniqueRadius(PLANET_RADIUS_RANGE.first, PLANET_RADIUS_RANGE.second, usedRadii); //generate a unique radius
-            string type = "planet";
-            vector<int> childrenIndices = {};
-            vector<Vector> trajectory = {};
-            bodies.push_back(Body( position,
-                                   velocity,
-                                   acceleration,
-                                   netForce,
-                                   mass,
-                                   radius,
-                                   gravitationalMultiplier,
-                                   type,
-                                   childrenIndices,
-                                   trajectory));
-            //print the body to the console
-            cout << "Planet " << i << " created." << endl;
-        }
-    }
-    //lastly, moons
-    if (moons > 0) {
-        cout << "Generating " << moons << " moons..." << endl;
-        for (int i = 0; i < moons; i++) {
-            //generate the default values for the body
-            Vector position = Vector(0.0, 0.0, 0.0);                                                        //default position
-            Vector velocity = Vector(0.0, 0.0, 0.0);                                                        //default velocity
-            Vector acceleration = Vector(0.0, 0.0, 0.0);                                                       //default acceleration
-            Vector netForce = Vector(0.0, 0.0, 0.0);                                                        //default net force
-            double mass = generateBoundedDouble(MOON_MASS_RANGE.first, MOON_MASS_RANGE.second);           //generate a random bounded mass
-            double radius = generateUniqueRadius(MOON_RADIUS_RANGE.first, MOON_RADIUS_RANGE.second, usedRadii); //generate a unique radius
-            string type = "moon";
-            vector<int> childrenIndices = {};
-            vector<Vector> trajectory = {};
-            bodies.push_back(Body( position,
-                                   velocity,
-                                   acceleration,
-                                   netForce,
-                                   mass,
-                                   radius,
-                                   gravitationalMultiplier,
-                                   type,
-                                   childrenIndices,
-                                   trajectory));
-            //print the body to the console
-            cout << "Moon " << i << " created." << endl;
-        }
+
+        // Add body to the list
+        bodies.push_back(Body(position, velocity, acceleration, netForce, mass, radius, gravitationalMultiplier, type, childrenIndices, trajectory));
     }
     cout << "All bodies generated." << endl;
-    cout << "God will now create the universe..." << endl;
+    cout << "Your new God will now create the universe..." << endl;
     //now we have our bodies, we can initiate the heavenscape
     initiateHeavenscape(bodies, bodyCount);
 }
@@ -271,14 +215,31 @@ void generateCustomBodies() {
     int N;
     cout << "Enter the total number of bodies (N): ";
     cin >> N;
-
+    
+    //check if N is valid
     if (N <= 0) {
         cerr << "Error: Number of bodies must be greater than 0." << endl;
         return;
     }
 
+    //check if N is unreasonably large for entry
+    if (N > 10) {
+        cout << "Warning: Number of bodies should be less than 10, more than 10 will take a long time for user entry" << endl;
+        cout << "Re-enter N?(y or n)" << endl;
+        char response;
+        cin >> response;
+        if (response == 'y') {
+            cout << "Okay, Re-enter N: ";
+            cin >> N;
+        }
+        else {
+            cout << "Okay, moving on..." << endl;
+        }
+    }
+
     cout << "Define the number of each type of body (star, planet, moon, black hole):" << endl;
     int stars, planets, moons, blackHoles;
+    int tries = 0;
     cout << "Stars: ";
     cin >> stars;
     cout << "Planets: ";
@@ -289,14 +250,43 @@ void generateCustomBodies() {
     cin >> blackHoles;
 
     // Validate counts
-    if (stars + planets + moons + blackHoles != N) {
-        cerr << "Error: Total body count must match N." << endl;
-        return;
+    while (stars + planets + moons + blackHoles != N) {
+        cout << "Total body count must match N. Re-enter the counts" << endl;
+        cout << "Stars: ";
+        cin >> stars;
+        cout << "Planets: ";
+        cin >> planets;
+        cout << "Moons: ";
+        cin >> moons;
+        cout << "Black holes: ";
+        cin >> blackHoles;
+        tries++;
+        if (tries > 5) {
+            cout << "Too many tries, moving on..." << endl;
+            return;
+        }
     }
 
     // Custom child assignment (logic to be implemented)
     cout << "Define child assignments for each body..." << endl;
-}
+    cout << "Please enter first the body number index, followed by the children indices, separated by spaces" << endl;
+    cout << "Example: 4 19 21 34" << endl;
+    cout << "This would mean that body 4 has children 19, 21, and 34" << endl;
+
+    //reprompt for input for each line until the user inputs -1
+    while (true) {
+        int bodyNumber, childNumber;
+        cin >> bodyNumber;
+        if (bodyNumber == -1) {
+            break;
+        }
+        while (cin >> childNumber) {
+            if (childNumber == -1) {
+                break;
+            }
+            bodies[bodyNumber].childrenIndices.push_back(childNumber);
+        }
+    }
 
 /**
  * generate custom random bodies, which will have custom body counts, but random assignments of children
@@ -543,12 +533,28 @@ int main() {
     // Delegate tasks based on mode
     if (mode == "random") {
         generateRandomBodies();
+        if (bodies.size() != (N)) {
+            cerr << "Error: Generating Random bodies failed." << endl;
+            return 1;
+        }
     } else if (mode == "custom") {
         generateCustomBodies();
+        if (bodies.size() != (N)) {
+            cerr << "Error: Generating Custom bodies failed." << endl;
+            return 1;
+        }
     } else if (mode == "custom random") {
         generateCustomRandomBodies();
+        if (bodies.size() != (N)) {
+            cerr << "Error: Generating Custom Random bodies failed." << endl;
+            return 1;
+        }
     } else if (mode == "preset") {
         generatePresetBodies();
+        if (bodies.size() != (N)) {
+            cerr << "Error: Generating Preset bodies failed." << endl;
+            return 1;
+        }
     }
 
     return 0;
