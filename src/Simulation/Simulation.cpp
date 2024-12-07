@@ -55,14 +55,14 @@ public:
      * and a single thread to output the results to the output file every 100 steps
      *
      * @param timeStep the timestep of the simulation
-     * @param numSteps the number of steps to run the simulation
+     * @param iterations the number of iterations of the simulation
      *
      */
-    void run(double timeStep, int numSteps)
+    void run(double timeStep, int iterations)
     {
 #pragma omp parallel
         {
-            for (int step = 0; step < numSteps; step++)
+            for (int step = 0; step < iterations; step++)
             {
 // divide the work among threads
 #pragma omp for
@@ -99,18 +99,32 @@ public:
     }
 };
 
-int main()
+int main(int argz, char *argv[])
 {
-    const string inputFile = "../input.txt";
+    // check for correct number of arguments
+    if (argc != 4) {
+        cerr << "Usage: <numthreads> <filename> <timestep> <iterations>" << endl;
+    }
+
+    // set the number of threads
+    const int numThreads = atoi(argv[1]);
+
+    // set the input file
+    const string inputFile = "../" + argv[2];                                           // "../" is the specific path to the current input file, can be removed depending on where the input file is located
+    // set the timestep and iterations
+    const double timestep = atof(argv[3]);
+    const int iterations = atoi(argv[4]);
+
+    // set the output file
     const string outputFile = "output.txt";
 
     // create the simulation
     Simulation sim(inputFile, outputFile);
     //initiateHeavenscape(sim.bodies, sim.bodyCount);
     // set number of threads (default is number of cores)
-    omp_set_num_threads(omp_get_max_threads());
+    omp_set_num_threads(numThreads);
     // run the simulation
-    sim.run(0.01, 1000);
+    sim.run(timestep, iterations);
 
     return 0;
 }
