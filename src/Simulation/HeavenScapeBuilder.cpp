@@ -135,10 +135,16 @@ void generateRandomBodies() {
     bodyCount[3] = planets;
     bodyCount[4] = moons;
 
+    //check the bodyCount vector
+    cout << "Body Counts: N:" << bodyCount[0] << " NS:" << bodyCount[1] << " NP:" << bodyCount[2] << " NM:" << bodyCount[3] << " NB:" << bodyCount[4] << endl;
+    //inform user the bodies will be generated now
+    cout << "Generating bodies..." << endl; 
+
     //now that we have the counts, we can make the random bodies, with default positions, velocities, and radii, to be set in initiateHeavenscape
     //we will also need to make a vector of used radii, to check against when generating unique radii
     //first generate the black holes
     if (blackHoles > 0) {
+        cout << "Generating " << blackHoles << " black holes..." << endl;
         for (int i = 0; i < blackHoles; i++) {
             Vector position = Vector(0.0, 0.0, 0.0);                                                        //default position
             Vector velocity = Vector(0.0, 0.0, 0.0);                                                        //default velocity
@@ -159,10 +165,13 @@ void generateRandomBodies() {
                                    type, 
                                    childrenIndices, 
                                    trajectory));
+            //print the body to the console
+            cout << "Black Hole " << i << " created." << endl;
         }
     }
     //now stars
     if (stars > 0) {
+        cout << "Generating " << stars << " stars..." << endl;
         for (int i = 0; i < stars; i++) {
             //generate the default values for the body
             Vector position = Vector(0.0, 0.0, 0.0);                                                        //default position
@@ -184,10 +193,13 @@ void generateRandomBodies() {
                                    type, 
                                    childrenIndices, 
                                    trajectory));
+            //print the body to the console
+            cout << "Star " << i << " created." << endl;
         }
     }
     //planets
     if (planets > 0) {
+        cout << "Generating " << planets << " planets..." << endl;
         for (int i = 0; i < planets; i++) {
             //generate the default values for the body
             Vector position = Vector(0.0, 0.0, 0.0);                                                        //default position
@@ -209,10 +221,13 @@ void generateRandomBodies() {
                                    type,
                                    childrenIndices,
                                    trajectory));
+            //print the body to the console
+            cout << "Planet " << i << " created." << endl;
         }
     }
     //lastly, moons
     if (moons > 0) {
+        cout << "Generating " << moons << " moons..." << endl;
         for (int i = 0; i < moons; i++) {
             //generate the default values for the body
             Vector position = Vector(0.0, 0.0, 0.0);                                                        //default position
@@ -234,9 +249,12 @@ void generateRandomBodies() {
                                    type,
                                    childrenIndices,
                                    trajectory));
+            //print the body to the console
+            cout << "Moon " << i << " created." << endl;
         }
     }
-
+    cout << "All bodies generated." << endl;
+    cout << "God will now create the universe..." << endl;
     //now we have our bodies, we can initiate the heavenscape
     initiateHeavenscape(bodies, bodyCount);
 }
