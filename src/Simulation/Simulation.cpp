@@ -50,7 +50,7 @@ public:
     /**
      * @brief runs the simulation
      *
-     * @details: will use openMP to parallelize the simulation, assigning a single thread to calculate the forces on each body,
+     * @details: will use OpenMP to parallelize the simulation, assigning a single thread to calculate the forces on each body,
      * and a single thread to output the results to the output file every 100 steps
      *
      * @param timeStep the timestep of the simulation
@@ -59,16 +59,19 @@ public:
      */
     void run(double timeStep, int iterations)
     {
-      double start_time = omp_get_wtime();
+      //initialize total time variable
+      double total_time = 0.0;
 #pragma omp parallel
         {
-            for (int step = 0; step < iterations; step++)
+	  //start timer for computation
+	  double start_comp_time = omp_get_wtime();
+            for (int step = 0; step < iterations + 1; step++)
             {
 	      // divide the work among threads
 #pragma omp for
                 for (size_t i = 0; i < bodies.size(); i++)
                 {
-		  cout << "Thread " << omp_get_thread_num() << "handling body " << i << endl;
+		  //cout << "Thread " << omp_get_thread_num() << "handling body " << i << endl;
                     // reset force before each calculation
                     bodies[i].resetForce();
                     // calculate the total force on each body
@@ -86,25 +89,38 @@ public:
                 {
 		  bodies[i].update(timeStep);
                 }
-
-// synchronize threads before outputting results
-#pragma omp barrier
-
+		
 // a single thread will output the results to the output file
 #pragma omp single
                 {
-		  fileManager.outputResults(outputFile, bodies, step);
-		  if (step % 100 == 0 || step == iterations - 1) {
-		    if (step == iterations - 1) {
-		      cout << "Final ";
+		  if (step % 1000 == 0) {
+		    if (step == iterations) {
+		      // synchronize threads before outputting results
+		      #pragma omp barrier
+		      //end timer for computation
+		      double end_comp_time = omp_get_wtime();
+		      cout << endl << "Computation time: " << end_comp_time - start_comp_time << " seconds" << endl;
+		      cout << endl << step << " iterations reached, outputting to file..." << endl;
+
+		      //start timer for outputting
+		      double start_out_time = omp_get_wtime();
+		      // outputs final results to destination file
+		      fileManager.outputResults(outputFile, bodies, step);
+		      //end timer for outputting
+		      double end_out_time = omp_get_wtime();
+		      cout << endl << "Destination: " << outputFile << endl;
+		      cout << endl << "Outputting took " << end_out_time - start_out_time << " seconds" << endl;
+
+		      // gather total time
+		      total_time = (end_comp_time - start_comp_time) + (end_out_time - start_out_time);
+		    } else {
+		    cout << "[Simulation reached " << step << " iterations]" << endl;
 		    }
-		    cout << "Timestep checkpoint reached: " << step  << endl;
-		    }
+		  }
 		}
             }
         }
-	double end_time = omp_get_wtime();
-        cout << "Execution time: " << end_time - start_time << " seconds" << endl;
+        cout << endl <<  "Total elapsed time: " << total_time << " seconds" << endl;
     }
 };
 
