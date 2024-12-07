@@ -183,7 +183,7 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
     // }
     /// output current timestep
     // file << "Timestep: " << timeStep << endl; // Timestep: 1
-    // file << "N: " << bodies.size() << endl;   // N: 10
+     file << "N: " << bodies.size() << endl;   // N: 10
     // file << "NS: " << NS << endl;             // NS: 1
     // file << "NP: " << NP << endl;             // NP: 1
     // file << "NM: " << NM << endl;             // NM: 1
