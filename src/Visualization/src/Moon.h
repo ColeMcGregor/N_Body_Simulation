@@ -7,11 +7,8 @@
 using namespace std;
 
 class Moon : public Body{
-    private:
-        int planetID;       //id of the planet that it follows
-
     public:
-        Moon(double radius,double mass, Vector position,string type, int planetID);
+        Moon(double radius,double mass, Vector position,string type);
 
 };
 

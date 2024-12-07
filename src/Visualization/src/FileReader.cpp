@@ -17,7 +17,7 @@ FileReader::FileReader(const std::string& fileName) : fileName(fileName) {}
     Calls readBodies which will return a tuple of vectors for type 
     body, star, planet,moon,blackhole
 */
-tuple<int,vector<Body>, std::vector<Star>, std::vector<Planet>, std::vector<Moon>, std::vector<BlackHole> > FileReader::readBodies() {
+tuple<vector<Body>, std::vector<Star>, std::vector<Planet>, std::vector<Moon>, std::vector<BlackHole> > FileReader::readBodies() {
     
     vector<Body> bodies;
     vector<Star> stars;
@@ -40,110 +40,79 @@ tuple<int,vector<Body>, std::vector<Star>, std::vector<Planet>, std::vector<Moon
     double radius, mass, x, y, z;
     string type;
 
-    //black hole var
-    double gravityuMultiplier;
-
-    //planet var
-    string material;
 
     //for moon
-    int planetID;
-
-    //for star
-    double luminosity;   
+    int planetID; 
 
     //gives you the line of the file   
     std::string line;
     //while loop for reading in the file
     while (std::getline(file, line)) {
         //calls the iss in from line, returns the line , string takes the prefix, and int is the value
-        istringstream iss(line);
-        string prefix;
-        int value;
+        // istringstream iss(line);
+        // string prefix;
+        // int value;
 
         //looks for "Timestep: int value or NB or NS or NP or NM or NBH: with int following them all"
-        if(iss >> prefix >> value){
-            if (prefix == "Timestep: "){
-                timestep = value;
-            }
-            else if (prefix == "NB: "){
-                numBodies = value;
-            }
-            else if (prefix == "NS: "){
-                numStars = value;
-            }
-            else if (prefix == "NP: "){
-                numPlanets = value;
-            }
-            else if (prefix == "NBH: "){
-                numBlackHoles = value;
-            }
-            else{
-                cerr << "Unknown Prefix " <<prefix << endl;
-            }
+        while (std::getline(file, line)) {
+    // Use istringstream to parse the line
+    std::istringstream iss(line);
+    std::string prefix;
+    int value;
 
-        }
-        //if it isnt in the first few lines, then it willl look for <radius> <mass> <x><y><z> and type followed by a special
-        //variable for what kind of body it is
-        else if (!(iss >> radius >> mass >> x >> y >> z >> type)) {
-            throw std::runtime_error("Invalid data format in file: " + fileName);
-        }
-        //if its a star, assign special to luminosity
-        else if(type == "star"){
-            if(!(iss >> luminosity))
-            {
-                throw runtime_error("Invalid data format for star in file: " +fileName);
-            }
-            //push star to the star vector and bodies vector
-            else{
-                Star star(radius,mass,Vector(x,y,z),type,luminosity);
+    // Parse lines with a prefix and an integer value
+    // if (iss >> prefix >> value) {
+    //     if (prefix == "Timestep:") {
+    //         timestep = value;
+    //         cout<<"TImestep: " <<timestep<<endl;
+    //     } else if (prefix == "NB:") {
+    //         numBodies = value;
+    //         cout<<"NB: "<<numBodies<<endl;
+    //     } else if (prefix == "NS:") {
+    //         numStars = value;
+    //         cout<<"NS: "<<numStars<<endl;
+    //     } else if (prefix == "NP:") {
+    //         numPlanets = value;
+    //         cout<<"NP: "<<numPlanets<<endl;
+    //     } else if (prefix == "NBH:") {
+    //         numBlackHoles = value;
+    //         cout<<"NBH: " <<numBlackHoles<<endl;
+    //     }
+    // } 
+    // Parse lines with radius, mass, position (x, y, z), and type
+        double radius, mass, x, y, z;
+        std::string type;
+
+        // Attempt to parse the data
+        if (iss >> radius >> mass >> x >> y >> z >> type) {
+            if (type == "star") {
+                // Create and push the Star object
+                Star star(radius, mass, Vector(x, y, z), type);
                 stars.push_back(star);
                 bodies.push_back(star);
-            }
-        }
-        //if its a planet, assign special to material
-        else if (type == "planet"){
-            if(!(iss >> material))
-            {
-                throw runtime_error("Invalid data format for planet in file: " +fileName);
-            }
-            //push to planet and body vectors
-            else{
-                Planet planet(radius,mass,Vector(x,y,z),type,material);
+            } else if (type == "planet") {
+                // Create and push the Planet object
+                Planet planet(radius, mass, Vector(x, y, z), type);
                 planets.push_back(planet);
                 bodies.push_back(planet);
-            }
-        }
-        //if its a moon, assign planetID
-        else if (type == "moon"){
-            if(!(iss >> planetID))
-            {
-                throw runtime_error("Invalid data format for moon in file: " +fileName);
-            }
-            //push to moon and body
-            else{
-                Moon moon(radius,mass,Vector(x,y,z),type,planetID);
+            } else if (type == "moon") {
+                // Create and push the Moon object
+                Moon moon(radius, mass, Vector(x, y, z), type);
                 moons.push_back(moon);
                 bodies.push_back(moon);
-            }
-        }
-        //if its a blachkole, apply to gravityMult
-        else if (type == "blackhole"){
-            if(!(iss >> gravityuMultiplier))
-            {
-                throw runtime_error("Invalid data format for BlackHole in file: " +fileName);
-            }
-            //push to black hole and bodies vectors
-            else{
-                BlackHole blackhole(radius,mass,Vector(x,y,z),type,gravityuMultiplier);
+            } else if (type == "blackhole") {
+                // Create and push the BlackHole object
+                BlackHole blackhole(radius, mass, Vector(x, y, z), type);
                 blackholes.push_back(blackhole);
                 bodies.push_back(blackhole);
             }
         }
     }
+    }
+    
     file.close();
     //returns timestep, bodies, stars, planets, moons and blackholes
-    return make_tuple(timestep, bodies , stars, planets, moons, blackholes);
+    return make_tuple(bodies , stars, planets, moons, blackholes);
 }
 
 
