@@ -32,7 +32,6 @@ void FileManager::loadConfig(
     vector<Body> &bodies,
     double &timestep,
     double &gravitationalMultiplier,
-    bool &stable,
     int &iterations,
     int bodyCount[5])
 {
@@ -83,10 +82,6 @@ void FileManager::loadConfig(
         else if (keyword == "gravitationalMultiplier")
         {
             StringFileReader >> gravitationalMultiplier;
-        }
-        else if (keyword == "stable")
-        {
-            StringFileReader >> stable;
         }
         else if (keyword == "body")
         {

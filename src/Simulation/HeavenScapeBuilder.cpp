@@ -130,17 +130,25 @@ void generateRandomBodies() {
     //first generate the black holes
     if (blackHoles > 0) {
         for (int i = 0; i < blackHoles; i++) {
-            Vector position = Vector(0.0, 0.0, 0.0);
-            Vector velocity = Vector(0.0, 0.0, 0.0);
-            Vector acceleration = Vector(0.0, 0.0, 0.0);
-            Vector netForce = Vector(0.0, 0.0, 0.0);
-            double mass = generateBoundedDouble(BLACKHOLE_MASS_RANGE.first, BLACKHOLE_MASS_RANGE.second);
-            double radius = generateSchwarzchildRadius(mass);
-            double gravitationalMultiplier = 1.0;
+            Vector position = Vector(0.0, 0.0, 0.0);                                                        //default position
+            Vector velocity = Vector(0.0, 0.0, 0.0);                                                        //default velocity
+            Vector acceleration = Vector(0.0, 0.0, 0.0);                                                       //default acceleration
+            Vector netForce = Vector(0.0, 0.0, 0.0);                                                        //default net force
+            double mass = generateBoundedDouble(BLACKHOLE_MASS_RANGE.first, BLACKHOLE_MASS_RANGE.second);   //generate a random bounded mass
+            double radius = generateSchwarzchildRadius(mass);                                              //generate a radius based on the mass for a black hole                                                   //default gravitational multiplier
             string type = "blackhole";
             vector<int> childrenIndices = {};
             vector<Vector> trajectory = {};
-            bodies.push_back(Body(position, velocity, acceleration, netForce, mass, radius, gravitationalMultiplier, type, childrenIndices, trajectory));
+            bodies.push_back(Body( position, 
+                                   velocity, 
+                                   acceleration, 
+                                   netForce, 
+                                   mass, 
+                                   radius, 
+                                   gravitationalMultiplier, 
+                                   type, 
+                                   childrenIndices, 
+                                   trajectory));
         }
     }
 
@@ -403,8 +411,6 @@ int main() {
     cin >> iterations;
     cout << "Enter gravitational multiplier(1.0 for real world): ";
     cin >> gravitationalMultiplier;
-    cout << "Enter stability (true or false)(if gravity 1.0, else irrelevant): ";
-    cin >> stable;
 
     /**
      * validate inputs and reprompt if necessary

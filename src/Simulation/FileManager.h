@@ -23,7 +23,7 @@ class FileManager
                         std::vector<Body> &bodies,
                         double &timestep,
                         double &gravitationalMultiplier,
-                        bool &stable,int &iterations,
+                        int &iterations,
                         int bodyCount[5]);
 
         void outputResults(const std::string &filePath,
