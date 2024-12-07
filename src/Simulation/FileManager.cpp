@@ -59,26 +59,26 @@ void FileManager::loadConfig(
         {
             StringFileReader >> iterations;
         }
-        else if (keyword == "N")
-        {
-            StringFileReader >> bodyCount[0]; // Total number of bodies
-        }
-        else if (keyword == "NS")
-        {
-            StringFileReader >> bodyCount[1]; // Number of stars
-        }
-        else if (keyword == "NP")
-        {
-            StringFileReader >> bodyCount[2]; // Number of planets
-        }
-        else if (keyword == "NM")
-        {
-            StringFileReader >> bodyCount[3]; // Number of moons
-        }
-        else if (keyword == "NB")
-        {
-            StringFileReader >> bodyCount[4]; // Number of blackholes
-        }
+        // else if (keyword == "N")
+        // {
+        //     StringFileReader >> bodyCount[0]; // Total number of bodies
+        // }
+        // else if (keyword == "NS")
+        // {
+        //     StringFileReader >> bodyCount[1]; // Number of stars
+        // }
+        // else if (keyword == "NP")
+        // {
+        //     StringFileReader >> bodyCount[2]; // Number of planets
+        // }
+        // else if (keyword == "NM")
+        // {
+        //     StringFileReader >> bodyCount[3]; // Number of moons
+        // }
+        // else if (keyword == "NB")
+        // {
+        //     StringFileReader >> bodyCount[4]; // Number of blackholes
+        // }
         else if (keyword == "gravitationalMultiplier")
         {
             StringFileReader >> gravitationalMultiplier;
@@ -157,37 +157,37 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
     // output the locations of the bodies to the file as the simulation runs(sets of "NValue x,y,z" coordinates)
 
     // create throwaway variables for the number of stars, planets, and moons
-    int NS = 0; // number of stars
-    int NP = 0; // number of planets
-    int NM = 0; // number of moons
-    int NB = 0; // number of blackholes
+    // int NS = 0; // number of stars
+    // int NP = 0; // number of planets
+    // int NM = 0; // number of moons
+    // int NB = 0; // number of blackholes
     // look through the bodies vector and count the number of stars, planets, and moons
-    for (size_t i = 0; i < bodies.size(); i++)
-    {
-        if (bodies[i].type == "star")
-        {
-            NS++;
-        }
-        else if (bodies[i].type == "planet")
-        {
-            NP++;
-        }
-        else if (bodies[i].type == "moon")
-        {
-            NM++;
-        }
-        else if (bodies[i].type == "blackhole")
-        {
-            NB++;
-        }
-    }
+    // for (size_t i = 0; i < bodies.size(); i++)
+    // {
+    //     if (bodies[i].type == "star")
+    //     {
+    //         NS++;
+    //     }
+    //     else if (bodies[i].type == "planet")
+    //     {
+    //         NP++;
+    //     }
+    //     else if (bodies[i].type == "moon")
+    //     {
+    //         NM++;
+    //     }
+    //     else if (bodies[i].type == "blackhole")
+    //     {
+    //         NB++;
+    //     }
+    // }
     /// output current timestep
-    file << "Timestep: " << timeStep << endl; // Timestep: 1
-    file << "N: " << bodies.size() << endl;   // N: 10
-    file << "NS: " << NS << endl;             // NS: 1
-    file << "NP: " << NP << endl;             // NP: 1
-    file << "NM: " << NM << endl;             // NM: 1
-    file << "NB: " << NB << endl;             // NB: 1
+    // file << "Timestep: " << timeStep << endl; // Timestep: 1
+    // file << "N: " << bodies.size() << endl;   // N: 10
+    // file << "NS: " << NS << endl;             // NS: 1
+    // file << "NP: " << NP << endl;             // NP: 1
+    // file << "NM: " << NM << endl;             // NM: 1
+    // file << "NB: " << NB << endl;             // NB: 1
     for (size_t i = 0; i < bodies.size(); i++)
     {
         if (bodies[i].childrenIndices.size() > 0)
