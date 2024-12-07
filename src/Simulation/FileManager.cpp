@@ -97,8 +97,8 @@ void FileManager::loadConfig(
             Vector position, velocity, accel, net_force = Vector(0, 0, 0);
             double mass, radius = 0.0;
             string type = "";
-            vector<int> children = {};            
-            vector<Vector> trajectory = {};
+            vector<int> children;
+            vector<Vector> trajectory;
 
             // Read subsequent lines for body details
             while (getline(file, line) && !line.empty())
