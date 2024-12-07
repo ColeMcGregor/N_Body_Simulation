@@ -211,6 +211,7 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
         {                                             
             operator<<(file, bodies[i].trajectory[j]); // Using the overloaded << operator
         }
+        file << endl;
     }
 
     // output the locations of the bodies to the file
