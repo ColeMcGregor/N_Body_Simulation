@@ -66,7 +66,9 @@ const double SPEED_OF_LIGHT = 2.99792458e8;       //meters per second
 double gravitationalMultiplier;
 int timestep;
 int iterations;
+int bodyCount[5];
 bool stable;
+vector<double> usedRadii;
 
 
 /**
@@ -124,6 +126,14 @@ void generateRandomBodies() {
     cout << "Stars: " << stars << "\n";
     cout << "Planets: " << planets << "\n";
     cout << "Moons: " << moons << endl;
+    cout << "Assigning bodies to bodyCount vector..." << endl;
+
+    //assign the body counts to the bodyCount vector
+    bodyCount[0] = N;
+    bodyCount[1] = blackHoles;
+    bodyCount[2] = stars;
+    bodyCount[3] = planets;
+    bodyCount[4] = moons;
 
     //now that we have the counts, we can make the random bodies, with default positions, velocities, and radii, to be set in initiateHeavenscape
     //we will also need to make a vector of used radii, to check against when generating unique radii
@@ -151,8 +161,84 @@ void generateRandomBodies() {
                                    trajectory));
         }
     }
+    //now stars
+    if (stars > 0) {
+        for (int i = 0; i < stars; i++) {
+            //generate the default values for the body
+            Vector position = Vector(0.0, 0.0, 0.0);                                                        //default position
+            Vector velocity = Vector(0.0, 0.0, 0.0);                                                        //default velocity
+            Vector acceleration = Vector(0.0, 0.0, 0.0);                                                       //default acceleration
+            Vector netForce = Vector(0.0, 0.0, 0.0);                                                        //default net force
+            double mass = generateBoundedDouble(STAR_MASS_RANGE.first, STAR_MASS_RANGE.second);           //generate a random bounded mass
+            double radius = generateUniqueRadius(STAR_RADIUS_RANGE.first, STAR_RADIUS_RANGE.second, usedRadii); //generate a unique radius
+            string type = "star";
+            vector<int> childrenIndices = {};
+            vector<Vector> trajectory = {};
+            bodies.push_back(Body( position, 
+                                   velocity, 
+                                   acceleration, 
+                                   netForce, 
+                                   mass, 
+                                   radius, 
+                                   gravitationalMultiplier, 
+                                   type, 
+                                   childrenIndices, 
+                                   trajectory));
+        }
+    }
+    //planets
+    if (planets > 0) {
+        for (int i = 0; i < planets; i++) {
+            //generate the default values for the body
+            Vector position = Vector(0.0, 0.0, 0.0);                                                        //default position
+            Vector velocity = Vector(0.0, 0.0, 0.0);                                                        //default velocity
+            Vector acceleration = Vector(0.0, 0.0, 0.0);                                                       //default acceleration
+            Vector netForce = Vector(0.0, 0.0, 0.0);                                                        //default net force
+            double mass = generateBoundedDouble(PLANET_MASS_RANGE.first, PLANET_MASS_RANGE.second);       //generate a random bounded mass
+            double radius = generateUniqueRadius(PLANET_RADIUS_RANGE.first, PLANET_RADIUS_RANGE.second, usedRadii); //generate a unique radius
+            string type = "planet";
+            vector<int> childrenIndices = {};
+            vector<Vector> trajectory = {};
+            bodies.push_back(Body( position,
+                                   velocity,
+                                   acceleration,
+                                   netForce,
+                                   mass,
+                                   radius,
+                                   gravitationalMultiplier,
+                                   type,
+                                   childrenIndices,
+                                   trajectory));
+        }
+    }
+    //lastly, moons
+    if (moons > 0) {
+        for (int i = 0; i < moons; i++) {
+            //generate the default values for the body
+            Vector position = Vector(0.0, 0.0, 0.0);                                                        //default position
+            Vector velocity = Vector(0.0, 0.0, 0.0);                                                        //default velocity
+            Vector acceleration = Vector(0.0, 0.0, 0.0);                                                       //default acceleration
+            Vector netForce = Vector(0.0, 0.0, 0.0);                                                        //default net force
+            double mass = generateBoundedDouble(MOON_MASS_RANGE.first, MOON_MASS_RANGE.second);           //generate a random bounded mass
+            double radius = generateUniqueRadius(MOON_RADIUS_RANGE.first, MOON_RADIUS_RANGE.second, usedRadii); //generate a unique radius
+            string type = "moon";
+            vector<int> childrenIndices = {};
+            vector<Vector> trajectory = {};
+            bodies.push_back(Body( position,
+                                   velocity,
+                                   acceleration,
+                                   netForce,
+                                   mass,
+                                   radius,
+                                   gravitationalMultiplier,
+                                   type,
+                                   childrenIndices,
+                                   trajectory));
+        }
+    }
 
-    
+    //now we have our bodies, we can initiate the heavenscape
+    initiateHeavenscape(bodies, bodyCount);
 }
 
 /**
