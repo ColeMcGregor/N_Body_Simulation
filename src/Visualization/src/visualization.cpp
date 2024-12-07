@@ -18,6 +18,12 @@
 
 using namespace std;
 
+/*
+    g++ -std=c++11 -o vis visualization.cpp FileReader.cpp Body.cpp Star.cpp Planet.cpp 
+        Moon.cpp BlackHole.cpp vector.cpp -framework OpenGL -framework GLUT
+        -I/usr/local/include
+*/
+
 void display() {
     // Clear color and depth buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -28,8 +34,8 @@ void display() {
 
     // Render stars (for demonstration, you can add better rendering here)
     glColor3f(1.0, 1.0, 0.0); // Yellow color for stars
-        glutSolidSphere(1.0, 20, 20); // Draw a small sphere representing a star
-        glPopMatrix();
+    glutSolidSphere(1.0, 20, 20); // Draw a small sphere representing a star
+    glPopMatrix();
     
 
     // You can do similar rendering for planets, moons, and black holes here...
