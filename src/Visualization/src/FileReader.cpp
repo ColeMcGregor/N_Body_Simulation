@@ -10,7 +10,34 @@
 #include "Moon.h"
 #include "BlackHole.h"
 
+using namespace std;
+
 FileReader::FileReader(const std::string& fileName) : fileName(fileName) {}
+
+int FileReader::readTimeStep() {
+    std::ifstream file(fileName); // Open the file
+    if (!file.is_open()) {
+        throw runtime_error("Unable to open file: " + fileName);
+    }
+
+    std::string line;
+    int timestep = 0; // Initialize timestep with a default value
+
+    // Read lines until "Timestep:" is found
+    if (std::getline(file, line)) {
+        istringstream iss(line);
+        string prefix;
+        int value;
+
+        if(iss >> prefix >> value){
+            file.close();
+            return value;
+        }
+        else{
+            throw runtime_error("Invalid format in file");
+        }
+    }
+}
 
 
 /*
@@ -47,39 +74,13 @@ tuple<vector<Body>, std::vector<Star>, std::vector<Planet>, std::vector<Moon>, s
     //gives you the line of the file   
     std::string line;
     //while loop for reading in the file
+    
     while (std::getline(file, line)) {
-        //calls the iss in from line, returns the line , string takes the prefix, and int is the value
-        // istringstream iss(line);
-        // string prefix;
-        // int value;
-
-        //looks for "Timestep: int value or NB or NS or NP or NM or NBH: with int following them all"
-        while (std::getline(file, line)) {
     // Use istringstream to parse the line
-    std::istringstream iss(line);
-    std::string prefix;
-    int value;
-
-    // Parse lines with a prefix and an integer value
-    // if (iss >> prefix >> value) {
-    //     if (prefix == "Timestep:") {
-    //         timestep = value;
-    //         cout<<"TImestep: " <<timestep<<endl;
-    //     } else if (prefix == "NB:") {
-    //         numBodies = value;
-    //         cout<<"NB: "<<numBodies<<endl;
-    //     } else if (prefix == "NS:") {
-    //         numStars = value;
-    //         cout<<"NS: "<<numStars<<endl;
-    //     } else if (prefix == "NP:") {
-    //         numPlanets = value;
-    //         cout<<"NP: "<<numPlanets<<endl;
-    //     } else if (prefix == "NBH:") {
-    //         numBlackHoles = value;
-    //         cout<<"NBH: " <<numBlackHoles<<endl;
-    //     }
-    // } 
-    // Parse lines with radius, mass, position (x, y, z), and type
+        std::istringstream iss(line);
+        std::string prefix;
+        int value;
+        // Parse lines with radius, mass, position (x, y, z), and type
         double radius, mass, x, y, z;
         std::string type;
 
@@ -108,8 +109,8 @@ tuple<vector<Body>, std::vector<Star>, std::vector<Planet>, std::vector<Moon>, s
             }
         }
     }
-    }
     
+
     file.close();
     //returns timestep, bodies, stars, planets, moons and blackholes
     return make_tuple(bodies , stars, planets, moons, blackholes);
