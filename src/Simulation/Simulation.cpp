@@ -37,7 +37,7 @@ public:
     {
         // load the configuration file
         try
-        {
+	{
             fileManager.loadConfig(inputFile, bodies, timestep, gravitationalMultiplier, iterations, bodyCount);
         }
         catch (const exception &e)
@@ -59,14 +59,16 @@ public:
      */
     void run(double timeStep, int iterations)
     {
+      double start_time = omp_get_wtime();
 #pragma omp parallel
         {
             for (int step = 0; step < iterations; step++)
             {
-// divide the work among threads
+	      // divide the work among threads
 #pragma omp for
                 for (size_t i = 0; i < bodies.size(); i++)
                 {
+		  cout << "Thread " << omp_get_thread_num() << "handling body " << i << endl;
                     // reset force before each calculation
                     bodies[i].resetForce();
                     // calculate the total force on each body
@@ -82,7 +84,7 @@ public:
 #pragma omp for
                 for (size_t i = 0; i < bodies.size(); i++)
                 {
-                    bodies[i].update(timeStep);
+		  bodies[i].update(timeStep);
                 }
 
 // synchronize threads before outputting results
@@ -91,18 +93,26 @@ public:
 // a single thread will output the results to the output file
 #pragma omp single
                 {
-                    fileManager.outputResults(outputFile, bodies, step);
-                }
+		  fileManager.outputResults(outputFile, bodies, step);
+		  if (step % 100 == 0 || step == iterations - 1) {
+		    if (step == iterations - 1) {
+		      cout << "Final ";
+		    }
+		    cout << "Timestep checkpoint reached: " << step  << endl;
+		    }
+		}
             }
         }
+	double end_time = omp_get_wtime();
+        cout << "Execution time: " << end_time - start_time << " seconds" << endl;
     }
 };
 
 int main(int argc, char *argv[])
 {
     // check for correct number of arguments
-    if (argc != 5) {
-        cerr << "Usage: <numthreads> <filename> <timestep> <iterations>" << endl;
+    if (argc != 3) {
+        cerr << "Usage: <numthreads> <filename>" << endl;
     }
 
     // set the number of threads
@@ -110,20 +120,18 @@ int main(int argc, char *argv[])
 
     // set the input file
     const string inputFile = string("../") + argv[2];                                           // "../" is the specific path to the current input file, can be removed depending on where the input file is located
-    // set the timestep and iterations
-    const double timestep = atof(argv[3]);
-    const int iterations = atoi(argv[4]);
 
     // set the output file
-    const string outputFile = "output.txt";
+    const string outputFile = "../output.txt";
 
     // create the simulation
     Simulation sim(inputFile, outputFile);
     //initiateHeavenscape(sim.bodies, sim.bodyCount);
     // set number of threads (default is number of cores)
     omp_set_num_threads(numThreads);
+    cout << "Using " << numThreads  << " threads" << endl;
     // run the simulation
-    sim.run(timestep, iterations);
+    sim.run(sim.timestep, sim.iterations);
 
     return 0;
 }
