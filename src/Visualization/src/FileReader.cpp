@@ -21,35 +21,66 @@ tuple<vector<Body>, std::vector<Star>, std::vector<Planet>, std::vector<Moon>, s
     vector<BlackHole> blackholes;
     ifstream file(fileName);
 
+    int count = 0; //once it reaches
+    int numBodies = 0;
+    int numStars = 0;
+    int numPlanets = 0;
+    int numMoons = 0;
+    int numBlackHoles = 0; 
+    int timestep = 0;
+
     if (!file.is_open()) {
         throw std::runtime_error("Unable to open file: " + fileName);
     }
 
+    double radius, mass, x, y, z;
+    string type;
+
+    //black hole var
+    double gravityuMultiplier;
+
+    //planet var
+    string material;
+
+    //for moon
+    int planetID;
+
+    //for star
+    double luminosity;      
     std::string line;
     while (std::getline(file, line)) {
         std::istringstream iss(line);
-        double radius, mass, x, y, z;
-        string type;
-
-        //black hole var
-        double gravityuMultiplier;
-
-        //planet var
-        string material;
-
-        //for moon
-        int planetID;
-
-        //for star
-        double luminosity;
-
-
         
-        if (!(iss >> radius >> mass >> x >> y >> z >> type)) {
+        istringstream iss(line);
+        string prefix;
+        int value;
+
+        if(iss >> prefix >> value){
+            if (prefix == "Timestep: "){
+                timestep = value;
+            }
+            else if (prefix == "NB: "){
+                numBodies = value;
+            }
+            else if (prefix == "NS: "){
+                numStars = value;
+            }
+            else if (prefix == "NP: "){
+                numPlanets = value;
+            }
+            else if (prefix == "NBH: "){
+                numBlackHoles = value;
+            }
+            else{
+                cerr << "Unknown Prefix " <<prefix << endl;
+            }
+
+        }
+        else if (!(iss >> radius >> mass >> x >> y >> z >> type)) {
             throw std::runtime_error("Invalid data format in file: " + fileName);
         }
 
-        if(type == "star"){
+        else if(type == "star"){
             if(!(iss >> luminosity))
             {
                 throw runtime_error("Invalid data format for star in file: " +fileName);
