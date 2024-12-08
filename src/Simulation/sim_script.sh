@@ -5,7 +5,7 @@
 #SBATCH --partition=skx-dev                # Partition name (specifically the skylake development partition)
 #SBATCH --nodes=1                          # Total number of nodes
 #SBATCH --ntasks=1                         # Total number of tasks
-#SBATCH --cpus-per-task=16                 # Number of cores per task
+#SBATCH --cpus-per-task=8                  # Number of cores per task
 #SBATCH --time=01:00:00                    # Maximum run time for script
 
 module load gcc

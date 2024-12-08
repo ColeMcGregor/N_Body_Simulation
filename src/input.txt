@@ -1,5 +1,5 @@
 Timestep 60
-Iterations 10000
+Iterations 500000
 N 8
 NS 1
 NP 5
