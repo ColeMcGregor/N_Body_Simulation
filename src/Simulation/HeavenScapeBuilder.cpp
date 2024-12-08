@@ -304,6 +304,9 @@ void generateCustomBodies() {
             bodies[bodyNumber].childrenIndices.push_back(childNumber);
         }
     }
+    //planets made and children assigned, now we can initiate the heavenscape
+    initiateHeavenscape(bodies, bodyCount);
+}
 
 /**
  * generate preset bodies, similar to the solar system
@@ -507,11 +510,6 @@ void initiateHeavenscape(vector<Body> &bodies, int bodyCount[5])
      *    - the closest moon to any planet in our solar system is phobos to mars, at an astonishly low 6000 km, or 6 x 10^6 meters, which can be used to average the minimum distance between moons and planets
      *    - the moon farthest from its host body is Neso from neptune, at 4.96 x 10^10 meters, which can be used to average the maximum distance between moons and planets
      *
-     *  6. Special distribution cases (UNSTABLE INTERACTIONS)
-     *    - The above bounds for the distances between bodies can be toggled off to create unstable interactions, this will result in the bodies spiraling into eachother, or out of the system
-     *    - Additionally, the gravitional multiplier when not set at 1 will create unstable interactions, as the force of gravity will be too great or too small, causing the bodies to behave erratically
-     *        - it should be noted that the bounds do not work at all for stable orbits when the gravitational multiplier is not 1.00
-     *    - the stable flag in the input file can be toggled to allow for stable orbits when the gravitational multiplier is set to 1.00, otherwise it is irrelevant
      */
 }
 
@@ -519,7 +517,7 @@ void initiateHeavenscape(vector<Body> &bodies, int bodyCount[5])
  * @brief outputs the bodies to the input.txt file
  * @param bodies the vector of bodies in the simulation
  */
-void outputBodies(const vector<Body> &bodies) {
+void outputBodies() {
     ofstream outputFile("input.txt");
     /**
      * input format:
@@ -651,7 +649,7 @@ int main() {
         cout << "Preset system generated with " << bodies.size() << " bodies." << endl;
     }
     //output the bodies to the input.txt file
-    outputBodies(bodies);
+    outputBodies();
     //end the program
     return 0;
 }

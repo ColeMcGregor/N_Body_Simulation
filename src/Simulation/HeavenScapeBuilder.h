@@ -18,6 +18,6 @@ void initiateHeavenscape(std::vector<Body> &bodies, int bodyCount[5]);
 void generateRandomBodies();
 void generateCustomBodies();
 void generatePresetBodies();
-void outputBodies(const std::vector<Body> &bodies);
+void outputBodies();
 
 #endif // HEAVENSCAPE_GENERATOR_H
