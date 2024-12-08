@@ -325,7 +325,6 @@ void generateCustomBodies() {
  */
 void generatePresetBodies() {
     cout << "Generating preset system based on the Solar System..." << endl;
-
     // Solar System constants
     //orbital radii of the planets in meters: Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
     vector<double> orbitalRadii = {0.0, 5.79e10, 1.08e11, 1.50e11, 2.28e11, 7.79e11, 1.43e12, 2.87e12, 4.50e12}; // Sun to Neptune
@@ -511,6 +510,46 @@ void initiateHeavenscape(vector<Body> &bodies, int bodyCount[5])
      *    - the moon farthest from its host body is Neso from neptune, at 4.96 x 10^10 meters, which can be used to average the maximum distance between moons and planets
      *
      */
+    //depending on number of black holes,  generate the positions equidistant from the center of the system, and each other
+    if (bodyCount[4] > 0) {
+        //generate the positions equidistant from the center of the system, either centered for one, or equidistant for multiple
+        for (size_t i = 0; i < bodyCount[4]; ++i) {
+            //generate the positions for the black holes (center for one, equidistant for multiple)
+            Vector position(0, 0, 0);
+            if (bodyCount[4] == 1) {
+                //center for one
+                bodies[i].position = position;
+            }
+            else if (bodyCount[4] == 2) {
+                //equidistant for 2
+                bodies[i].position = position + Vector(1, 1, 1); //these numbers need changing*********************************************************************
+                bodies[i + 1].position = position + Vector(-1, -1, -1); //these numbers need changing**************************************************************
+                i += 1;//account for the fact that we are adding two bodies
+            }
+            else if (bodyCount[4] == 3) {
+                //equidistant for 3
+                bodies[i].position = position + Vector(1, 1, 1); //these numbers need changing*********************************************************************
+                bodies[i + 1].position = position + Vector(-1, -1, -1); //these numbers need changing**************************************************************
+                bodies[i + 2].position = position + Vector(1, -1, -1); //these numbers need changing*********************************************************************
+                i += 2;//account for the fact that we are adding three bodies
+            }
+            else {
+                //equidistant for 4 or more (4 is the current max)
+                //these will be in a square formation
+                bodies[i].position = position + Vector(1, 1, 1); //these numbers need changing*********************************************************************
+                bodies[i + 1].position = position + Vector(-1, -1, -1); //these numbers need changing**************************************************************
+                bodies[i + 2].position = position + Vector(1, -1, -1); //these numbers need changing*********************************************************************
+                bodies[i + 3].position = position + Vector(-1, 1, 1); //these numbers need changing*********************************************************************
+                i += 3;//account for the fact that we are adding four bodies
+            }
+        }
+        cout << "Black holes positioned in Random Generation." << endl;
+    }
+    //stars baby
+    if (bodyCount[1] > 0) {
+        for (size_t i = bodyCount[4]; i < bodyCount[1] + bodyCount[4]; ++i) {
+        cout << "Stars positioned in Random Generation." << endl;
+    }
 }
 
 /**
