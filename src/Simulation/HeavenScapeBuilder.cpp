@@ -521,6 +521,63 @@ void initiateHeavenscape(vector<Body> &bodies, int bodyCount[5])
  */
 void outputBodies(const vector<Body> &bodies) {
     ofstream outputFile("input.txt");
+    /**
+     * input format:
+     * Timestep [timestep]
+     * Iterations [iterations]
+     * N [N]
+     * NS [NS]
+     * NP [NP]
+     * NM [NM]
+     * NB [NB]
+     * gravitationalMultiplier [gravitationalMultiplier]
+     * 
+     * body [body number]
+     * children [children indices]
+     * position [x, y, z]
+     * velocity [x, y, z]
+     * mass [mass]
+     * density [density]
+     * radius [radius]
+     * [star, planet, moon, black hole]
+     * ...
+     */
+
+    //output Timestep
+    outputFile << "Timestep " << timestep << endl;
+    //output Iterations
+    outputFile << "Iterations " << iterations << endl;
+    //output N
+    outputFile << "N " << N << endl;
+    //output NS
+    outputFile << "NS " << NS << endl;
+    //output NP
+    outputFile << "NP " << NP << endl;
+    //output NM
+    outputFile << "NM " << NM << endl;
+    //output NB
+    outputFile << "NB " << NB << endl;
+    //output gravitationalMultiplier
+    outputFile << "gravitationalMultiplier " << gravitationalMultiplier << endl;
+    //output each body
+    for (size_t i = 0; i < bodies.size(); ++i) {
+        outputFile << "body " << i << endl;
+        outputFile << "children ";
+        for (size_t j = 0; j < bodies[i].childrenIndices.size(); ++j) {
+            outputFile << bodies[i].childrenIndices[j];
+            if (j != bodies[i].childrenIndices.size() - 1) {
+                outputFile << " "; // Add a space between children
+            }
+        }
+        outputFile << endl; //end the line of children
+        outputFile << "position " << bodies[i].position << endl; //output position
+        outputFile << "velocity " << bodies[i].velocity << endl; //output velocity
+        outputFile << "mass " << bodies[i].mass << endl; //output mass
+        outputFile << "density " << bodies[i].density << endl; //output density
+        outputFile << "radius " << bodies[i].radius << endl; //output radius
+        outputFile << bodies[i].type << endl; //output type
+        outputFile << endl; //make empty line between bodies
+    }
 }
 
 /**
@@ -595,5 +652,6 @@ int main() {
     }
     //output the bodies to the input.txt file
     outputBodies(bodies);
+    //end the program
     return 0;
 }
