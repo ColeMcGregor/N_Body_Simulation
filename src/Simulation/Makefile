@@ -4,7 +4,7 @@ CXX = g++
 CXXFLAGS = -Xpreprocessor -fopenmp -std=c++17 -Wall
 LDFLAGS = -fopenmp
 TARGET = Simulation
-SOURCES = Simulation.cpp HeavenScapeBuilder.cpp FileManager.cpp body.cpp vector.cpp
+SOURCES = Simulation.cpp FileManager.cpp body.cpp vector.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 
 all: $(TARGET)
