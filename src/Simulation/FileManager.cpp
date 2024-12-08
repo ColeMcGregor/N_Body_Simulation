@@ -162,7 +162,7 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
      * Timestep: 1
      */
 
-    // file << "Timestep: " << timeStep << endl; // Timestep: 1
+    file << "Timestep: " << timeStep << endl; // Timestep: 1
 
     /**
      * below will output the number of bodies in the simulation
