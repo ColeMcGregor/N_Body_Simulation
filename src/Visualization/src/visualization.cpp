@@ -23,10 +23,10 @@ using namespace std;
 */
 
 // Global declarations
-vector<Body> stars;
-vector<Body> planets;
-vector<Body> moons;
-vector<Body> blackholes;
+vector<Star> stars;
+vector<Planet> planets;
+vector<Moon> moons;
+vector<BlackHole> blackholes;
 
 //for graphics dont worry ill ocmment more later
 void display() {
@@ -46,20 +46,21 @@ void display() {
         glColor3f(1.0, 1.0, 0.0); // Yellow for stars
         Vector pos = star.getPosition();
         double rad = star.getRadius();
-        cout << "Star position : "<<  pos.x << pos.y << pos.z << endl;
         glTranslatef(pos.x, pos.y, pos.z);
         glutSolidSphere(rad, 100, 100); // Larger sphere for stars
         glPopMatrix();
     }
 
     //     // Render planets
-    // for (const auto& planet : planets) {
-    //     glPushMatrix();
-    //     glColor3f(0.0, 0.0, 1.0); // Blue for planets
-    //     glTranslatef(planet.position.x, planet.position.y, planet.position.z);
-    //     glutSolidSphere(1.0, 20, 20); // Medium sphere for planets
-    //     glPopMatrix();
-    // }
+    for (const auto& planet : planets) {
+        glPushMatrix();
+        glColor3f(0.0, 0.0, 1.0); // Blue for planets
+        Vector pos = planet.getPosition();
+        double rad = planet.getRadius();
+        glTranslatef(pos.x, pos.y, pos.z);
+        glutSolidSphere(rad, 100, 100); // Medium sphere for planets
+        glPopMatrix();
+    }
 
     // // Render moons
     // for (const auto& moon : moons) {
@@ -122,11 +123,13 @@ int main(int argc, char** argv) {
         int timestep = reader.readTimeStep();
         auto [localBodies, localStars, localPlanets, localMoons, localBH] = reader.readBodies();
 
+        
         stars = move(localStars);
+        planets = move(localPlanets);
 
         // Output summary of the read data
         cout << "Timestep: " <<timestep<<endl;
-        cout << "Number of bodies: " << bodies.size() << endl;
+        cout << "Number of bodies: " << localBodies.size() << endl;
         cout << "Number of stars: " << stars.size() << endl;
         cout << "Number of planets: " << planets.size() << endl;
         cout << "Number of moons: " << moons.size() << endl;
@@ -139,7 +142,7 @@ int main(int argc, char** argv) {
         glutCreateWindow("N-Body Simulation");
         glutReshapeFunc(reshape); 
 
-                glutDisplayFunc(display); // Register display callback 
+
 
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
@@ -151,7 +154,7 @@ int main(int argc, char** argv) {
         calculateScale();
 
         glutReshapeFunc(reshape);
-
+        glutDisplayFunc(display); // Register display callback 
         glutMainLoop();
         
     } catch (const std::exception& e) {
