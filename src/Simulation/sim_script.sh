@@ -21,4 +21,4 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 make
 
 # run
-./Simulation
+./Simulation 32-bodies.txt

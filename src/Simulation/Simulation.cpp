@@ -18,7 +18,6 @@
 #include "vector.h"      // Include your Vector class header
 #include "body.h"        // Include your Body class header
 #include "FileManager.h" // Include your FileManager class header
-#include "HeavenScapeBuilder.h"
 
 using namespace std;
 
@@ -34,8 +33,8 @@ public:
     int bodyCount[5];               // information about the simulation bodies: 0: N, 1: NS, 2: NP, 3: NM, 4: NB, stored in the corresponding index of the array
     FileManager fileManager;        // file manager for the simulation
 
-    Simulation(vector<Body> bodies, string outputFile, double timestep, double gravitationalMultiplier, int iterations, int bodyCount[5])
-        : bodies(bodies), outputFile(outputFile), timestep(timestep), gravitationalMultiplier(gravitationalMultiplier), iterations(iterations) {}
+  //Simulation(vector<Body> bodies, string outputFile, double timestep, double gravitationalMultiplier, int iterations, int bodyCount[5])
+  //: bodies(bodies), outputFile(outputFile), timestep(timestep), gravitationalMultiplier(gravitationalMultiplier), iterations(iterations) {}
 
     Simulation(const string &inputFile, const string &outputFile)
         : inputFile(inputFile), outputFile(outputFile), fileManager(inputFile) {
@@ -121,7 +120,7 @@ public:
                         }
                         else
                         {
-                            cout << "[Simulation reached " << step << " iterations]" << endl;
+                            cout << "Simulation reached " << step << " iterations" << endl;
                         }
                     }
                 }
@@ -198,9 +197,6 @@ int main(int argc, char *argv[])
     {
         cerr << "Usage: ./Simulation <filename>" << endl;
     }
-
-    // set the number of threads
-    // const int numThreads = atoi(argv[1]);
 
     // set the input file
     const string inputFile = string("../") + argv[1]; // "../" is the specific path to the current input file, can be removed depending on where the input file is located

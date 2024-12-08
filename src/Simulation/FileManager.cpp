@@ -10,6 +10,7 @@
  * @author: Cole McGregor, Hawk Lindner, Brandon Trama
  */
 
+#include <omp.h>
 #include "FileManager.h"
 #include <fstream>
 #include <sstream>
@@ -206,7 +207,7 @@ vector<string> thread_outputs(omp_get_max_threads());
 
 // output block style trajectories
     #pragma omp parallel
-    {   
+    {
         // output block style trajectories
         std::ostringstream local_stream;
 
