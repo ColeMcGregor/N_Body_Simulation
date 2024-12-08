@@ -99,21 +99,23 @@ public:
                         {
                             // end timer for computation
                             double end_comp_time = omp_get_wtime();
-                            cout << endl
-                                    << step << " iterations reached, outputting to file..." << endl;
+                            cout << "Simulation reached " >> step << " iterations" << endl;
                             cout << endl
                                     << "Computation time: " << end_comp_time - start_comp_time << " seconds" << endl;
 
                             // start timer for outputting
+                            cout << endl
+                                    << "Outputting to file..." << endl;
                             double start_out_time = omp_get_wtime();
                             // outputs final results to destination file
                             fileManager.outputResults(outputFile, bodies, step);
+                            cout << "Done!" << endl;
                             // end timer for outputting
                             double end_out_time = omp_get_wtime();
                             cout << endl
-                                    << "Destination: " << outputFile << endl;
-                            cout << endl
                                     << "Outputting took " << end_out_time - start_out_time << " seconds" << endl;
+                            cout << endl
+                                    << "File Destination: " << outputFile << endl;
 
                             // gather total time
                             total_time = (end_comp_time - start_comp_time) + (end_out_time - start_out_time);
