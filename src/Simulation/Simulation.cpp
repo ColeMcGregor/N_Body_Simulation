@@ -157,8 +157,6 @@ int main(int argc, char *argv[])
             cin << iterations;
             cout << endl;
 
-            // pass the timestep and iterations to the simulation
-
             // generates bodies according to our solar system
             bodies.generatePresetBodies();
 
