@@ -8,13 +8,13 @@
 #include <string>
 #include <random>       // Assigning colors
 
-#include "vector.h"
-#include "Body.h"
-#include "Star.h"
-#include "Planet.h"
-#include "Moon.h"
-#include "BlackHole.h"
-#include "FileReader.h"
+// #include "vector.h"
+// //#include "Body.h"
+// #include "Star.h"
+// #include "Planet.h"
+// #include "Moon.h"
+// #include "BlackHole.h"
+// #include "FileReader.h"
 
 using namespace std;
 
@@ -23,67 +23,67 @@ using namespace std;
 */
 
 // Global declarations
-vector<Star> stars;
-vector<Planet> planets;
-vector<Moon> moons;
-vector<BlackHole> blackholes;
+// vector<Star> stars;
+// vector<Planet> planets;
+// vector<Moon> moons;
+// vector<BlackHole> blackholes;
 
 //for graphics dont worry ill ocmment more later
-void display() {
-    // Clear color and depth buffers
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+// void display() {
+//     // Clear color and depth buffers
+//     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//     glLoadIdentity();
     
-    // Set camera view
-    gluLookAt(  0.0, 0.0, 100.0,
-                0.0, 0.0, 0.0,
-                0.0, 1.0, 0.0);
+//     // Set camera view
+//     gluLookAt(  0.0, 0.0, 100.0,
+//                 0.0, 0.0, 0.0,
+//                 0.0, 1.0, 0.0);
 
-    //rendering stars
-    cout << stars.size()<<endl;
-    for (const auto& star : stars) {
-        glPushMatrix();
-        glColor3f(1.0, 1.0, 0.0); // Yellow for stars
-        Vector pos = star.getPosition();
-        double rad = star.getRadius();
-        glTranslatef(pos.x, pos.y, pos.z);
-        glutSolidSphere(rad, 100, 100); // Larger sphere for stars
-        glPopMatrix();
-    }
+//     // //rendering stars
+//     // cout << stars.size()<<endl;
+//     // for (const auto& star : stars) {
+//     //     glPushMatrix();
+//     //     glColor3f(1.0, 1.0, 0.0); // Yellow for stars
+//     //     Vector pos = star.getPosition();
+//     //     double rad = star.getRadius();
+//     //     glTranslatef(pos.x, pos.y, pos.z);
+//     //     glutSolidSphere(rad, 100, 100); // Larger sphere for stars
+//     //     glPopMatrix();
+//     // }
 
-    //     // Render planets
-    for (const auto& planet : planets) {
-        glPushMatrix();
-        glColor3f(0.0, 0.0, 1.0); // Blue for planets
-        Vector pos = planet.getPosition();
-        double rad = planet.getRadius();
-        glTranslatef(pos.x, pos.y, pos.z);
-        glutSolidSphere(rad, 100, 100); // Medium sphere for planets
-        glPopMatrix();
-    }
+//     //     // Render planets
+//     // for (const auto& planet : planets) {
+//     //     glPushMatrix();
+//     //     glColor3f(0.0, 0.0, 1.0); // Blue for planets
+//     //     Vector pos = planet.getPosition();
+//     //     double rad = planet.getRadius();
+//     //     glTranslatef(pos.x, pos.y, pos.z);
+//     //     glutSolidSphere(rad, 100, 100); // Medium sphere for planets
+//     //     glPopMatrix();
+//     // }
 
-    // // Render moons
-    // for (const auto& moon : moons) {
-    //     glPushMatrix();
-    //     glColor3f(0.5, 0.5, 0.5); // Gray for moons
-    //     glTranslatef(moon.position.x, moon.position.y, moon.position.z);
-    //     glutSolidSphere(0.5, 20, 20); // Small sphere for moons
-    //     glPopMatrix();
-    // }
+//     // // Render moons
+//     // for (const auto& moon : moons) {
+//     //     glPushMatrix();
+//     //     glColor3f(0.5, 0.5, 0.5); // Gray for moons
+//     //     glTranslatef(moon.position.x, moon.position.y, moon.position.z);
+//     //     glutSolidSphere(0.5, 20, 20); // Small sphere for moons
+//     //     glPopMatrix();
+//     // }
 
-    // // Render black holes
-    // for (const auto& blackhole : blackholes) {
-    //     glPushMatrix();
-    //     glColor3f(0.0, 0.0, 0.0); // Black for black holes
-    //     glTranslatef(blackhole.position.x, blackhole.position.y, blackhole.position.z);
-    //     glutSolidSphere(3.0, 30, 30); // Large sphere for black holes
-    //     glPopMatrix();
-    // }
+//     // // Render black holes
+//     // for (const auto& blackhole : blackholes) {
+//     //     glPushMatrix();
+//     //     glColor3f(0.0, 0.0, 0.0); // Black for black holes
+//     //     glTranslatef(blackhole.position.x, blackhole.position.y, blackhole.position.z);
+//     //     glutSolidSphere(3.0, 30, 30); // Large sphere for black holes
+//     //     glPopMatrix();
+//     // }
     
-    // You can do similar rendering for planets, moons, and black holes here...
+//     // You can do similar rendering for planets, moons, and black holes here...
 
-    glutSwapBuffers(); // Swap the buffers for smooth rendering
-}
+//     glutSwapBuffers(); // Swap the buffers for smooth rendering
+// }
 //graphics again dont worry
 void reshape(int w, int h) {
     glViewport(0, 0, w, h);
@@ -115,51 +115,353 @@ void calculateScale() {
     }
 }
 
-int main(int argc, char** argv) {
+//int main(int argc, char** argv) {
 
-    try {
+   // try {
         // Create a FileReader to read the output file generated by the simulation
-        FileReader reader(argv[1]);
-        int timestep = reader.readTimeStep();
-        auto [localBodies, localStars, localPlanets, localMoons, localBH] = reader.readBodies();
+        // FileReader reader("output.txt");
+        // int timestep = reader.readTimeStep();
+        // auto [localBodies, localStars, localPlanets, localMoons, localBH] = reader.readBodies();
 
         
-        stars = move(localStars);
-        planets = move(localPlanets);
+        // stars = move(localStars);
+        // planets = move(localPlanets);
 
-        // Output summary of the read data
-        cout << "Timestep: " <<timestep<<endl;
-        cout << "Number of bodies: " << localBodies.size() << endl;
-        cout << "Number of stars: " << stars.size() << endl;
-        cout << "Number of planets: " << planets.size() << endl;
-        cout << "Number of moons: " << moons.size() << endl;
-        cout << "Number of black holes: " << blackholes.size() << endl;
+        // // Output summary of the read data
+        // cout << "Timestep: " <<timestep<<endl;
+        // cout << "Number of bodies: " << localBodies.size() << endl;
+        // cout << "Number of stars: " << stars.size() << endl;
+        // cout << "Number of planets: " << planets.size() << endl;
+        // cout << "Number of moons: " << moons.size() << endl;
+        // cout << "Number of black holes: " << blackholes.size() << endl;
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
+struct Body {
+    int id;
+    std::string type;
+    double radius;
+    std::vector<std::vector<double>> positions;
+};
 
-    //graphics from here down
-        glutInit(&argc,argv);
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-        glutInitWindowSize(800, 600);
-        glutCreateWindow("N-Body Simulation");
-        glutReshapeFunc(reshape); 
+
+vector<Body>bodies;
+int timestep = 0;
+
+// Initialize OpenGL
+void initOpenGL() {
+    glClearColor(0.0, 0.0, 0.0, 1.0); // Black background
+    glEnable(GL_DEPTH_TEST);         // Enable depth testing
+    glDepthFunc(GL_LEQUAL);          // Less-than-or-equal depth test
+}
 
 
 
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        gluPerspective(45.0,800.0/600.0, 1.0,200.0);
+void drawBody(const Body& body, const std::vector<double>& position) {
+    glPushMatrix();
+    glTranslatef(position[0] * 1e6, position[1] * 1e6, position[2] * 1e6); // Scale positions for visibility
 
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+    if (body.type == "star")
+        glColor3f(1.0, 1.0, 0.0); // Yellow for stars
+    else if (body.type == "planet")
+        glColor3f(0.0, 0.0, 1.0); // Blue for planets
+    else if (body.type == "moon")
+        glColor3f(0.5, 0.5, 0.5); // Gray for moons
+    else
+        glColor3f(1.0, 0.0, 0.0); // Red for other types
 
-        calculateScale();
+    glutSolidSphere(body.radius / 1e9, 20, 20); // Scale radius for visualization
+    glPopMatrix();
+}
 
-        glutReshapeFunc(reshape);
-        glutDisplayFunc(display); // Register display callback 
-        glutMainLoop();
+
+double zpos = 50;
+void keyboard(unsigned char key, int x, int y) {
+    switch (key) {
+        case 'w': zpos -= 50.0f; //need to be fixed
+            if(zpos < 1.0){
+                zpos = 1.0;
+            } break; // Move closer
+        case 's': zpos += 50.f; 
+              break; // Move farther  //needs to be fixed
+        case  27: exit(0); break;   //esc key           //works
+        // case '+': zoomFactor += 0.1f;                   //needs to be fixed
+        //     std::cout <<"Zooming in" << ::std::endl; break;
+        // case '-': zoomFactor -= 0.1f;                   //needs to be fixed
+        //     std::cout <<"Zooming out" << ::std::endl; break;
         
-    } catch (const std::exception& e) {
-        cerr << "Error: " << e.what() << endl;
+    }
+    glutPostRedisplay(); // Redraw the scene
+}
+void renderScene() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the color and depth buffers
+    glLoadIdentity();
+
+    // Set camera position
+    gluLookAt(0.0, 0.0, 10.0,   // Camera position (z = 10)
+              0.0, 0.0, 0.0,    // Look-at point
+              0.0, 1.0, 0.0);   // Up vector
+
+    // Render each body
+    for (const auto& body : bodies) {
+        if (body.positions.empty()) {
+            // Skip rendering if there are no positions
+            std::cerr << "Warning: Body " << body.id << " has no positions." << std::endl;
+            continue;
+        }
+
+        // Ensure timestep is valid for the current body
+        size_t currentIndex = timestep % (body.positions.size() - 1);
+        size_t nextIndex = currentIndex + 1;
+
+        // Interpolation factor (0.0 to 1.0)
+        float alpha = static_cast<float>(timestep % 100) / 100.0f;
+
+        // Interpolate position: (1 - alpha) * current + alpha * next
+        std::vector<double> interpolatedPosition(3);
+        for (size_t i = 0; i < 3; ++i) {
+            interpolatedPosition[i] =
+                (1.0 - alpha) * body.positions[currentIndex][i] +
+                alpha * body.positions[nextIndex][i];
+        }
+
+        // Draw the body at the interpolated position
+        drawBody(body, interpolatedPosition);
     }
 
-    return 0;
+    glutSwapBuffers(); // Swap buffers to display the rendered frame
 }
+
+
+#include <algorithm>
+
+std::string trim(const std::string& str) {
+    size_t first = str.find_first_not_of(" \t\n\r");
+    size_t last = str.find_last_not_of(" \t\n\r");
+    return (first == std::string::npos || last == std::string::npos) ? "" : str.substr(first, last - first + 1);
+}
+
+
+void parseInputFile(const std::string& filename) {
+    std::ifstream inputFile(filename);
+    if (!inputFile.is_open()) {
+        std::cerr << "Error: Could not open the file " << filename << std::endl;
+        return;
+    }
+
+    std::string line;
+    Body currentBody;
+
+    while (std::getline(inputFile, line)) {
+        line = trim(line); // Trim leading/trailing whitespace
+        if (line.empty()) continue; // Skip empty lines
+
+        // Check if the line starts a new body (if it has `id`, `type`, `radius`)
+        if (isdigit(line[0])) {
+            if (!currentBody.positions.empty()) {
+                // Save the previous body if it has positions
+                bodies.push_back(currentBody);
+                currentBody = Body(); // Reset for the new body
+            }
+
+            // Parse the new body details
+            std::istringstream bodyStream(line);
+            if (!(bodyStream >> currentBody.id >> currentBody.type >> currentBody.radius)) {
+                std::cerr << "Error: Failed to parse body details: " << line << std::endl;
+                continue;
+            }
+        } else {
+            // Assume the line contains position data
+            line = trim(line); // Trim again in case of additional spaces
+
+            // Replace commas with spaces for easier parsing
+            std::replace(line.begin(), line.end(), ',', ' ');
+
+            std::istringstream positionStream(line);
+            std::vector<double> position(3);
+
+            // Parse x, y, z values
+            if (!(positionStream >> position[0] >> position[1] >> position[2])) {
+                std::cerr << "Error: Failed to parse position: " << line << std::endl;
+                continue;
+            }
+
+            currentBody.positions.push_back(position);
+        }
+    }
+
+    // Save the last body (if it has positions)
+    if (!currentBody.positions.empty()) {
+        bodies.push_back(currentBody);
+    }
+
+    inputFile.close();
+
+    // Debug output
+    for (const auto& body : bodies) {
+        std::cout << "Body ID: " << body.id
+                  << ", Type: " << body.type
+                  << ", Radius: " << body.radius << std::endl;
+
+        for (size_t i = 0; i < body.positions.size(); ++i) {
+            std::cout << "  Position " << i << ": "
+                      << body.positions[i][0] << ", "
+                      << body.positions[i][1] << ", "
+                      << body.positions[i][2] << std::endl;
+        }
+    }
+}
+
+
+void update(int value) {
+    timestep++;
+
+    // Ensure timestep doesn't exceed the largest `positions.size()`
+    size_t maxTimestep = 0;
+    for (const auto& body : bodies) {
+        maxTimestep = std::max(maxTimestep, body.positions.size());
+    }
+    if (timestep >= maxTimestep) {
+        timestep = 0;
+    }
+
+    glutPostRedisplay();
+    glutTimerFunc(16, update, 0); // Call again in 16ms
+}
+
+
+
+
+int main(int argc, char** argv) {
+    // std::ifstream inputFile("output.txt");
+    // if (!inputFile.is_open()) {
+    //     std::cerr << "Error opening file!" << std::endl;
+    //     return -1;
+    // }
+
+    // int numBodies;
+    // std::vector<std::vector<int>> hierarchy;
+
+    // // Read header
+    // std::string line;
+    // if (std::getline(inputFile, line)) {
+    //     std::istringstream headerStream(line);
+    //     std::string label;
+    //     headerStream >> label >> timestep;
+    // }
+
+    // if (std::getline(inputFile, line)) {
+    //     std::istringstream numStream(line);
+    //     std::string label;
+    //     numStream >> label >> numBodies;
+    // }
+
+    // // Read hierarchy
+    // while (std::getline(inputFile, line)) {
+    //     if (line.empty()) break;
+    //     std::istringstream hierarchyStream(line);
+    //     std::vector<int> parentsAndChildren;
+    //     int value;
+    //     while (hierarchyStream >> value) {
+    //         parentsAndChildren.push_back(value);
+    //     }
+    //     hierarchy.push_back(parentsAndChildren);
+    // }
+
+    // // Read body data
+    // while (std::getline(inputFile, line)) {
+    //     Body body;
+    //     std::istringstream bodyStream(line);
+    //     bodyStream >> body.id >> body.type >> body.radius;
+
+    //     while (std::getline(inputFile, line)) {
+    //         if (line.empty() || line[0] == '0' || line[0] == '1') break;
+    //         for (char& c : line) {
+    //             if (c == ',') c = ' ';
+    //         }
+    //         std::istringstream positionStream(line);
+    //         std::vector<double> position(3);
+    //         positionStream >> position[0] >> position[1] >> position[2];
+    //         body.positions.push_back(position);
+    //     }
+
+    //     bodies.push_back(body);
+
+    //     if (!line.empty() && (line[0] == '0' || line[0] == '1')) continue;
+    // }
+
+    // inputFile.close();
+
+    parseInputFile("output.txt");
+    // Debugging Output
+    std::cout << "Timestep: " << timestep << std::endl;
+    //std::cout << "Number of Bodies: " << numBodies << std::endl;
+
+
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Celestial Bodies Visualization");
+
+    initOpenGL();
+
+    glutDisplayFunc(renderScene);
+    glutTimerFunc(16, update, 0); // Start animation loop
+
+    glutKeyboardFunc(keyboard);
+    glutMainLoop();
+}
+
+
+
+
+
+
+
+
+
+
+    // for (const auto& group : hierarchy) {
+    //     std::cout << "Hierarchy: ";
+    //     for (int id : group) std::cout << id << " ";
+    //     std::cout << std::endl;
+    // }
+
+    // for (const auto& body : bodies) {
+    //     std::cout << "Body ID: " << body.id << ", Type: " << body.type << ", Radius: " << body.radius << std::endl;
+    //     for (const auto& position : body.positions) {
+    //         std::cout << "Position: (" << position[0] << ", " << position[1] << ", " << position[2] << ")" << std::endl;
+    //     }
+    // }
+
+
+//     //graphics from here down
+//         glutInit(&argc,argv);
+//         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+//         glutInitWindowSize(800, 600);
+//         glutCreateWindow("N-Body Simulation");
+//         // glutReshapeFunc(reshape); 
+
+
+
+//         // glMatrixMode(GL_PROJECTION);
+//         // glLoadIdentity();
+//         // gluPerspective(45.0,800.0/600.0, 1.0,200.0);
+
+//         // glMatrixMode(GL_MODELVIEW);
+//         // glLoadIdentity();
+
+//         // calculateScale();
+
+//         glutReshapeFunc(reshape);
+//         glutDisplayFunc(display); // Register display callback 
+//         glutMainLoop();
+        
+//     } catch (const std::exception& e) {
+//         cerr << "Error: " << e.what() << endl;
+//     }
+
+//     return 0;
+// }
