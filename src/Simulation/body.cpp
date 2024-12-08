@@ -121,9 +121,9 @@ void Body::update(double timestep)
 Vector Body::sumForces(const vector<Body> &bodies)
 {
     // always reset the net force before each calculation
-    net_force = Vector(0, 0, 0);
+  Vector net_force(0, 0, 0);
 
-#pragma omp parallel for reduction(vector_reduction: tempForce) schedule(dynamic)
+#pragma omp parallel for reduction(vector_reduction: net_force) schedule(dynamic)
     // loop through all bodies and calculate the force between this body and the other bodies
     for (size_t i = 0; i < bodies.size(); i++) {
       // avoid calculating force with itself
