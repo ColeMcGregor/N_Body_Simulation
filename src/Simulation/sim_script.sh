@@ -10,6 +10,7 @@
 
 module load gcc
 
+# ensures threads are bound to a specific core
 export OMP_PROC_BIND=true
 # set num threads 
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
