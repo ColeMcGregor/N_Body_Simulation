@@ -203,10 +203,11 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
  * ...
  */
 
+vector<string> thread_outputs(omp_get_max_threads());
+
 // output block style trajectories
     #pragma omp parallel
     {
-        vector<string> thread_outputs(omp_get_max_threads());
         // output block style trajectories
         std::ostringstream local_stream;
 
