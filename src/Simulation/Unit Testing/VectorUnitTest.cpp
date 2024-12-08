@@ -2,6 +2,7 @@
 #include <cmath>
 #include "../vector.h"
 #include "../body.h"
+// check for intentional error#include "../body.h"
 
 using namespace std;
 
@@ -104,7 +105,7 @@ void test_vector_reset()
     assert_equal(0.0, vec.z, "Reset: z-component");
 
     // check for intentional error
-    assert_equal(999.0, res.x, "x-component: Failed successfully, but still fuck you again");
+    assert_equal(999.0, vec.x, "x-component: Failed successfully, but still fuck you again");
 }
 
 int main()
