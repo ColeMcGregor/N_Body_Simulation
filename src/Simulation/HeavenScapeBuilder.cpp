@@ -61,14 +61,125 @@ constexpr std::pair<double, double> BLACKHOLE_RADIUS_RANGE = {1.5e19, 1.5e21};
 //constants
 const double GRAVITATIONAL_CONSTANT = 6.67430e-11;  //G baby
 const double SPEED_OF_LIGHT = 2.99792458e8;       //meters per second
+//Solar System constants
+const Body SUN = Body(  Vector(0.0, 0.0, 0.0), //position in center of system
+                        Vector(0.0, 0.0, 0.0), //velocity in center of system
+                        Vector(0.0, 0.0, 0.0), //acceleration in center of system
+                        Vector(0.0, 0.0, 0.0), //net force in center of system
+                        1.989e30, //mass in kg
+                        6.9634e8, //radius in meters    
+                        gravitationalMultiplier, //gravitational multiplier
+                        "star", //type
+                        {1, 2, 3, 4, 5, 6, 7, 8}, //children indices
+                        {} //trajectory
+                        );
+const Body MERCURY = Body(Vector(0.0, 0.0, 0.0), //position in meters
+                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
+                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
+                        Vector(0.0, 0.0, 0.0), //net force in newtons
+                        3.3011e23, //mass in kg
+                        2.4397e6, //radius in meters
+                        gravitationalMultiplier, //gravitational multiplier
+                        "planet", //type
+                        {}, //children indices
+                        {} //trajectory
+                        );
+const Body VENUS = Body(Vector(0.0, 0.0, 0.0), //position in meters
+                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
+                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
+                        Vector(0.0, 0.0, 0.0), //net force in newtons
+                        4.8675e24, //mass in kg
+                        6.0518e6, //radius in meters
+                        gravitationalMultiplier, //gravitational multiplier
+                        "planet", //type
+                        {}, //children indices
+                        {} //trajectory
+                        );
+const Body EARTH = Body(Vector(0.0, 0.0, 0.0), //position in meters
+                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
+                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
+                        Vector(0.0, 0.0, 0.0), //net force in newtons
+                        5.9722e24, //mass in kg
+                        6.371e6, //radius in meters
+                        gravitationalMultiplier, //gravitational multiplier
+                        "planet", //type
+                        {9}, //children indices
+                        {} //trajectory
+                        );
+const Body MARS = Body(Vector(0.0, 0.0, 0.0), //position in meters
+                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
+                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
+                        Vector(0.0, 0.0, 0.0), //net force in newtons
+                        6.4171e23, //mass in kg
+                        3.3895e6, //radius in meters
+                        gravitationalMultiplier, //gravitational multiplier
+                        "planet", //type
+                        {}, //children indices
+                        {} //trajectory
+                        );
+const Body JUPITER = Body(Vector(0.0, 0.0, 0.0), //position in meters
+                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
+                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
+                        Vector(0.0, 0.0, 0.0), //net force in newtons
+                        1.8982e27, //mass in kg
+                        6.9911e7, //radius in meters
+                        gravitationalMultiplier, //gravitational multiplier
+                        "planet", //type
+                        {}, //children indices
+                        {} //trajectory
+                        );
+const Body SATURN = Body(Vector(0.0, 0.0, 0.0), //position in meters
+                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
+                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
+                        Vector(0.0, 0.0, 0.0), //net force in newtons
+                        5.6834e26, //mass in kg
+                        5.8232e7, //radius in meters
+                        gravitationalMultiplier, //gravitational multiplier
+                        "planet", //type
+                        {}, //children indices
+                        {} //trajectory
+                        );
+const Body URANUS = Body(Vector(0.0, 0.0, 0.0), //position in meters
+                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
+                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
+                        Vector(0.0, 0.0, 0.0), //net force in newtons
+                        8.6810e25, //mass in kg
+                        2.5362e7, //radius in meters
+                        gravitationalMultiplier, //gravitational multiplier
+                        "planet", //type
+                        {}, //children indices
+                        {} //trajectory
+                        );
+const Body NEPTUNE = Body(Vector(0.0, 0.0, 0.0), //position in meters
+                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
+                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
+                        Vector(0.0, 0.0, 0.0), //net force in newtons
+                        1.02413e26, //mass in kg
+                        2.4622e7, //radius in meters
+                        gravitationalMultiplier, //gravitational multiplier
+                        "planet", //type
+                        {}, //children indices
+                        {} //trajectory
+                        );
+const Body MOON = Body(Vector(0.0, 0.0, 0.0), //position in meters
+                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
+                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
+                        Vector(0.0, 0.0, 0.0), //net force in newtons
+                        7.34767309e22, //mass in kg
+                        1.7374e6, //radius in meters
+                        gravitationalMultiplier, //gravitational multiplier
+                        "moon", //type
+                        {}, //children indices
+                        {} //trajectory
+                        );
 
 //global variables
 double gravitationalMultiplier;
 int timestep;
 int iterations;
 int bodyCount[5];
-bool stable;
 vector<double> usedRadii;
+vector<Body> bodies;
 
 
 /**
@@ -314,7 +425,22 @@ void generatePresetBodies() {
     cout << "1 Star, 8 Planets, and their moons." << endl;
 
     //no black holes
+    bodyCount[1] = 0; //black holes
+    bodyCount[2] = 1; //stars(the sun)
+    bodyCount[3] = 8; //planets
+    bodyCount[4] = 1; //moon(the moon)
+
+    //now we make the bodies so we can assign the hierarchy
+    for (int i = 0; i < N; i++) {
+        //bodies 0 is the sun, 1-8 are the planets, 9 is the moon
+
+    }
+
+    //now we assign the hierarchy of the bodies: Sun has 8 planets, Earth has 1 moon
     
+
+    //now we have our bodies, we can initiate the heavenscape
+    initiateHeavenscape(bodies, bodyCount);
 }
 
 /**
