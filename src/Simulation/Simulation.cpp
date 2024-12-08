@@ -34,6 +34,9 @@ public:
     int bodyCount[5];               // information about the simulation bodies: 0: N, 1: NS, 2: NP, 3: NM, 4: NB, stored in the corresponding index of the array
     FileManager fileManager;        // file manager for the simulation
 
+    Simulation(vector<Body> bodies, string outputFile, double timestep, double gravitationalMultiplier, int iterations, int bodyCount[5])
+        : bodies(bodies), outputFile(outputFile), gravitationalMultiplier(gravitationalMultiplier) {}
+
     Simulation(const string &inputFile, const string &outputFile)
         : inputFile(inputFile), outputFile(outputFile), fileManager(inputFile) {
             // load the configuration file
@@ -45,8 +48,6 @@ public:
                 exit(1);
         }
     }
-  //Simulation(vector<Body> &bodies, const string &outputFile)
-  //: bodies(bodies), outputFile(outputFile) {}
 
     /**
      * @brief runs the simulation
@@ -133,79 +134,54 @@ public:
 
 int main(int argc, char *argv[])
 {
-    // int option;
-    // bool isValid = false;
-    // // let the user choose between generating our solar system or loading an existing input file
-    // cout << "Please select an option:\n";
-    // cout << "1. Generate our solar system.\n";
-    // cout << "2. Load existing input file.\n";
-    // cout << "Enter your choice: ";
-    // cin >> option;
-    // cout << endl;
+    int option;
+    bool isValid = false;
+    // let the user choose between generating our solar system or loading an existing input file
+    cout << "Please select an option:\n";
+    cout << "1. Generate our solar system.\n";
+    cout << "2. Load existing input file.\n";
+    cout << "Enter your choice: ";
+    cin >> option;
+    cout << endl;
 
-    // vector<Body> bodies;
-    // double timeStep;
-    // int iterations;
+    vector<Body> bodies;
+    double timeStep;
+    int iterations;
 
-    // switch (option) {
-    //     case 1;
-    //         // prompt user for timestep and iterations
-    //         cout << "Timestep: ";
-    //         cin << timeStep;
-    //         cout << endl << "Iterations: ";
-    //         cin << iterations;
-    //         cout << endl;
+    switch (option) {
+        case 1;
+            // prompt user for timestep and iterations
+            cout << "Timestep: ";
+            cin << timeStep;
+            cout << endl << "Iterations: ";
+            cin << iterations;
+            cout << endl;
 
-    //         // pass the timestep and iterations to the simulation
+            // pass the timestep and iterations to the simulation
 
-    //         // generates bodies according to our solar system
-    //         bodies.generatePresetBodies();
-    //         break;
-    //     case 2;
-    //         // get the input file name from the user
-    //         cout << "Enter the name of the input file: ";
-    //         string inputFile;
-    //         cin >> inputFile;
-    //         cout << endl;
+            // generates bodies according to our solar system
+            bodies.generatePresetBodies();
 
-    //         // load the configuration file
-    //         try {
-    //             fileManager.loadConfig(inputFile, bodies, timestep, gravitationalMultiplier, iterations, bodyCount);
-    //         } catch (const exception &e) {
-    //             cout << "Error loading input file\n"
-    //                     << e.what() << endl;
-    //             exit(1);
-    //         } break;
-    //     default:
-    //         cerr << "Invalid option! Please try again..." << endl;
-    //         exit(1);
-    // }
-
-    // // set the output file
-    // const string outputFile = "../output.txt";
-
-    // create the simulation
-
-    // check for correct number of arguments
-    if (argc != 2)
-    {
-        cerr << "Usage: <filename>" << endl;
+            // create the simulation
+            cout << "Creating simulation..." << endl;
+            Simulation sim(bodies, "../output.txt", 1.0);
+            // run the simulation
+            cout << "Running simulation..." << endl;
+            sim.run(timeStep, iterations);
+            break;
+        case 2;
+            // check for correct number of arguments
+            if (argc > 2)
+            {
+                cerr << "Usage: <filename> (optional)" << endl;
+            }
+            // create the simulation
+            Simulation sim(inputFile, "../output.txt");
+            // run the simulation
+            sim.run(sim.timestep, sim.iterations);
+        default:
+            cerr << "Invalid option! Please try again..." << endl;
+            exit(1);
     }
-
-    // set the number of threads
-    // const int numThreads = atoi(argv[1]);
-
-    // set the input file
-    const string inputFile = string("../") + argv[1]; // "../" is the specific path to the current input file, can be removed depending on where the input file is located
-
-    // set the output file
-    const string outputFile = "../output.txt";
-
-    // create the simulation
-    Simulation sim(inputFile, outputFile);
-    // initiateHeavenscape(sim.bodies, sim.bodyCount);
-    //  run the simulation
-    sim.run(sim.timestep, sim.iterations);
-
     return 0;
 }
