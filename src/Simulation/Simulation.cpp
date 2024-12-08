@@ -44,9 +44,9 @@ public:
                         << e.what() << endl;
                 exit(1);
         }
-
-    Simulation(vector<Body> &bodies, const string &outputFile)
-        : bodies(bodies), outputFile(outputFile) {}
+    }
+  //Simulation(vector<Body> &bodies, const string &outputFile)
+  //: bodies(bodies), outputFile(outputFile) {}
 
     /**
      * @brief runs the simulation
