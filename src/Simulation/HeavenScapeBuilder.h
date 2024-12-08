@@ -8,14 +8,16 @@
 // Function prototypes for body generation
 double generateUniqueRadius(double minRadius, double maxRadius, const std::vector<double> &usedRadii);
 double generateBoundedDouble(double min, double max);
+double generateSchwarzchildRadius(double mass);
 Vector calculateOrbitalPosition(const Vector &parentPos, double orbitalRadius);
 Vector calculateOrbitalVelocity(const Vector &parentPos, const Vector &childPos, double parentMass, double gravitationalMultiplier);
 void initiateHeavenscape(std::vector<Body> &bodies, int bodyCount[5]);
 
+
 // Function prototypes for Input.txt creation
-void generateRandomBodies(int N, const std::string &outputFile);
-void generateCustomBodies(int N, const std::string &outputFile);
-void generateCustomRandomBodies(int N, const std::string &outputFile);
-void generatePresetBodies(const std::string &outputFile);
+void generateRandomBodies();
+void generateCustomBodies();
+void generatePresetBodies();
+void outputBodies(const std::vector<Body> &bodies);
 
 #endif // HEAVENSCAPE_GENERATOR_H

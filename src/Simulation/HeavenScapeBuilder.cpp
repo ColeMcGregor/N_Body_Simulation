@@ -22,13 +22,13 @@
  *      1. generateSchwarzchildRadius
  *      2. generateRandomBodies
  *      3. generateCustomBodies
- *      4. generateCustomRandomBodies
- *      5. generatePresetBodies
- *      6. generateUniqueRadius
- *      7. generateBoundedDouble
- *      8. calculateOrbitalPosition
- *      9. calculateOrbitalVelocity
- *      10. initiateHeavenscape
+ *      4. generatePresetBodies
+ *      5. generateUniqueRadius
+ *      6. generateBoundedDouble
+ *      7. calculateOrbitalPosition
+ *      8. calculateOrbitalVelocity
+ *      9. initiateHeavenscape
+ *      10. outputBodies
  * 3. main function
  */
 
@@ -73,105 +73,7 @@ const Body SUN = Body(  Vector(0.0, 0.0, 0.0), //position in center of system
                         {1, 2, 3, 4, 5, 6, 7, 8}, //children indices
                         {} //trajectory
                         );
-const Body MERCURY = Body(Vector(0.0, 0.0, 0.0), //position in meters
-                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
-                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
-                        Vector(0.0, 0.0, 0.0), //net force in newtons
-                        3.3011e23, //mass in kg
-                        2.4397e6, //radius in meters
-                        gravitationalMultiplier, //gravitational multiplier
-                        "planet", //type
-                        {}, //children indices
-                        {} //trajectory
-                        );
-const Body VENUS = Body(Vector(0.0, 0.0, 0.0), //position in meters
-                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
-                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
-                        Vector(0.0, 0.0, 0.0), //net force in newtons
-                        4.8675e24, //mass in kg
-                        6.0518e6, //radius in meters
-                        gravitationalMultiplier, //gravitational multiplier
-                        "planet", //type
-                        {}, //children indices
-                        {} //trajectory
-                        );
-const Body EARTH = Body(Vector(0.0, 0.0, 0.0), //position in meters
-                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
-                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
-                        Vector(0.0, 0.0, 0.0), //net force in newtons
-                        5.9722e24, //mass in kg
-                        6.371e6, //radius in meters
-                        gravitationalMultiplier, //gravitational multiplier
-                        "planet", //type
-                        {9}, //children indices
-                        {} //trajectory
-                        );
-const Body MARS = Body(Vector(0.0, 0.0, 0.0), //position in meters
-                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
-                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
-                        Vector(0.0, 0.0, 0.0), //net force in newtons
-                        6.4171e23, //mass in kg
-                        3.3895e6, //radius in meters
-                        gravitationalMultiplier, //gravitational multiplier
-                        "planet", //type
-                        {}, //children indices
-                        {} //trajectory
-                        );
-const Body JUPITER = Body(Vector(0.0, 0.0, 0.0), //position in meters
-                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
-                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
-                        Vector(0.0, 0.0, 0.0), //net force in newtons
-                        1.8982e27, //mass in kg
-                        6.9911e7, //radius in meters
-                        gravitationalMultiplier, //gravitational multiplier
-                        "planet", //type
-                        {}, //children indices
-                        {} //trajectory
-                        );
-const Body SATURN = Body(Vector(0.0, 0.0, 0.0), //position in meters
-                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
-                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
-                        Vector(0.0, 0.0, 0.0), //net force in newtons
-                        5.6834e26, //mass in kg
-                        5.8232e7, //radius in meters
-                        gravitationalMultiplier, //gravitational multiplier
-                        "planet", //type
-                        {}, //children indices
-                        {} //trajectory
-                        );
-const Body URANUS = Body(Vector(0.0, 0.0, 0.0), //position in meters
-                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
-                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
-                        Vector(0.0, 0.0, 0.0), //net force in newtons
-                        8.6810e25, //mass in kg
-                        2.5362e7, //radius in meters
-                        gravitationalMultiplier, //gravitational multiplier
-                        "planet", //type
-                        {}, //children indices
-                        {} //trajectory
-                        );
-const Body NEPTUNE = Body(Vector(0.0, 0.0, 0.0), //position in meters
-                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
-                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
-                        Vector(0.0, 0.0, 0.0), //net force in newtons
-                        1.02413e26, //mass in kg
-                        2.4622e7, //radius in meters
-                        gravitationalMultiplier, //gravitational multiplier
-                        "planet", //type
-                        {}, //children indices
-                        {} //trajectory
-                        );
-const Body MOON = Body(Vector(0.0, 0.0, 0.0), //position in meters
-                        Vector(0.0, 0.0, 0.0), //velocity in meters per second
-                        Vector(0.0, 0.0, 0.0), //acceleration in meters per second squared
-                        Vector(0.0, 0.0, 0.0), //net force in newtons
-                        7.34767309e22, //mass in kg
-                        1.7374e6, //radius in meters
-                        gravitationalMultiplier, //gravitational multiplier
-                        "moon", //type
-                        {}, //children indices
-                        {} //trajectory
-                        );
+
 
 //global variables
 double gravitationalMultiplier;
@@ -421,27 +323,64 @@ void generateCustomBodies() {
 void generatePresetBodies() {
     cout << "Generating preset system based on the Solar System..." << endl;
 
-    // Predefined body setup (logic to be implemented)
-    cout << "1 Star, 8 Planets, and their moons." << endl;
+    // Solar System constants
+    //orbital radii of the planets in meters: Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
+    vector<double> orbitalRadii = {0.0, 5.79e10, 1.08e11, 1.50e11, 2.28e11, 7.79e11, 1.43e12, 2.87e12, 4.50e12}; // Sun to Neptune
+    //masses of the planets in kg: Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
+    vector<double> parentMasses = {1.989e30, 1.989e30, 1.989e30, 1.989e30, 1.989e30, 1.989e30, 1.989e30, 1.989e30}; // Sun for planets
+    //planet mass ranges: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
+    vector<double> planetMassRanges = {3.3011e23, 4.8675e24, 5.9722e24, 6.4171e23, 1.8982e27, 5.6834e26, 8.6810e25, 1.02413e26};
+    //planet radius ranges: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
+    vector<double> planetRadiusRanges = {2.4397e6, 6.0518e6, 6.3710e6, 3.3895e6, 6.9911e7, 5.8232e7, 2.5362e7, 2.4622e7};
+    //names of the bodies
+    vector<string> bodyNames = {"Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"};
 
-    //no black holes
-    bodyCount[1] = 0; //black holes
-    bodyCount[2] = 1; //stars(the sun)
-    bodyCount[3] = 8; //planets
-    bodyCount[4] = 1; //moon(the moon)
+    // use the sun preset body
+    bodies.push_back(SUN);
+    cout << "Sun created." << endl;
 
-    //now we make the bodies so we can assign the hierarchy
-    for (int i = 0; i < N; i++) {
-        //bodies 0 is the sun, 1-8 are the planets, 9 is the moon
+    // Place the planets around the Sun(mercury to neptune)
+    for (size_t i = 1; i < orbitalRadii.size(); ++i) {
+        double r = orbitalRadii[i];
+        double v = sqrt(GRAVITATIONAL_CONSTANT * parentMasses[i - 1] / r);
 
+        // Calculate initial position and velocity
+        Vector position(r, 0, 0); // Start along X-axis
+        Vector velocity(0, v, 0); // Perpendicular in Y-axis
+
+        // Create the planet
+        Body planet(
+            position, velocity, Vector(0, 0, 0), Vector(0, 0, 0),
+            planetMassRanges[i - 1], // Mass from range or preset
+            planetRadiusRanges[i - 1], // Radius from range or preset
+            gravitationalMultiplier, "planet", {}, {}
+        );
+
+        bodies.push_back(planet);
+        cout << bodyNames[i] << " created at r = " << r << " with v = " << v << endl;
     }
 
-    //now we assign the hierarchy of the bodies: Sun has 8 planets, Earth has 1 moon
-    
+    // Add Earth's Moon
+    double moonR = 3.84e8; // Moon's distance from Earth in meters
+    double moonV = sqrt(GRAVITATIONAL_CONSTANT * bodies[3].mass / moonR); // Use Earth's mass for moon calculation as parent mass
 
-    //now we have our bodies, we can initiate the heavenscape
-    initiateHeavenscape(bodies, bodyCount);
+    Vector moonPosition(bodies[3].position.x + moonR, 0, 0); // Offset from Earth by any axis, in this case, x
+    Vector moonVelocity(0, moonV + bodies[3].velocity.y, 0); // Tangential to Earth's velocity, in this case, y, to make a perpendicular velocity vector
+
+    Body moon(
+        moonPosition, moonVelocity, Vector(0, 0, 0), Vector(0, 0, 0),
+        7.34767309e22, // Mass of moon
+        1.7374e6, // Radius of moon
+        gravitationalMultiplier, "moon", {}, {}
+    );
+
+    bodies.push_back(moon);
+    cout << "Moon created at r = " << moonR << " from Earth with v = " << moonV << endl;
+
+    // Output information
+    cout << "Preset solar system generated with " << bodies.size() << " bodies." << endl;
 }
+
 
 /**
  * @brief generates a unique radius for a body, will take in a vector of used radii to check against
@@ -577,6 +516,14 @@ void initiateHeavenscape(vector<Body> &bodies, int bodyCount[5])
 }
 
 /**
+ * @brief outputs the bodies to the input.txt file
+ * @param bodies the vector of bodies in the simulation
+ */
+void outputBodies(const vector<Body> &bodies) {
+    ofstream outputFile("input.txt");
+}
+
+/**
  * main function, which will prompt the user for the mode, timestep, iterations, gravitational multiplier, and stability, and call the appropriate function
  */
 
@@ -638,19 +585,15 @@ int main() {
             cerr << "Error: Generating Custom bodies failed." << endl;
             return 1;
         }
-    } else if (mode == "custom random") {
-        generateCustomRandomBodies();
-        if (bodies.size() != (N)) {
-            cerr << "Error: Generating Custom Random bodies failed." << endl;
-            return 1;
-        }
     } else if (mode == "preset") {
         generatePresetBodies();
         if (bodies.size() != (N)) {
             cerr << "Error: Generating Preset bodies failed." << endl;
             return 1;
         }
+        cout << "Preset system generated with " << bodies.size() << " bodies." << endl;
     }
-
+    //output the bodies to the input.txt file
+    outputBodies(bodies);
     return 0;
 }
