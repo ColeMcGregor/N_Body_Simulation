@@ -14,11 +14,11 @@ module load gcc
 export OMP_PROC_BIND=true
 # set num threads 
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
-# check num threads
-echo $OMP_NUM_THREADS
+# # check num threads
+# echo $OMP_NUM_THREADS
 
 # compile simulation program
 make
 
 # run
-./Simulation input.txt
+./Simulation
