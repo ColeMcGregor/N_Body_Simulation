@@ -10,6 +10,7 @@
  * @author: Cole McGregor, Hawk Lindner, Brandon Trama
  */
 
+#include <omp.h>
 #include "FileManager.h"
 #include <fstream>
 #include <sstream>
