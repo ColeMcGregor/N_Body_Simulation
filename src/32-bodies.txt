@@ -1,0 +1,264 @@
+Timestep 60
+Iterations 1000000
+N 32
+NS 0
+NP 30
+NM 2
+NB 0
+gravitationalMultiplier 1.0
+
+body 0
+position 0.0 0.0 0.0
+velocity 0.0 0.0 0.0
+mass 6.0e24
+density 5514.0
+radius 6371000
+planet
+
+body 1
+position 1.0e11 0.0 0.0
+velocity 0.0 3.0e4 0.0
+mass 6.4e23
+density 3933.0
+radius 3396200
+planet
+
+body 2
+position -1.5e11 0.0 0.0
+velocity 0.0 -2.9e4 0.0
+mass 5.9e24
+density 5243.0
+radius 6052000
+planet
+
+body 3
+position 0.0 2.5e11 0.0
+velocity -2.8e4 0.0 0.0
+mass 3.3e23
+density 5427.0
+radius 2440000
+planet
+
+body 4
+position 2.5e11 -2.0e11 0.0
+velocity 2.4e4 2.0e4 0.0
+mass 1.9e27
+density 1326.0
+radius 69911000
+planet
+
+body 5
+position -1.0e11 -1.0e11 0.0
+velocity 1.5e4 1.5e4 0.0
+mass 6.6e26
+density 687.0
+radius 58232000
+planet
+
+body 6
+position 3.0e11 3.0e11 0.0
+velocity -1.2e4 1.2e4 0.0
+mass 8.7e25
+density 1271.0
+radius 25362000
+planet
+
+body 7
+position -1.0e8 1.0e8 0.0
+velocity 0.0 -1.0e3 0.0
+mass 7.34e22
+density 3340.0
+radius 1737400
+moon
+
+body 8
+position 1.0e11 1.0e11 0.0
+velocity -3.0e3 -3.0e3 0.0
+mass 3.0e24
+density 5570.0
+radius 5200000
+planet
+
+body 9
+position -1.0e11 2.0e11 0.0
+velocity 2.5e4 0.0 0.0
+mass 2.5e24
+density 5300.0
+radius 5000000
+planet
+
+body 10
+position 1.5e11 2.5e11 0.0
+velocity -2.8e4 -1.0e4 0.0
+mass 7.0e24
+density 5110.0
+radius 6400000
+planet
+
+body 11
+position 0.0 -2.0e11 0.0
+velocity 3.0e4 0.0 0.0
+mass 4.5e23
+density 5000.0
+radius 4500000
+planet
+
+body 12
+position 2.0e11 2.0e11 0.0
+velocity -2.0e4 2.0e4 0.0
+mass 5.5e24
+density 4800.0
+radius 5500000
+planet
+
+body 13
+position -2.5e11 1.5e11 0.0
+velocity 1.0e4 2.5e4 0.0
+mass 6.5e24
+density 5200.0
+radius 6100000
+planet
+
+body 14
+position 3.0e11 0.0 0.0
+velocity -1.5e4 1.5e4 0.0
+mass 2.5e27
+density 7500.0
+radius 70000000
+planet
+
+body 15
+position -2.5e11 -3.0e11 0.0
+velocity 1.0e4 1.0e4 0.0
+mass 1.8e26
+density 1200.0
+radius 68000000
+planet
+
+body 16
+position 1.0e12 1.5e11 0.0
+velocity 0.0 -1.0e3 0.0
+mass 8.0e24
+density 5400.0
+radius 6200000
+planet
+
+body 17
+position -3.0e11 2.0e11 0.0
+velocity 1.2e4 1.2e4 0.0
+mass 5.5e24
+density 6800.0
+radius 5800000
+planet
+
+body 18
+position 1.2e11 -1.5e11 0.0
+velocity -3.0e4 1.5e4 0.0
+mass 7.0e24
+density 6600.0
+radius 6700000
+planet
+
+body 19
+position -3.5e11 -3.5e11 0.0
+velocity 2.5e3 -2.5e3 0.0
+mass 3.5e24
+density 5700.0
+radius 5400000
+planet
+
+body 20
+position 2.5e11 1.0e11 0.0
+velocity 0.0 3.0e3 0.0
+mass 4.5e24
+density 6900.0
+radius 5900000
+planet
+
+body 21
+position 0.0 3.0e11 0.0
+velocity 2.0e4 0.0 0.0
+mass 6.0e24
+density 6500.0
+radius 6300000
+planet
+
+body 22
+position -2.0e11 2.0e11 0.0
+velocity -1.0e4 -1.0e4 0.0
+mass 2.8e24
+density 5400.0
+radius 5100000
+planet
+
+body 23
+position 2.0e11 -1.0e11 0.0
+velocity 2.0e4 -1.0e4 0.0
+mass 9.0e24
+density 6700.0
+radius 6900000
+planet
+
+body 24
+position -1.0e11 3.0e11 0.0
+velocity -2.0e4 1.5e4 0.0
+mass 4.0e24
+density 6200.0
+radius 6000000
+planet
+
+body 25
+position 3.0e11 3.0e11 0.0
+velocity -1.0e4 1.5e4 0.0
+mass 7.0e24
+density 5500.0
+radius 6100000
+planet
+
+body 26
+position -1.5e11 -2.0e11 0.0
+velocity 3.0e4 0.0 0.0
+mass 3.5e24
+density 4900.0
+radius 5600000
+planet
+
+body 27
+position 0.0 -3.5e11 0.0
+velocity 1.0e4 2.0e4 0.0
+mass 6.0e24
+density 6600.0
+radius 6700000
+planet
+
+body 28
+position 1.5e11 -2.5e11 0.0
+velocity 2.0e4 1.0e4 0.0
+mass 4.0e24
+density 6200.0
+radius 5800000
+planet
+
+body 29
+position -2.0e11 3.5e11 0.0
+velocity -3.0e4 -2.5e4 0.0
+mass 9.0e24
+density 6500.0
+radius 6400000
+planet
+
+body 30
+position 1.0e11 -1.0e11 0.0
+velocity -2.0e4 2.0e4 0.0
+mass 7.34e22
+density 3340.0
+radius 1737400
+moon
+
+body 31
+position -2.5e11 1.0e11 0.0
+velocity 3.0e4 0.0 0.0
+mass 7.34e22
+density 3340.0
+radius 1737400
+moon
