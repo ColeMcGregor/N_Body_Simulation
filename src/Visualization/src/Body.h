@@ -16,6 +16,13 @@ class Body{
     public:
         /*spot for constructor*/
     Body(double radius,double mass, const Vector& position, const string& type);
+
+    const Vector& getPosition() const{
+        return position;
+    }
+    const double getRadius() const{
+        return radius;
+    }
 };
 
 #endif

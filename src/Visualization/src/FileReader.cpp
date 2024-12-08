@@ -41,16 +41,16 @@ int FileReader::readTimeStep() {
 
 
 /*
-    Calls readBodies which will return a tuple of vectors for type 
+    Calls readlocalBodies which will return a tuple of vectors for type 
     body, star, planet,moon,blackhole
 */
 tuple<vector<Body>, std::vector<Star>, std::vector<Planet>, std::vector<Moon>, std::vector<BlackHole> > FileReader::readBodies() {
     
-    vector<Body> bodies;
-    vector<Star> stars;
-    vector<Planet> planets;
-    vector<Moon> moons;
-    vector<BlackHole> blackholes;
+    vector<Body> localBodies;
+    vector<Star> localStars;
+    vector<Planet> localPlanets;
+    vector<Moon> localMoons;
+    vector<BlackHole> localBH;
     ifstream file(fileName);
 
     int numBodies = 0;
@@ -89,31 +89,31 @@ tuple<vector<Body>, std::vector<Star>, std::vector<Planet>, std::vector<Moon>, s
             if (type == "star") {
                 // Create and push the Star object
                 Star star(radius, mass, Vector(x, y, z), type);
-                stars.push_back(star);
-                bodies.push_back(star);
+                localStars.push_back(star);
+                localBodies.push_back(star);
             } else if (type == "planet") {
                 // Create and push the Planet object
                 Planet planet(radius, mass, Vector(x, y, z), type);
-                planets.push_back(planet);
-                bodies.push_back(planet);
+                localPlanets.push_back(planet);
+                localBodies.push_back(planet);
             } else if (type == "moon") {
                 // Create and push the Moon object
                 Moon moon(radius, mass, Vector(x, y, z), type);
-                moons.push_back(moon);
-                bodies.push_back(moon);
+                localMoons.push_back(moon);
+                localBodies.push_back(moon);
             } else if (type == "blackhole") {
                 // Create and push the BlackHole object
                 BlackHole blackhole(radius, mass, Vector(x, y, z), type);
-                blackholes.push_back(blackhole);
-                bodies.push_back(blackhole);
+                localBH.push_back(blackhole);
+                localBodies.push_back(blackhole);
             }
         }
     }
     
 
     file.close();
-    //returns timestep, bodies, stars, planets, moons and blackholes
-    return make_tuple(bodies , stars, planets, moons, blackholes);
+    //returns timestep, localBodies, localStars, planets, localMoons and localBH
+    return make_tuple(localBodies , localStars, localPlanets, localMoons, localBH);
 }
 
 
