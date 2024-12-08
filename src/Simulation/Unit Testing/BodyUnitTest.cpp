@@ -1,3 +1,6 @@
+// How to compile:
+// clang++ ../vector.cpp ../body.cpp BodyUnitTest.cpp -o BodyUnitTest -Wall -g -std=c++23
+
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -9,25 +12,11 @@ using namespace std;
 int passed_tests = 0;
 int total_tests = 0;
 
-void assert_equal(double expected, double actual, const std::string &message)
-{
-    total_tests++;
-    if (std::fabs(expected - actual) < 1e-6)
-    {
-        passed_tests++;
-        cout << ":) |" << message << endl;
-    }
-    else
-    {
-        cout << "Fuck you | " << message << endl;
-    }
-}
-
 void assert_vector_equal(const Vector &expected, const Vector &actual, const std::string &message)
 {
     total_tests++;
-    if (std::fabs(expected.x - actual.x) < 1e-6 && 
-        std::fabs(expected.y - actual.y) < 1e-6 && 
+    if (std::fabs(expected.x - actual.x) < 1e-6 &&
+        std::fabs(expected.y - actual.y) < 1e-6 &&
         std::fabs(expected.z - actual.z) < 1e-6)
     {
         passed_tests++;
@@ -91,9 +80,11 @@ void test_update()
 
     Vector expectedPosition(1.0, 0, 0); // position = 0 + velocity * 1 + 0.5 * acceleration * 1^2
     Vector expectedVelocity(1.0, 0, 0); // velocity = 0 + acceleration * 1
+    Vector expectedTrajectory(1.0, 0, 0); // same as position calculation above
 
     assert_vector_equal(expectedPosition, body.position, "Updating position with timestep");
     assert_vector_equal(expectedVelocity, body.velocity, "Updating velocity with timestep");
+    assert_vector_equal(expectedTrajectory, body.trajectory[0], "Updating trajectory with timestep")
 }
 
 void test_sumForces()
@@ -119,7 +110,6 @@ void test_sumForces()
 
     assert_vector_equal(expectedForce, actualForce, "Summing forces on body");
 }
-
 
 int main()
 {

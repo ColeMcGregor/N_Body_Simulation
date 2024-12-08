@@ -1,3 +1,6 @@
+// How to compile:
+// clang++ ../vector.cpp VectorUnitTest.cpp -o VectorUnitTest -Wall -g -std=c++23
+
 #include <iostream>
 #include <cmath>
 #include "../vector.h"
