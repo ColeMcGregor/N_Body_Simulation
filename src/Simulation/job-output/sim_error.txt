@@ -1,7 +1,0 @@
-
-Lmod is automatically replacing "intel/24.0" with "gcc/13.2.0".
-
-
-Due to MODULEPATH changes, the following have been reloaded:
-  1) impi/21.11
-
