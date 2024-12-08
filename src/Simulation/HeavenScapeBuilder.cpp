@@ -431,13 +431,18 @@ void generatePresetBodies() {
     bodyCount[4] = 1; //moon(the moon)
 
     //now we make the bodies so we can assign the hierarchy
-    for (int i = 0; i < N; i++) {
-        //bodies 0 is the sun, 1-8 are the planets, 9 is the moon
-
-    }
-
-    //now we assign the hierarchy of the bodies: Sun has 8 planets, Earth has 1 moon
-    
+    //bodies 0 is the sun, 1-8 are the planets, 9 is the moon
+    //use the preset body constants
+    bodies.push_back(SUN);
+    bodies.push_back(MERCURY);
+    bodies.push_back(VENUS);
+    bodies.push_back(EARTH);
+    bodies.push_back(MARS);
+    bodies.push_back(JUPITER);
+    bodies.push_back(SATURN);
+    bodies.push_back(URANUS);
+    bodies.push_back(NEPTUNE);
+    bodies.push_back(MOON);
 
     //now we have our bodies, we can initiate the heavenscape
     initiateHeavenscape(bodies, bodyCount);
