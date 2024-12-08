@@ -54,7 +54,7 @@ void test_vector_scalar_multiplication()
 {
     double scalar = 2.0;
     Vector vec(1, 2, 3);
-    vec = vec * scalar;
+    Vector res = vec * scalar;
 
     assert_equal(2.0, res.x, "Multiplication: x-component");
     assert_equal(4.0, res.y, "Multiplication: y-component");
@@ -65,14 +65,14 @@ void test_vector_scalar_division()
 {
     double scalar = 2.0;
     Vector vec(4, 5, 6);
-    vec = vec / scalar;
+    Vector res = vec / scalar;
 
     assert_equal(2.0, res.x, "Scalar division: x-component");
     assert_equal(2.5, res.y, "Scalar division: y-component");
     assert_equal(3.0, res.z, "Scalar division: z-component");
 }
 
-void test_vector_reset();
+void test_vector_reset()
 {
     Vector vec(1, 2, 3);
     vec.reset();
@@ -87,6 +87,9 @@ int main()
     test_vector_constructor_and_magnitute();
     test_vector_addition();
     test_vector_subtraction();
+    test_vector_scalar_multiplication();
+    test_vector_scalar_division();
+    test_vector_reset();
 
     std::cout << "\nSummary: " << passed_tests << "/" << total_tests << " tests passed.\n";
     return (total_tests == passed_tests) ? 0 : 1;
