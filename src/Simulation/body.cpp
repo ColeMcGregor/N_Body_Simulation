@@ -105,7 +105,7 @@ void Body::update(double timestep)
     // update velocity and position
     this->velocity = this->velocity + (this->acceleration * timestep);
     this->position = this->position + this->velocity * timestep;
-
+    // add the position to the trajectory for output
     this->trajectory.push_back(this->position);
     // reset acceleration for next timestep
     this->acceleration = Vector(0, 0, 0);
