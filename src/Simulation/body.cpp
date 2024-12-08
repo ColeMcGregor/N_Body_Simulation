@@ -136,10 +136,6 @@ Vector Body::sumForces(const vector<Body> &bodies)
     return net_force;
 }
 
-/*
-        Apply acceleration to velocity and position using timestep
-*/
-
 // debug method for testing
 void Body::printState() const
 {
