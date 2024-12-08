@@ -11,6 +11,7 @@
  * @dependencies: body.cpp, filemanager.cpp
  */
 
+#include <iostream>
 #include <vector>
 #include <string>
 #include <omp.h>
@@ -32,12 +33,12 @@ public:
     int bodyCount[5];               // information about the simulation bodies: 0: N, 1: NS, 2: NP, 3: NM, 4: NB, stored in the corresponding index of the array
     FileManager fileManager;        // file manager for the simulation
 
-  Simulation(const string &inputFile, const string &outputFile)
-    : inputFile(inputFile), outputFile(outputFile), fileManager(inputFile)
+    Simulation(const string &inputFile, const string &outputFile)
+        : inputFile(inputFile), outputFile(outputFile), fileManager(inputFile)
     {
         // load the configuration file
         try
-	{
+        {
             fileManager.loadConfig(inputFile, bodies, timestep, gravitationalMultiplier, iterations, bodyCount);
         }
         catch (const exception &e)
@@ -59,94 +60,95 @@ public:
      */
     void run(double timeStep, int iterations)
     {
-      //initialize total time variable
-      double total_time = 0.0;
+        // initialize total time variable
+        double total_time = 0.0;
+
 #pragma omp parallel
         {
-	  //start timer for computation
-	  double start_comp_time = omp_get_wtime();
+#pragma omp single
+            {
+                cout << "Using " << omp_get_num_threads() << " threads:" << endl
+                        << endl;
+            }
+
+            // start timer for computation
+            double start_comp_time = omp_get_wtime();
+
             for (int step = 0; step < iterations + 1; step++)
             {
-	      // divide the work among threads
-#pragma omp for
+                // divide the work among threads
+#pragma omp for schedule(dynamic)
                 for (size_t i = 0; i < bodies.size(); i++)
                 {
-		  //cout << "Thread " << omp_get_thread_num() << "handling body " << i << endl;
-                    // reset force before each calculation
-                    bodies[i].resetForce();
-                    // calculate the total force on each body
+                    // cout << "Thread " << omp_get_thread_num() << "handling body " << i << endl;
+                    //  calculate the total force on each body
                     Vector totalForce = bodies[i].sumForces(bodies);
-                    // apply the force to the body
                     bodies[i].applyForce(totalForce);
+                    bodies[i].update(timeStep);
                 }
 
-// synchronize threads before updating positions
-#pragma omp barrier
-
-// update the bodies' positions and velocities
-#pragma omp for
-                for (size_t i = 0; i < bodies.size(); i++)
-                {
-		  bodies[i].update(timeStep);
-                }
-		
 // a single thread will output the results to the output file
 #pragma omp single
                 {
-		  if (step % 1000 == 0) {
-		    if (step == iterations) {
-		      // synchronize threads before outputting results
-		      #pragma omp barrier
-		      //end timer for computation
-		      double end_comp_time = omp_get_wtime();
-		      cout << endl << "Computation time: " << end_comp_time - start_comp_time << " seconds" << endl;
-		      cout << endl << step << " iterations reached, outputting to file..." << endl;
+                    if (step % 100000 == 0)
+                    {
+                        if (step == iterations)
+                        {
+                            // end timer for computation
+                            double end_comp_time = omp_get_wtime();
+                            cout << endl
+                                    << "Computation time: " << end_comp_time - start_comp_time << " seconds" << endl;
+                            cout << endl
+                                    << step << " iterations reached, outputting to file..." << endl;
 
-		      //start timer for outputting
-		      double start_out_time = omp_get_wtime();
-		      // outputs final results to destination file
-		      fileManager.outputResults(outputFile, bodies, step);
-		      //end timer for outputting
-		      double end_out_time = omp_get_wtime();
-		      cout << endl << "Destination: " << outputFile << endl;
-		      cout << endl << "Outputting took " << end_out_time - start_out_time << " seconds" << endl;
+                            // start timer for outputting
+                            double start_out_time = omp_get_wtime();
+                            // outputs final results to destination file
+                            fileManager.outputResults(outputFile, bodies, step);
+                            // end timer for outputting
+                            double end_out_time = omp_get_wtime();
+                            cout << endl
+                                    << "Destination: " << outputFile << endl;
+                            cout << endl
+                                    << "Outputting took " << end_out_time - start_out_time << " seconds" << endl;
 
-		      // gather total time
-		      total_time = (end_comp_time - start_comp_time) + (end_out_time - start_out_time);
-		    } else {
-		    cout << "[Simulation reached " << step << " iterations]" << endl;
-		    }
-		  }
-		}
+                            // gather total time
+                            total_time = (end_comp_time - start_comp_time) + (end_out_time - start_out_time);
+                        }
+                        else
+                        {
+                            cout << "[Simulation reached " << step << " iterations]" << endl;
+                        }
+                    }
+                }
             }
         }
-        cout << endl <<  "Total elapsed time: " << total_time << " seconds" << endl;
+        cout << endl
+                << "Total elapsed time: " << total_time << " seconds" << endl;
     }
 };
 
 int main(int argc, char *argv[])
 {
     // check for correct number of arguments
-    if (argc != 3) {
-        cerr << "Usage: <numthreads> <filename>" << endl;
+    if (argc != 2)
+    {
+        cerr << "Usage: <filename>" << endl;
     }
 
     // set the number of threads
-    const int numThreads = atoi(argv[1]);
+    // const int numThreads = atoi(argv[1]);
 
     // set the input file
-    const string inputFile = string("../") + argv[2];                                           // "../" is the specific path to the current input file, can be removed depending on where the input file is located
+    const string inputFile = string("../") + argv[1]; // "../" is the specific path to the current input file, can be removed depending on where the input file is located
 
     // set the output file
     const string outputFile = "../output.txt";
 
     // create the simulation
     Simulation sim(inputFile, outputFile);
-    //initiateHeavenscape(sim.bodies, sim.bodyCount);
-    // set number of threads (default is number of cores)
-    omp_set_num_threads(numThreads);
-    cout << "Using " << numThreads  << " threads" << endl;
-    // run the simulation
+    // initiateHeavenscape(sim.bodies, sim.bodyCount);
+    //  run the simulation
     sim.run(sim.timestep, sim.iterations);
 
     return 0;

@@ -29,9 +29,11 @@ struct Vector
     Vector operator-(const Vector &other) const;
     Vector operator*(double scalar) const;
     Vector operator/(double scalar) const;
-    friend std::ofstream& operator<<(std::ofstream& file, const Vector& vec); //also, chat says const can be in there, itll tell the compiler that << cant affect the vector
+    friend std::ofstream& operator<<(std::ofstream& file, const Vector& vec);
     void reset(); 
     void print() const;
 };
+
+#pragma omp declare reduction(vector_reduction : Vector : omp_out = omp_out + omp_in) initializer(omp_priv = Vector(0, 0, 0))
 
 #endif
