@@ -18,6 +18,7 @@
 #include "vector.h"      // Include your Vector class header
 #include "body.h"        // Include your Body class header
 #include "FileManager.h" // Include your FileManager class header
+#include "HeavenScapeBuilder.h"
 
 using namespace std;
 
@@ -34,19 +35,10 @@ public:
     FileManager fileManager;        // file manager for the simulation
 
     Simulation(const string &inputFile, const string &outputFile)
-        : inputFile(inputFile), outputFile(outputFile), fileManager(inputFile)
-    {
-        // load the configuration file
-        try
-        {
-            fileManager.loadConfig(inputFile, bodies, timestep, gravitationalMultiplier, iterations, bodyCount);
-        }
-        catch (const exception &e)
-        {
-            cout << "Error loading configuration file\n" << e.what() << endl;
-            exit(1);
-        }
-    }
+        : inputFile(inputFile), outputFile(outputFile), fileManager(inputFile) {}
+
+    Simulation(vector<Body> &bodies, const string &outputFile)
+        : bodies(bodies), outputFile(outputFile) {}
 
     /**
      * @brief runs the simulation
@@ -63,9 +55,12 @@ public:
         // initialize total time variable
         double total_time = 0.0;
 
-#pragma omp parallel
+        // specifies how many bodies a thread will handle at any given time
+        int chunk_size = bodies.size() / omp_get_max_threads();
+
+        #pragma omp parallel
         {
-#pragma omp single
+            #pragma omp single
             {
                 cout << "Using " << omp_get_num_threads() << " threads:" << endl
                         << endl;
@@ -77,7 +72,7 @@ public:
             for (int step = 0; step < iterations + 1; step++)
             {
                 // divide the work among threads
-#pragma omp for schedule(dynamic)
+                #pragma omp for schedule(dynamic, chunk_size)
                 for (size_t i = 0; i < bodies.size(); i++)
                 {
                     // cout << "Thread " << omp_get_thread_num() << "handling body " << i << endl;
@@ -88,7 +83,7 @@ public:
                 }
 
 // a single thread will output the results to the output file
-#pragma omp single
+                #pragma omp single
                 {
                     if (step % 100000 == 0)
                     {
@@ -130,20 +125,73 @@ public:
 
 int main(int argc, char *argv[])
 {
-    // check for correct number of arguments
-    if (argc != 2)
-    {
-        cerr << "Usage: <filename>" << endl;
+    int option;
+    bool isValid = false;
+    // let the user choose between generating our solar system or loading an existing input file
+    cout << "Please select an option:\n";
+    cout << "1. Generate our solar system.\n";
+    cout << "2. Load existing input file.\n";
+    cout << "Enter your choice: ";
+    cin >> option;
+    cout << endl;
+
+    vector<Body> bodies;
+    double timeStep;
+    int iterations;
+
+    switch (option) {
+        case 1;
+            // prompt user for timestep and iterations
+            cout << "Timestep: ";
+            cin << timeStep;
+            cout << endl << "Iterations: ";
+            cin << iterations;
+            cout << endl;
+
+            // pass the timestep and iterations to the simulation
+
+            // generates bodies according to our solar system
+            bodies.generatePresetBodies();
+            break;
+        case 2;
+            // get the input file name from the user
+            cout << "Enter the name of the input file: ";
+            string inputFile;
+            cin >> inputFile;
+            cout << endl;
+
+            // load the configuration file
+            try {
+                fileManager.loadConfig(inputFile, bodies, timestep, gravitationalMultiplier, iterations, bodyCount);
+            } catch (const exception &e) {
+                cout << "Error loading input file\n"
+                        << e.what() << endl;
+                exit(1);
+            } break;
+        default:
+            cerr << "Invalid option! Please try again..." << endl;
+            exit(1);
     }
-
-    // set the number of threads
-    // const int numThreads = atoi(argv[1]);
-
-    // set the input file
-    const string inputFile = string("../") + argv[1]; // "../" is the specific path to the current input file, can be removed depending on where the input file is located
 
     // set the output file
     const string outputFile = "../output.txt";
+
+    // create the simulation
+
+    // check for correct number of arguments
+    // if (argc != 2)
+    // {
+    //     cerr << "Usage: <filename>" << endl;
+    // }
+
+    // // set the number of threads
+    // // const int numThreads = atoi(argv[1]);
+
+    // // set the input file
+    // const string inputFile = string("../") + argv[1]; // "../" is the specific path to the current input file, can be removed depending on where the input file is located
+
+    // // set the output file
+    // const string outputFile = "../output.txt";
 
     // create the simulation
     Simulation sim(inputFile, outputFile);
