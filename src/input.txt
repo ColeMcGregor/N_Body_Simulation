@@ -1,9 +1,9 @@
 Timestep 60
 Iterations 10000
-N 5
+N 8
 NS 1
-NP 3
-NM 1
+NP 5
+NM 2
 NB 0
 gravitationalMultiplier 1.0
 
@@ -17,8 +17,8 @@ radius 696340000
 star
 
 body 1
-position 0.0 0.0 0.0
-velocity 0.0 0.0 0.0
+position 1.0e11 0.0 0.0
+velocity 0.0 2.98e4 0.0
 mass 6.0e24
 density 5514.0
 radius 6371000
@@ -26,28 +26,49 @@ planet
 
 body 2
 children 4
-position 0.0 0.0 0.0
-velocity 0.0 0.0 0.0
-mass 6.0e24
+position -1.5e11 0.0 0.0
+velocity 0.0 -2.41e4 0.0
+mass 5.97e24
 density 5514.0
 radius 6371000
 planet
 
 body 3
-position 0.0 0.0 0.0
-velocity 0.0 0.0 0.0
-mass 6.0e24
-density 5514.0
-radius 6371000
+position 0.0 2.2e11 0.0
+velocity -2.0e4 0.0 0.0
+mass 6.42e23
+density 3933.0
+radius 3389500
 planet
 
 body 4
-position 0.0 0.0 0.0
-velocity 0.0 0.0 0.0
+position 1.2e11 2.0e10 0.0
+velocity 1.0e4 2.98e4 0.0
 mass 7.34e22
 density 3340
 radius 1737400
 moon
 
+body 5
+position -2.0e11 -1.0e10 0.0
+velocity 1.2e4 -2.0e4 0.0
+mass 6.0e24
+density 5270.0
+radius 6051800
+planet
 
+body 6
+position 1.0e11 -2.5e10 0.0
+velocity 1.5e4 1.5e4 0.0
+mass 7.34e22
+density 3340
+radius 1737400
+moon
 
+body 7
+position -1.2e11 1.0e11 0.0
+velocity -2.1e4 -1.1e4 0.0
+mass 4.87e24
+density 5243.0
+radius 6051800
+planet
