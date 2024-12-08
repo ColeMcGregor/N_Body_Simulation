@@ -57,7 +57,7 @@ std::ofstream& operator<<(std::ofstream& file, const Vector& vec) {
  * @param vec the vector to output
  * @return the file with the vector appended(or written if it's a new file)
  */
-std::ostream& operator<<(std::ostream& stream, const Vector& vec) {
+std::ostringstream& operator<<(std::ostringstream& stream, const Vector& vec) {
   stream << std::to_string(vec.x) << ", " << std::to_string(vec.y) << ", " << std::to_string(vec.z); // <3
   stream << std::endl;
   return stream;

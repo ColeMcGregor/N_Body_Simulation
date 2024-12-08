@@ -30,6 +30,7 @@ struct Vector
     Vector operator*(double scalar) const;
     Vector operator/(double scalar) const;
     friend std::ofstream& operator<<(std::ofstream& file, const Vector& vec);
+    friend std::ostringstream& operator<<(std::ostringstream file, const Vector& vec);
     void reset(); 
     void print() const;
 };
