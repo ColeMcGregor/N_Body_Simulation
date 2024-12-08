@@ -1,6 +1,6 @@
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -g
+CXXFLAGS = -std=c++17 -Wall -Wextra -g -I./src/Simulation/Unit\ Testing
 
 # Files and directories
 SRC = vector.cpp
