@@ -97,9 +97,9 @@ public:
                             // end timer for computation
                             double end_comp_time = omp_get_wtime();
                             cout << endl
-                                    << "Computation time: " << end_comp_time - start_comp_time << " seconds" << endl;
-                            cout << endl
                                     << step << " iterations reached, outputting to file..." << endl;
+                            cout << endl
+                                    << "Computation time: " << end_comp_time - start_comp_time << " seconds" << endl;
 
                             // start timer for outputting
                             double start_out_time = omp_get_wtime();
