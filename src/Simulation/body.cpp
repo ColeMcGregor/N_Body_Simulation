@@ -122,7 +122,6 @@ Vector Body::sumForces(const vector<Body> &bodies)
 {
     // always reset the net force before each calculation
     net_force = Vector(0, 0, 0);
-    Vector tempForce(0, 0, 0);
 
 #pragma omp parallel for reduction(vector_reduction: tempForce) schedule(dynamic)
     // loop through all bodies and calculate the force between this body and the other bodies
@@ -131,15 +130,10 @@ Vector Body::sumForces(const vector<Body> &bodies)
       if (this != &bodies[i]) {
 	// accumulate forces
 	Vector force = gravForce(bodies[i]);
-	tempForce = tempForce + force;
+	net_force = net_force + force;
       }
     }
-    net_force = tempForce;
     return net_force;
-}
-void Body::resetForce()
-{
-    net_force.reset(); // reset the net force to (0, 0, 0) using the reset method in vector.h
 }
 
 /*

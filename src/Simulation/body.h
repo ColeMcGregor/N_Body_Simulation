@@ -37,7 +37,6 @@ public:
         void applyForce(const Vector &force);
         void update(double timestep);
         Vector sumForces(const std::vector<Body> &bodies);
-        void resetForce();
         void printState() const;
 };
 
