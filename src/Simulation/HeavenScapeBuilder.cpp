@@ -334,6 +334,8 @@ void generatePresetBodies() {
     vector<double> planetMassRanges = {3.3011e23, 4.8675e24, 5.9722e24, 6.4171e23, 1.8982e27, 5.6834e26, 8.6810e25, 1.02413e26};
     //planet radius ranges: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
     vector<double> planetRadiusRanges = {2.4397e6, 6.0518e6, 6.3710e6, 3.3895e6, 6.9911e7, 5.8232e7, 2.5362e7, 2.4622e7};
+    //vector of orbital Inclinations
+    vector<double> orbitalInclinations = {0.0, 3.38, 3.86, 7.25, 5.65, 6.09, 5.51, 6.48, 11.88};
     //names of the bodies
     vector<string> bodyNames = {"Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"};
 
@@ -345,10 +347,15 @@ void generatePresetBodies() {
     for (size_t i = 1; i < orbitalRadii.size(); ++i) {
         double r = orbitalRadii[i];
         double v = sqrt(GRAVITATIONAL_CONSTANT * parentMasses[i - 1] / r);
+        //convert the inclination to radians
+        double inclination = orbitalInclinations[i] * (M_PI / 180.0);
+        //use the inclination to calculate the z position and velocity
+        double z = r * sin(inclination);      // Z position based on inclination
+        double vz = v * sin(inclination);    // Z velocity based on inclination
 
         // Calculate initial position and velocity
-        Vector position(r, 0, 0); // Start along X-axis
-        Vector velocity(0, v, 0); // Perpendicular in Y-axis
+        Vector position(r, 0, z); // Start along X-axis
+        Vector velocity(0, v, vz); // Perpendicular in Y-axis
 
         // Create the planet
         Body planet(
