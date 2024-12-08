@@ -199,6 +199,10 @@ void generateRandomBodies() {
     }
     cout << "All bodies generated." << endl;
     cout << "Your new God will now create the universe..." << endl;
+
+    //children assignment
+
+
     //now we have our bodies, we can initiate the heavenscape
     initiateHeavenscape(bodies, bodyCount);
 }
@@ -289,44 +293,6 @@ void generateCustomBodies() {
     }
 
 /**
- * generate custom random bodies, which will have custom body counts, but random assignments of children
- * 
- * must input N, the total number of bodies
- * must input the number of each type of body(star, planet, moon, black hole)
- * will have random assignment of bodies as children to each other, following hierarchy of mass
- *     will check that none of the children are more massive than the parent, and that no children are assigned to themselves, or more than one parent
- */
-void generateCustomRandomBodies() {
-    int N;
-    cout << "Enter the total number of bodies (N): ";
-    cin >> N;
-
-    if (N <= 0) {
-        cerr << "Error: Number of bodies must be greater than 0." << endl;
-        return;
-    }
-
-    cout << "Define the number of each type of body (star, planet, moon, black hole):" << endl;
-    int stars, planets, moons, blackHoles;
-    cout << "Stars: ";
-    cin >> stars;
-    cout << "Planets: ";
-    cin >> planets;
-    cout << "Moons: ";
-    cin >> moons;
-    cout << "Black holes: ";
-    cin >> blackHoles;
-
-    if (stars + planets + moons + blackHoles != N) {
-        cerr << "Error: Total body count must match N." << endl;
-        return;
-    }
-
-    // Random child assignment (logic to be implemented)
-    cout << "Randomly assigning children..." << endl;
-}
-
-/**
  * generate preset bodies, similar to the solar system
  * N = 297
  * 1 star, the sun
@@ -334,11 +300,11 @@ void generateCustomRandomBodies() {
  *    -Mercury, no moons
  *    -Venus, no moons
  *    -Earth, 1 moon
- *    -Mars, 2 moons
- *    -Jupiter, 95 moons
- *    -Saturn, 146 moons
- *    -Uranus, 28 moons
- *    -Neptune, 16 moons
+ *    -Mars, 2 moons(ignored for now)
+ *    -Jupiter, 95 moons(ignored for now)
+ *    -Saturn, 146 moons(ignored for now)
+ *    -Uranus, 28 moons(ignored for now)
+ *    -Neptune, 16 moons(ignored for now)
  * no black holes or other bodies
  */
 void generatePresetBodies() {
@@ -346,6 +312,9 @@ void generatePresetBodies() {
 
     // Predefined body setup (logic to be implemented)
     cout << "1 Star, 8 Planets, and their moons." << endl;
+
+    //no black holes
+    
 }
 
 /**

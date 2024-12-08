@@ -131,7 +131,7 @@ Vector Body::sumForces(const vector<Body> &bodies)
       if (this != &bodies[i]) {
 	// accumulate forces
 	Vector force = gravForce(bodies[i]);
-	tempForce + tempForce + force;
+	tempForce = tempForce + force;
       }
     }
     net_force = tempForce;
