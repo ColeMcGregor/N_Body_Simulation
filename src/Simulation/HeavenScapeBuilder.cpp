@@ -36,6 +36,9 @@
 #include <string>
 #include <utility> // For std::pair
 #include <vector>
+#include "vector.h"
+#include "body.h"
+#include "HeavenScapeBuilder.h"
 
 using namespace std;
 
