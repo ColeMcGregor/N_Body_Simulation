@@ -66,7 +66,7 @@ const double GRAVITATIONAL_CONSTANT = 6.67430e-11;  //G baby
 const double SPEED_OF_LIGHT = 2.99792458e8;       //meters per second
 
 //global variables
-double gravitationalMultiplier;
+double gravitationalMultiplier = 1.0;
 int timestep;
 int iterations;
 int bodyCount[5];
@@ -560,6 +560,7 @@ void initiateHeavenscape(vector<Body> &bodies, int bodyCount[5])
         for (size_t i = bodyCount[4]; i < bodyCount[1] + bodyCount[4]; ++i) {
         cout << "Stars positioned in Random Generation." << endl;
     }
+    }
 }
 
 /**
@@ -633,6 +634,7 @@ void outputBodies() {
 
 int main() {
     string mode;
+    int N;
 
     // Prompt user for the mode
     cout << "Enter mode (random, custom, custom random, preset): ";
