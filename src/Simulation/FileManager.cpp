@@ -203,7 +203,7 @@ vector<string> thread_outputs(omp_get_max_threads());
             for (size_t j = 0; j < bodies[i].trajectory.size(); j++)
             {   
                 // output the trajectory of the body
-                if (j % SLICING_FACTOR == 60) {
+                if (j % SLICING_FACTOR == 0) {
                     Vector scaledPosition = bodies[i].trajectory[j] / TRAJECTORY_SCALE_FACTOR;
                     local_stream << scaledPosition; // Using the overloaded << operator
                 }
