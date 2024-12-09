@@ -634,7 +634,6 @@ void outputBodies() {
 
 int main() {
     string mode;
-    int N;
 
     // Prompt user for the mode
     cout << "Enter mode (random, custom, custom random, preset): ";
