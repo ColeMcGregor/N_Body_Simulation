@@ -75,10 +75,10 @@ vector<double> usedRadii;
 vector<Body> bodies;
 
 //fill in vectors for SUN constant
-vector<Vector> SUN_POSITION = {Vector(0.0, 0.0, 0.0)};
-vector<Vector> SUN_VELOCITY = {Vector(0.0, 0.0, 0.0)};
-vector<Vector> SUN_ACCELERATION = {Vector(0.0, 0.0, 0.0)};
-vector<Vector> SUN_NET_FORCE = {Vector(0.0, 0.0, 0.0)};
+Vector SUN_POSITION(0.0, 0.0, 0.0);
+Vector SUN_VELOCITY(0.0, 0.0, 0.0);
+Vector SUN_ACCELERATION(0.0, 0.0, 0.0);
+Vector SUN_NET_FORCE(0.0, 0.0, 0.0);
 
 //Solar System constants
 const Body SUN = Body(  SUN_POSITION, //position in center of system
