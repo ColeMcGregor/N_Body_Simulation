@@ -19,7 +19,7 @@
 #include "vector.h"
 using namespace std;
 
-const int SLICING_FACTOR = 1000; //Thousands of iterations to output to the file
+const int SLICING_FACTOR = 60; //iterations output to file every hour
 
 /**
  * @brief This function is used to load the configuration file and parse the information to create the bodies in the simulation
