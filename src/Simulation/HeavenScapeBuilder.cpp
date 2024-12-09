@@ -234,46 +234,21 @@ void generateRandomBodies() {
  *     will check that none of the children are more massive than the parent, and that no children are assigned to themselves, or more than one parent
  */
 void generateCustomBodies() {
-    int N;
     cout << "Enter the total number of bodies (N): ";
     cin >> N;
-    
-    //check if N is valid
+
+    // Validate input for total bodies
     if (N <= 0) {
         cerr << "Error: Number of bodies must be greater than 0." << endl;
         return;
     }
 
-    //check if N is unreasonably large for entry
-    if (N > 10) {
-        cout << "Warning: Number of bodies should be less than 10, more than 10 will take a long time for user entry" << endl;
-        cout << "Re-enter N?(y or n)" << endl;
-        char response;
-        cin >> response;
-        if (response == 'y') {
-            cout << "Okay, Re-enter N: ";
-            cin >> N;
-        }
-        else {
-            cout << "Okay, moving on..." << endl;
-        }
-    }
-
-    cout << "Define the number of each type of body (star, planet, moon, black hole):" << endl;
+    // Variables to store counts of each type
     int stars, planets, moons, blackHoles;
-    int tries = 0;
-    cout << "Stars: ";
-    cin >> stars;
-    cout << "Planets: ";
-    cin >> planets;
-    cout << "Moons: ";
-    cin >> moons;
-    cout << "Black holes: ";
-    cin >> blackHoles;
+    cout << "Define the number of each type of body (star, planet, moon, black hole):" << endl;
 
-    // Validate counts
-    while (stars + planets + moons + blackHoles != N) {
-        cout << "Total body count must match N. Re-enter the counts" << endl;
+    // Input for each body type
+    do {
         cout << "Stars: ";
         cin >> stars;
         cout << "Planets: ";
@@ -282,36 +257,82 @@ void generateCustomBodies() {
         cin >> moons;
         cout << "Black holes: ";
         cin >> blackHoles;
-        tries++;
-        if (tries > 5) {
-            cout << "Too many tries, moving on..." << endl;
-            return;
+
+        if (stars + planets + moons + blackHoles != N) {
+            cerr << "Error: Total bodies must match N. Please re-enter." << endl;
         }
+    } while (stars + planets + moons + blackHoles != N);
+
+    // Assign counts to global bodyCount array
+    bodyCount[0] = N;
+    bodyCount[1] = blackHoles;
+    bodyCount[2] = stars;
+    bodyCount[3] = planets;
+    bodyCount[4] = moons;
+
+    // Generate bodies with default positions and velocities
+    cout << "Generating bodies..." << endl;
+    for (int i = 0; i < N; ++i) {
+        double mass, radius;
+        string type;
+
+        // Determine body type and assign properties
+        if (i < blackHoles) {
+            mass = generateBoundedDouble(BLACKHOLE_MASS_RANGE.first, BLACKHOLE_MASS_RANGE.second);
+            radius = generateSchwarzchildRadius(mass);
+            type = "blackhole";
+        } else if (i < blackHoles + stars) {
+            mass = generateBoundedDouble(STAR_MASS_RANGE.first, STAR_MASS_RANGE.second);
+            radius = generateUniqueRadius(STAR_RADIUS_RANGE.first, STAR_RADIUS_RANGE.second, usedRadii);
+            type = "star";
+        } else if (i < blackHoles + stars + planets) {
+            mass = generateBoundedDouble(PLANET_MASS_RANGE.first, PLANET_MASS_RANGE.second);
+            radius = generateUniqueRadius(PLANET_RADIUS_RANGE.first, PLANET_RADIUS_RANGE.second, usedRadii);
+            type = "planet";
+        } else {
+            mass = generateBoundedDouble(MOON_MASS_RANGE.first, MOON_MASS_RANGE.second);
+            radius = generateUniqueRadius(MOON_RADIUS_RANGE.first, MOON_RADIUS_RANGE.second, usedRadii);
+            type = "moon";
+        }
+
+        // Add body to the list
+        bodies.push_back(Body(Vector(), Vector(), Vector(), Vector(), mass, radius, gravitationalMultiplier, type, {}, {}));
     }
 
-    // Custom child assignment (logic to be implemented)
-    cout << "Define child assignments for each body..." << endl;
-    cout << "Please enter first the body number index, followed by the children indices, separated by spaces" << endl;
-    cout << "Example: 4 19 21 34" << endl;
-    cout << "This would mean that body 4 has children 19, 21, and 34" << endl;
+    cout << "All bodies generated. Now define child relationships..." << endl;
 
-    //reprompt for input for each line until the user inputs -1
-    while (true) {
-        int bodyNumber, childNumber;
-        cin >> bodyNumber;
-        if (bodyNumber == -1) {
-            break;
+    // Assign children to each body
+    for (int i = 0; i < N; ++i) {
+        int numChildren;
+        cout << "Enter the number of children for body " << i << " (" << bodies[i].type << "): ";
+        cin >> numChildren;
+
+        if (numChildren > N - 1) {
+            cerr << "Error: Too many children specified. Skipping this body." << endl;
+            continue;
         }
-        while (cin >> childNumber) {
-            if (childNumber == -1) {
-                break;
+
+        cout << "Enter the indices of the children (space-separated): ";
+        for (int j = 0; j < numChildren; ++j) {
+            int childIndex;
+            cin >> childIndex;
+
+            // Validate child index
+            if (childIndex == i || childIndex < 0 || childIndex >= N) {
+                cerr << "Invalid child index. Skipping..." << endl;
+                continue;
             }
-            bodies[bodyNumber].childrenIndices.push_back(childNumber);
+            bodies[i].childrenIndices.push_back(childIndex);
         }
     }
-    //planets made and children assigned, now we can initiate the heavenscape
+
+    // Assign positions and velocities
+    cout << "Assigning positions and velocities..." << endl;
     initiateHeavenscape(bodies, bodyCount);
+
+    cout << "Custom bodies successfully generated and initialized." << endl;
 }
+
 
 /**
  * generate preset bodies, similar to the solar system
