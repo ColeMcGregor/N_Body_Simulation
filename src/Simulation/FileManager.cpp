@@ -196,7 +196,7 @@ vector<string> thread_outputs(omp_get_max_threads());
         for (size_t i = 0; i < bodies.size(); i++)
         { // for each body
             // body number, body type, body radius
-            local_stream << bodies[i].type << " " << i << " " << bodies[i].radius << endl; // output the body number, type, and radius
+            local_stream << i << " " << bodies[i].type << " " << bodies[i].radius << endl; // output the body number, type, and radius
             for (size_t j = 0; j < bodies[i].trajectory.size(); j++)
             {   
                 // output the trajectory of the body
