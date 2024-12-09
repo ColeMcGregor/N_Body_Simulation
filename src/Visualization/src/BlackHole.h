@@ -8,7 +8,7 @@ using namespace std;
 
 class BlackHole : public Body{
     public:
-        BlackHole(double radius, double mass,Vector position, string type);
+        BlackHole(double radius,Vector position, string type);
 };
 
 #endif

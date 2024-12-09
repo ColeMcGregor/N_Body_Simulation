@@ -8,7 +8,7 @@ using namespace std;
 
 class Planet : public Body{
     public:
-        Planet(double radius,double mass,Vector position, string type);
+        Planet(double radius,Vector position, string type);
 };
 
 #endif

@@ -8,7 +8,8 @@ using namespace std;
 class Star : public Body {
     public:
         // Constructor
-        Star(double radius, double mass, const Vector& position, const string& type);
+        //Star(double radius, const Vector& position, const string& type);
+        Star(int id, const string& type, double radius);
 };
 
 #endif
