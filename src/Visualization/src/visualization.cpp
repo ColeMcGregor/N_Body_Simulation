@@ -8,14 +8,15 @@
 #include <string>
 #include <random>       // Assigning colors
 
-// #include "vector.h"
-// //#include "Body.h"
-// #include "Star.h"
-// #include "Planet.h"
-// #include "Moon.h"
-// #include "BlackHole.h"
-// #include "FileReader.h"
+#include <fstream>
+#include <sstream>
+#include <stdexcept>
 
+
+#include "Body.h" // Assuming Body.cpp and Body.h define the Body class
+#include "vector.h" // Assuming Vector is defined here
+
+#include <algorithm>
 using namespace std;
 
 /*
@@ -23,219 +24,142 @@ using namespace std;
 */
 
 
-//graphics again dont worry
-void reshape(int w, int h) {
-    glViewport(0, 0, w, h);
-    glMatrixMode(GL_PROJECTION);
+void parseInputFile(const string& fileName, int& timestep, int& bodyCount,
+                    vector<Body>& bodies) {
+    ifstream file(fileName);
+
+    if (!file.is_open()) {
+        throw runtime_error("Unable to open file: " + fileName);
+    }
+
+    string line;
+
+    // Parse the timestep
+    if (getline(file, line)) {
+        istringstream iss(line);
+        string label;
+        iss >> label >> timestep;
+        if (label != "Timestep:") {
+            throw runtime_error("Invalid format for Timestep");
+        }
+    }
+    // Parse the number of bodies
+    if (getline(file, line)) {
+        istringstream iss(line);
+        string label;
+        iss >> label >> bodyCount;
+        if (label != "N:") {
+            throw runtime_error("Invalid format for body count");
+        }
+    }
+
+    // Parse body details
+    do {
+        istringstream iss(line);
+        int id;
+        string type;
+        double radius;
+        iss >> type >> id >> radius;
+            
+        
+        Body body(type, id, radius);
+
+        vector<Vector> trajectories;
+
+        // Read trajectory lines
+        while (getline(file, line)) {
+            if (line.empty() || line.find_first_not_of("0123456789.,- ") != string::npos) {
+                break;  // Stop parsing trajectories when a non-position line is found
+            }
+
+            istringstream posStream(line);
+            double x, y, z;
+            char comma;
+
+            if (posStream >> x >> comma >> y >> comma >> z) {
+                trajectories.emplace_back(Vector(x, y, z));  // Use the Vector class
+            } else {
+                throw runtime_error("Invalid trajectory format");
+            }
+        }
+
+            body.updatePosition(trajectories);  // Update the body with parsed trajectories
+            bodies.push_back(body);  // Add the body to the vector
+        
+        } while (!file.eof());
+
+        file.close();
+    }
+int posx,posy,posz = 10;
+// Function to set up the display
+void display() {
+    // Set the background color to black
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);  // RGBA: black background
+    glClear(GL_COLOR_BUFFER_BIT);  // Clear the color buffer
     glLoadIdentity();
-    gluPerspective(45.0, (double)w / (double)h, 1.0, 1000.0);
-    glMatrixMode(GL_MODELVIEW);
-} 
 
+    gluLookAt   (posx,posy,posz,
+                0.0,0.0,0.0,
+                0.0,1.0,0.0);
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <vector>
-#include <string>
-struct Body {
-    int id;
-    std::string type;
-    double radius;
-    std::vector<std::vector<double>> positions;
-};
+    for(int i = 1; i < bodies.size(); i++){
 
-
-vector<Body>bodies;
-int timestep = 0;
-
-// Initialize OpenGL
-void initOpenGL() {
-    glEnable(GL_DEPTH_TEST);         // Enable depth testing
-    glDepthFunc(GL_LEQUAL);          // Less-than-or-equal depth test
-    glClearColor(0.0, 0.0, 0.0, 1.0); // Black background
-
-}
-
-
-
-// void drawBody(const Body& body, const std::vector<double>& position) {
-//     glPushMatrix();
-//     glTranslatef(position[0] * 1e6, position[1] * 1e6, position[2] * 1e6); // Scale positions for visibility
-
-//     if (body.type == "star")
-//         glColor3f(1.0, 1.0, 0.0); // Yellow for stars
-//     else if (body.type == "planet")
-//         glColor3f(0.0, 0.0, 1.0); // Blue for planets
-//     else if (body.type == "moon")
-//         glColor3f(0.5, 0.5, 0.5); // Gray for moons
-//     else
-//         glColor3f(1.0, 0.0, 0.0); // Red for other types
-
-//     glutSolidSphere(body.radius / 1e9, 20, 20); // Scale radius for visualization
-//     glPopMatrix();
-// }
-
-
-double zpos = 50;
-void keyboard(unsigned char key, int x, int y) {
-    switch (key) {
-        case 'w': zpos -= 50.0f; //need to be fixed
-            if(zpos < 1.0){
-                zpos = 1.0;
-            } break; // Move closer
-        case 's': zpos += 50.f; 
-              break; // Move farther  //needs to be fixed
-        case  27: exit(0); break;   //esc key           //works
-        // case '+': zoomFactor += 0.1f;                   //needs to be fixed
-        //     std::cout <<"Zooming in" << ::std::endl; break;
-        // case '-': zoomFactor -= 0.1f;                   //needs to be fixed
-        //     std::cout <<"Zooming out" << ::std::endl; break;
-        
     }
-    glutPostRedisplay(); // Redraw the scene
-}
-// void renderScene() {
-//     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the color and depth buffers
-//     glLoadIdentity();
-
-//     // Set camera position
-//     gluLookAt(0.0, 0.0, 10.0,   // Camera position (z = 10)
-//               0.0, 0.0, 0.0,    // Look-at point
-//               0.0, 1.0, 0.0);   // Up vector
-
-//     // Render each body
-//     for (const auto& body : bodies) {
-//         if (body.positions.empty()) {
-//             // Skip rendering if there are no positions
-//             std::cerr << "Warning: Body " << body.id << " has no positions." << std::endl;
-//             continue;
-//         }
-
-//         // Ensure timestep is valid for the current body
-//         size_t currentIndex = timestep % (body.positions.size() - 1);
-//         size_t nextIndex = currentIndex + 1;
-
-//         // Interpolation factor (0.0 to 1.0)
-//         float alpha = static_cast<float>(timestep % 100) / 100.0f;
-
-//         // Interpolate position: (1 - alpha) * current + alpha * next
-//         std::vector<double> interpolatedPosition(3);
-//         for (size_t i = 0; i < 3; ++i) {
-//             interpolatedPosition[i] =
-//                 (1.0 - alpha) * body.positions[currentIndex][i] +
-//                 alpha * body.positions[nextIndex][i];
-//         }
-
-//         // Draw the body at the interpolated position
-//         drawBody(body, interpolatedPosition);
-//     }
-
-//     glutSwapBuffers(); // Swap buffers to display the rendered frame
-// }
-
-
-#include <algorithm>
-
-std::string trim(const std::string& str) {
-    size_t first = str.find_first_not_of(" \t\n\r");
-    size_t last = str.find_last_not_of(" \t\n\r");
-    return (first == std::string::npos || last == std::string::npos) ? "" : str.substr(first, last - first + 1);
+    // Swap buffers (display the rendered image)
+    glutSwapBuffers();
 }
 
-void update(int value) {
-    timestep++;
-
-    // Ensure timestep doesn't exceed the largest `positions.size()`
-    size_t maxTimestep = 0;
-    for (const auto& body : bodies) {
-        maxTimestep = std::max(maxTimestep, body.positions.size());
-    }
-    if (timestep >= maxTimestep) {
-        timestep = 0;
-    }
-
-    glutPostRedisplay();
-    glutTimerFunc(16, update, 0); // Call again in 16ms
+// Function to set up the OpenGL environment
+void init() {
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);  // Black background color
+    glLoadIdentity();
 }
-
-
-#include "FileReader.h"
-
+vector<Body> bodies;
 int main(int argc, char** argv) {
+    try {
+        string fileName = "output.txt";
+        int timestep = 0;
+        int bodyCount = 0;
 
 
-    FileReader reader("output.txt");
-    int timestep = reader.readTimeStep();
-    auto[localBodies,localStars,localPlanets,localMoons,localBH] = reader.readBodies();
+        parseInputFile(fileName, timestep, bodyCount, bodies);
 
-    // Debugging Output
-    std::cout << "Timestep: " << timestep << std::endl;
-    //std::cout << "Number of Bodies: " << numBodies << std::endl;
+        // Output parsed data for verification
+        cout << "Timestep: " << timestep << endl;
+        cout << "Number of Bodies: " << bodyCount << endl;
 
 
+        cout << "\nBodies and Trajectories:\n";
+        cout<<bodies.size()<<endl;
+        for (const auto& body : bodies) {
+            cout << "Body ID: " << body.getID() << ", Type: " << body.getType() << ", Radius: " << body.getRadius() << endl;
+            //cout << "Trajectories:\n";
+            // for (const auto& trajectory : body.getPosition()) {
+            //     cout<< trajectory.x<<" "<<trajectory.y<<" "<<trajectory.z << endl;  // Assuming `Vector` overloads `operator<<`
+            // }
+            cout << endl;
+        }
+    } catch (const exception& e) {
+        cerr << "Error: " << e.what() << endl;
+    }
+
+    // Initialize GLUT
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize(800, 600);
-    glutCreateWindow("Celestial Bodies Visualization");
 
-    initOpenGL();
+    // Set up a single buffered window with RGB color model
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowSize(800, 600);  // Set window size to 800x600 pixels
+    glutCreateWindow("N-Body Sim");  // Create the window with a title
 
-    //glutDisplayFunc(renderScene);
-    glutTimerFunc(16, update, 0); // Start animation loop
+    // Initialize OpenGL
+    init();
 
-    glutKeyboardFunc(keyboard);
+    // Register the display function to render the scene
+    glutDisplayFunc(display);
+
+    // Enter the GLUT main loop (will keep the window open)
     glutMainLoop();
+
+
+    return 0;
 }
-
-
-
-
-
-
-
-
-
-
-    // for (const auto& group : hierarchy) {
-    //     std::cout << "Hierarchy: ";
-    //     for (int id : group) std::cout << id << " ";
-    //     std::cout << std::endl;
-    // }
-
-    // for (const auto& body : bodies) {
-    //     std::cout << "Body ID: " << body.id << ", Type: " << body.type << ", Radius: " << body.radius << std::endl;
-    //     for (const auto& position : body.positions) {
-    //         std::cout << "Position: (" << position[0] << ", " << position[1] << ", " << position[2] << ")" << std::endl;
-    //     }
-    // }
-
-
-//     //graphics from here down
-//         glutInit(&argc,argv);
-//         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-//         glutInitWindowSize(800, 600);
-//         glutCreateWindow("N-Body Simulation");
-//         // glutReshapeFunc(reshape); 
-
-
-
-//         // glMatrixMode(GL_PROJECTION);
-//         // glLoadIdentity();
-//         // gluPerspective(45.0,800.0/600.0, 1.0,200.0);
-
-//         // glMatrixMode(GL_MODELVIEW);
-//         // glLoadIdentity();
-
-//         // calculateScale();
-
-//         glutReshapeFunc(reshape);
-//         glutDisplayFunc(display); // Register display callback 
-//         glutMainLoop();
-        
-//     } catch (const std::exception& e) {
-//         cerr << "Error: " << e.what() << endl;
-//     }
-
-//     return 0;
-// }
