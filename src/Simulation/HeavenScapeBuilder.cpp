@@ -80,6 +80,8 @@ Vector SUN_VELOCITY(0.0, 0.0, 0.0);
 Vector SUN_ACCELERATION(0.0, 0.0, 0.0);
 Vector SUN_NET_FORCE(0.0, 0.0, 0.0);
 
+vector<Vector> trajectory;
+
 //Solar System constants
 const Body SUN = Body(  SUN_POSITION, //position in center of system
                         SUN_VELOCITY, //velocity in center of system
@@ -90,7 +92,7 @@ const Body SUN = Body(  SUN_POSITION, //position in center of system
                         gravitationalMultiplier, //gravitational multiplier
                         "star", //type
                         vector<int>{1, 2, 3, 4, 5, 6, 7, 8}, //children indices
-                        vector<Vector>{} //trajectory
+                        trajectory{} //trajectory
                         );
 
 
@@ -390,13 +392,14 @@ void generatePresetBodies() {
         Vector velocity(0, v, vz); // Perpendicular in Y-axis
         Vector acceleration(0, 0, 0); // Acceleration is zero
         Vector net_force(0, 0, 0); // Net force is zero
+        vector<Vector> trajectory;
 
         // Create the planet
         Body planet(
             position, velocity, acceleration, net_force,
             planetMassRanges[i - 1], // Mass from range or preset
             planetRadiusRanges[i - 1], // Radius from range or preset
-            gravitationalMultiplier, "planet", {}, {}
+            gravitationalMultiplier, "planet", {}, trajectory
         );
 
         bodies.push_back(planet);
