@@ -89,8 +89,8 @@ const Body SUN = Body(  SUN_POSITION, //position in center of system
                         6.9634e8, //radius in meters    
                         gravitationalMultiplier, //gravitational multiplier
                         "star", //type
-                        {1, 2, 3, 4, 5, 6, 7, 8}, //children indices
-                        {} //trajectory
+                        vector<int>{1, 2, 3, 4, 5, 6, 7, 8}, //children indices
+                        vector<Vector>{} //trajectory
                         );
 
 
