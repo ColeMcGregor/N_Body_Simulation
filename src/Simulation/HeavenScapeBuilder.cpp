@@ -417,11 +417,13 @@ void generatePresetBodies() {
     Vector moonAcceleration(0, 0, 0);
     Vector moonNetForce(0, 0, 0);
 
+    vector<Vector> moonTrajectory;
+
     Body moon(
         moonPosition, moonVelocity, moonAcceleration, moonNetForce,
         7.34767309e22, // Mass of moon
         1.7374e6, // Radius of moon
-        gravitationalMultiplier, "moon", {}, {}
+        gravitationalMultiplier, "moon", {}, moonTrajectory
     );
 
     bodies.push_back(moon);
