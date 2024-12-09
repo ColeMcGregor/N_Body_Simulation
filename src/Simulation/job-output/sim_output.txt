@@ -1,23 +1,24 @@
-8
 g++ -Xpreprocessor -fopenmp -std=c++17 -Wall -c Simulation.cpp -o Simulation.o
-g++ -Xpreprocessor -fopenmp -std=c++17 -Wall -c FileManager.cpp -o FileManager.o
-g++ -Xpreprocessor -fopenmp -std=c++17 -Wall -c body.cpp -o body.o
-g++ -Xpreprocessor -fopenmp -std=c++17 -Wall -c vector.cpp -o vector.o
 g++ Simulation.o FileManager.o body.o vector.o -o Simulation -fopenmp
-Using 8 threads:
+Using 32 threads:
 
-[Simulation reached 0 iterations]
-[Simulation reached 100000 iterations]
-[Simulation reached 200000 iterations]
-[Simulation reached 300000 iterations]
-[Simulation reached 400000 iterations]
+Simulation reached 0 iterations
+Simulation reached 100000 iterations
+Simulation reached 200000 iterations
+Simulation reached 300000 iterations
+Simulation reached 400000 iterations
+Simulation reached 500000 iterations
+Simulation reached 600000 iterations
+Simulation reached 700000 iterations
+Simulation reached 800000 iterations
+Simulation reached 900000 iterations
 
-Computation time: 7.36839 seconds
+1000000 iterations reached, outputting to file...
 
-500000 iterations reached, outputting to file...
+Computation time: 57.7479 seconds
 
 Destination: ../output.txt
 
-Outputting took 14.019 seconds
+Outputting took 92.7406 seconds
 
-Total elapsed time: 21.3874 seconds
+Total elapsed time: 150.489 seconds

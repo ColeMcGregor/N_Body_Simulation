@@ -10,6 +10,7 @@
  * @author: Cole McGregor, Hawk Lindner, Brandon Trama
  */
 
+#include <omp.h>
 #include "FileManager.h"
 #include <fstream>
 #include <sstream>
@@ -169,16 +170,16 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
      * example:
      * N: 10
      */
-     file << "N: " << bodies.size() << endl;   // N: 10
+    file << "N: " << bodies.size() << endl; // N: 10
 
     /**
-         * below will make a block of parent child relationships, in order of parent index followed by child indices
-         * example:
-         * 0 1 2 3
-         * 1 4 5
-         * 2 6 7
-         * 3 8 9
-         */
+     * below will make a block of parent child relationships, in order of parent index followed by child indices
+     * example:
+     * 0 1 2 3
+     * 1 4 5
+     * 2 6 7
+     * 3 8 9
+     */
     for (size_t i = 0; i < bodies.size(); i++)
     {
         if (bodies[i].childrenIndices.size() > 0)
@@ -191,30 +192,44 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
             file << endl;
         }
     }
-    
-    /**
-     * below will make a block of body number, body type, body radius, and trajectory for each body
-     * example:
-     * 0 star 100
-     * 0.002 0.123 0.456
-     * 0.003 0.124 0.457
-     * 0.004 0.125 0.458
-     * ...
-     */
 
-    // output block style trajectories
-    for (size_t i = 0; i < bodies.size(); i++)
-    { // for each body
-        // body number, body type, body radius
-        file << i << " " << bodies[i].type << " " << bodies[i].radius << endl; // output the body number, type, and radius
-        for (size_t j = 0; j < bodies[i].trajectory.size(); j++)
-        {                                             
-            operator<<(file, bodies[i].trajectory[j]); // Using the overloaded << operator
+/**
+ * below will make a block of body number, body type, body radius, and trajectory for each body
+ * example:
+ * 0 star 100
+ * 0.002 0.123 0.456
+ * 0.003 0.124 0.457
+ * 0.004 0.125 0.458
+ * ...
+ */
+
+vector<string> thread_outputs(omp_get_max_threads());
+
+// output block style trajectories
+    #pragma omp parallel
+    {
+        // output block style trajectories
+        std::ostringstream local_stream;
+
+        #pragma omp for schedule(static)
+        for (size_t i = 0; i < bodies.size(); i++)
+        { // for each body
+            // body number, body type, body radius
+            local_stream << bodies[i].type << " " << i << " " << bodies[i].radius << endl; // output the body number, type, and radius
+            for (size_t j = 0; j < bodies[i].trajectory.size(); j++)
+            {   
+                // output the trajectory of the body
+                local_stream << bodies[i].trajectory[j]; // Using the overloaded << operator
+            }
         }
-        file << endl;
+        thread_outputs[omp_get_thread_num()] = local_stream.str();
+    }   
+    // output the trajectories of the bodies to the file sequentially
+    for (const string& thread_output : thread_outputs)
+    {
+        file << thread_output << endl;
     }
 
-    // output the locations of the bodies to the file
-
-    file.close();
+// output the locations of the bodies to the file
+file.close();
 }

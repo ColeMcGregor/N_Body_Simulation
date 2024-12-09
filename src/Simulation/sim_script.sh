@@ -3,9 +3,9 @@
 #SBATCH --output=job-output/sim_output.txt # Output file
 #SBATCH --error=job-output/sim_error.txt   # Error file
 #SBATCH --partition=skx-dev                # Partition name (specifically the skylake development partition)
-#SBATCH --nodes=1                          # Total number of nodes
-#SBATCH --ntasks=1                         # Total number of tasks
-#SBATCH --cpus-per-task=8                  # Number of cores per task
+#SBATCH --nodes=2                          # Total number of nodes
+#SBATCH --ntasks=2                         # Total number of tasks
+#SBATCH --cpus-per-task=32                 # Number of cores per task
 #SBATCH --time=01:00:00                    # Maximum run time for script
 
 module load gcc
@@ -21,4 +21,4 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 make
 
 # run
-./Simulation
+./Simulation 32-bodies.txt

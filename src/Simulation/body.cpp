@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <omp.h>
 #include "body.h"
 #include "vector.h"
 using namespace std;
