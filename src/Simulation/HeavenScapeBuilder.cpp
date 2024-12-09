@@ -66,12 +66,9 @@ const double GRAVITATIONAL_CONSTANT = 6.67430e-11;  //G baby
 const double SPEED_OF_LIGHT = 2.99792458e8;       //meters per second
 
 //global variables
-<<<<<<< HEAD
-double gravitationalMultiplier;
 int N;
 =======
 double gravitationalMultiplier = 1.0;
->>>>>>> 0a0843c5f3e6507109367f6b809411f9bfb08ece
 int timestep;
 int iterations;
 int bodyCount[5];
