@@ -103,7 +103,7 @@ public:
                         {
                             // end timer for computation
                             double end_comp_time = omp_get_wtime();
-                            cout << "Simulation reached " >> step << " iterations" << endl;
+                            cout << "Simulation reached " << step << " iterations" << endl;
                             cout << endl
                                     << "Computation time: " << end_comp_time - start_comp_time << " seconds" << endl;
 
