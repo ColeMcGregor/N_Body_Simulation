@@ -64,6 +64,15 @@ constexpr std::pair<double, double> BLACKHOLE_RADIUS_RANGE = {1.5e19, 1.5e21};
 //constants
 const double GRAVITATIONAL_CONSTANT = 6.67430e-11;  //G baby
 const double SPEED_OF_LIGHT = 2.99792458e8;       //meters per second
+
+//global variables
+double gravitationalMultiplier;
+int timestep;
+int iterations;
+int bodyCount[5];
+vector<double> usedRadii;
+vector<Body> bodies;
+
 //Solar System constants
 const Body SUN = Body(  Vector(0.0, 0.0, 0.0), //position in center of system
                         Vector(0.0, 0.0, 0.0), //velocity in center of system
@@ -76,15 +85,6 @@ const Body SUN = Body(  Vector(0.0, 0.0, 0.0), //position in center of system
                         {1, 2, 3, 4, 5, 6, 7, 8}, //children indices
                         {} //trajectory
                         );
-
-
-//global variables
-double gravitationalMultiplier;
-int timestep;
-int iterations;
-int bodyCount[5];
-vector<double> usedRadii;
-vector<Body> bodies;
 
 
 /**
