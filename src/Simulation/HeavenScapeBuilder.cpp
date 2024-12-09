@@ -434,6 +434,11 @@ void generatePresetBodies() {
     bodyCount[1] = 1;
     bodyCount[2] = 8;
     bodyCount[3] = 1;
+    N = bodies.size();
+    NB = bodyCount[4];
+    NS = bodyCount[1];
+    NP = bodyCount[2];
+    NM = bodyCount[3];
 
     // Output information
     cout << "Preset solar system generated with " << bodies.size() << " bodies." << endl;
