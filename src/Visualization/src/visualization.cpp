@@ -59,22 +59,22 @@ void initOpenGL() {
 
 
 
-void drawBody(const Body& body, const std::vector<double>& position) {
-    glPushMatrix();
-    glTranslatef(position[0] * 1e6, position[1] * 1e6, position[2] * 1e6); // Scale positions for visibility
+// void drawBody(const Body& body, const std::vector<double>& position) {
+//     glPushMatrix();
+//     glTranslatef(position[0] * 1e6, position[1] * 1e6, position[2] * 1e6); // Scale positions for visibility
 
-    if (body.type == "star")
-        glColor3f(1.0, 1.0, 0.0); // Yellow for stars
-    else if (body.type == "planet")
-        glColor3f(0.0, 0.0, 1.0); // Blue for planets
-    else if (body.type == "moon")
-        glColor3f(0.5, 0.5, 0.5); // Gray for moons
-    else
-        glColor3f(1.0, 0.0, 0.0); // Red for other types
+//     if (body.type == "star")
+//         glColor3f(1.0, 1.0, 0.0); // Yellow for stars
+//     else if (body.type == "planet")
+//         glColor3f(0.0, 0.0, 1.0); // Blue for planets
+//     else if (body.type == "moon")
+//         glColor3f(0.5, 0.5, 0.5); // Gray for moons
+//     else
+//         glColor3f(1.0, 0.0, 0.0); // Red for other types
 
-    glutSolidSphere(body.radius / 1e9, 20, 20); // Scale radius for visualization
-    glPopMatrix();
-}
+//     glutSolidSphere(body.radius / 1e9, 20, 20); // Scale radius for visualization
+//     glPopMatrix();
+// }
 
 
 double zpos = 50;
@@ -95,44 +95,44 @@ void keyboard(unsigned char key, int x, int y) {
     }
     glutPostRedisplay(); // Redraw the scene
 }
-void renderScene() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the color and depth buffers
-    glLoadIdentity();
+// void renderScene() {
+//     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the color and depth buffers
+//     glLoadIdentity();
 
-    // Set camera position
-    gluLookAt(0.0, 0.0, 10.0,   // Camera position (z = 10)
-              0.0, 0.0, 0.0,    // Look-at point
-              0.0, 1.0, 0.0);   // Up vector
+//     // Set camera position
+//     gluLookAt(0.0, 0.0, 10.0,   // Camera position (z = 10)
+//               0.0, 0.0, 0.0,    // Look-at point
+//               0.0, 1.0, 0.0);   // Up vector
 
-    // Render each body
-    for (const auto& body : bodies) {
-        if (body.positions.empty()) {
-            // Skip rendering if there are no positions
-            std::cerr << "Warning: Body " << body.id << " has no positions." << std::endl;
-            continue;
-        }
+//     // Render each body
+//     for (const auto& body : bodies) {
+//         if (body.positions.empty()) {
+//             // Skip rendering if there are no positions
+//             std::cerr << "Warning: Body " << body.id << " has no positions." << std::endl;
+//             continue;
+//         }
 
-        // Ensure timestep is valid for the current body
-        size_t currentIndex = timestep % (body.positions.size() - 1);
-        size_t nextIndex = currentIndex + 1;
+//         // Ensure timestep is valid for the current body
+//         size_t currentIndex = timestep % (body.positions.size() - 1);
+//         size_t nextIndex = currentIndex + 1;
 
-        // Interpolation factor (0.0 to 1.0)
-        float alpha = static_cast<float>(timestep % 100) / 100.0f;
+//         // Interpolation factor (0.0 to 1.0)
+//         float alpha = static_cast<float>(timestep % 100) / 100.0f;
 
-        // Interpolate position: (1 - alpha) * current + alpha * next
-        std::vector<double> interpolatedPosition(3);
-        for (size_t i = 0; i < 3; ++i) {
-            interpolatedPosition[i] =
-                (1.0 - alpha) * body.positions[currentIndex][i] +
-                alpha * body.positions[nextIndex][i];
-        }
+//         // Interpolate position: (1 - alpha) * current + alpha * next
+//         std::vector<double> interpolatedPosition(3);
+//         for (size_t i = 0; i < 3; ++i) {
+//             interpolatedPosition[i] =
+//                 (1.0 - alpha) * body.positions[currentIndex][i] +
+//                 alpha * body.positions[nextIndex][i];
+//         }
 
-        // Draw the body at the interpolated position
-        drawBody(body, interpolatedPosition);
-    }
+//         // Draw the body at the interpolated position
+//         drawBody(body, interpolatedPosition);
+//     }
 
-    glutSwapBuffers(); // Swap buffers to display the rendered frame
-}
+//     glutSwapBuffers(); // Swap buffers to display the rendered frame
+// }
 
 
 #include <algorithm>
@@ -142,66 +142,6 @@ std::string trim(const std::string& str) {
     size_t last = str.find_last_not_of(" \t\n\r");
     return (first == std::string::npos || last == std::string::npos) ? "" : str.substr(first, last - first + 1);
 }
-
-
-void parseInputFile(const std::string& filename) {
-    std::ifstream inputFile(filename);
-    if (!inputFile.is_open()) {
-        std::cerr << "Error: Could not open the file " << filename << std::endl;
-        return;
-    }
-
-    string line;
-    Body currentBody;
-
-    while (std::getline(inputFile, line)) {
-        line = trim(line); // Trim leading/trailing whitespace
-        if (line.empty()) continue; // Skip empty lines
-
-        // Check if the line starts a new body (if it has `id`, `type`, `radius`)
-        if (isdigit(line[0])) {
-            if (!currentBody.positions.empty()) {
-                // Save the previous body if it has positions
-                bodies.push_back(currentBody);
-                currentBody = Body(); // Reset for the new body
-            }
-
-            // Parse the new body details
-            istringstream bodyStream(line);
-            if (!(bodyStream >> currentBody.id >> currentBody.type >> currentBody.radius)) {
-                //std::cerr << "Error: Failed to parse body details: " << line << std::endl;
-                continue;
-            }
-        } else {
-            // Assume the line contains position data
-            line = trim(line); // Trim again in case of additional spaces
-
-            // Replace commas with spaces for easier parsing
-            std::replace(line.begin(), line.end(), ',', ' ');
-
-            std::istringstream positionStream(line);
-            std::vector<double> position(3);
-
-            // Parse x, y, z values
-            if (!(positionStream >> position[0] >> position[1] >> position[2])) {
-                //std::cerr << "Error: Failed to parse position: " << line << std::endl;
-                continue;
-            }
-
-            currentBody.positions.push_back(position);
-        }
-    }
-    for(int i = 0 ; i < bodies.size(); i++){
-        cout<<bodies[i].radius<<endl;
-    }
-    // Save the last body (if it has positions)
-    if (!currentBody.positions.empty()) {
-        bodies.push_back(currentBody);
-    }
-
-    inputFile.close();
-}
-
 
 void update(int value) {
     timestep++;
@@ -220,12 +160,15 @@ void update(int value) {
 }
 
 
-
+#include "FileReader.h"
 
 int main(int argc, char** argv) {
 
 
-    parseInputFile("output.txt");
+    FileReader reader("output.txt");
+    int timestep = reader.readTimeStep();
+    auto[localBodies,localStars,localPlanets,localMoons,localBH] = reader.readBodies();
+
     // Debugging Output
     std::cout << "Timestep: " << timestep << std::endl;
     //std::cout << "Number of Bodies: " << numBodies << std::endl;
@@ -238,7 +181,7 @@ int main(int argc, char** argv) {
 
     initOpenGL();
 
-    glutDisplayFunc(renderScene);
+    //glutDisplayFunc(renderScene);
     glutTimerFunc(16, update, 0); // Start animation loop
 
     glutKeyboardFunc(keyboard);

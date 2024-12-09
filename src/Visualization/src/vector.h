@@ -1,34 +1,26 @@
+// Vector.h
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include <cmath>
-#include <iostream>
-#include <string>
-#include <vector>
+#include <iostream>  // for std::ostream
 
-class Body;
+class Vector {
+public:
+    double x, y, z;
 
-/*
-    Vector struct for holding x,y,z coordinates,
-    has a magnitude function, and a constructor that defaults to 0
-    has operator overloading for +, -, *, and / to allow for vector math
+    // Constructor declaration
+    Vector();
+    Vector(double x_, double y_, double z_);
 
-    Vector is used to represent position, velocity, acceleration, and force
-    as they are all vectored quantities
+    // Method declarations
+    double magnitude() const;
+    Vector operator+(const Vector& other) const;
+    Vector operator-(const Vector& other) const;
+    Vector operator*(double scalar) const;
+    Vector operator/(double scalar) const;
 
-
-*/
-struct Vector{
-    double x,y,z;
-    //std::vector<Body> relatedBodies;
-    Vector(double x_ = 0.0, double y_ = 0.0, double z_ = 0.0);
-    double magnitude()const;
-    Vector operator+(const Vector& other)const;
-    Vector operator-(const Vector& other)const;
-    Vector operator*(double scalar)const;
-    Vector operator/(double scalar)const;
-    void print()const;
-
+    // Method declaration for print
+    void print() const;
 
 };
 

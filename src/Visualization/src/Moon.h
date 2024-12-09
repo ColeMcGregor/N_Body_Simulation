@@ -8,7 +8,7 @@ using namespace std;
 
 class Moon : public Body{
     public:
-        Moon(double radius,double mass, Vector position,string type);
+        Moon(double radius, Vector position,string type);
 
 };
 

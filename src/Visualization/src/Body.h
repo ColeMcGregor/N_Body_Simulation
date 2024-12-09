@@ -1,28 +1,32 @@
 #ifndef BODY_H
 #define BODY_H
 
-
-#include "vector.h"
+#include <vector>
 #include <string>
+#include "vector.h" // Ensure you have the Vector class header available
 
-using namespace std;    //no more std::
+class Body {
+public:
+    // Constructor for the Body class
+    Body(int id, const std::string& type, double radius);
 
-class Body{
-    protected:
-        double radius;      //every body will have a radius
-        double mass;        //mass of the planets
-        vector<Vector>  position;    //every body will have a position
-        string type;        //type of body
-    public:
-        /*spot for constructor*/
-    Body(double radius,double mass, const Vector& position, const string& type);
+    // Method to update the positions of the body
+    void updatePosition(const std::vector<Vector>& newPositions);
 
-    // const Vector& getPosition() const{
-    //     return position;
-    // }
-    const double getRadius() const{
-        return radius;
-    }
+    // Getter for positions
+    std::vector<Vector> getPosition() const;
+
+    // Getter for body ID
+    int getID() const;
+
+    // Getter for body type
+    std::string getType() const;
+
+private:
+    int id;                    // ID of the body
+    std::string type;          // Type of the body (e.g., "star", "planet")
+    double radius;             // Radius of the body
+    std::vector<Vector> positions; // Positions of the body stored in a vector
 };
 
-#endif
+#endif // BODY_H
