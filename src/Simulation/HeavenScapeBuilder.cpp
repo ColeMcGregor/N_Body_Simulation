@@ -102,128 +102,128 @@ double generateSchwarzchildRadius(double mass) {
  * will have random assignment of bodies as children to each other, following hierarchy of mass
  *     will check that none of the children are more massive than the parent, and that no children are assigned to themselves, or more than one parent
  */
-void generateRandomBodies() {
-    int stars, planets, moons, blackHoles;
-    int currentBlackHoles, currentStars, currentPlanets, currentMoons;
-    cout << "Enter the total number of bodies (N): ";
-    cin >> N;
+// void generateRandomBodies() {
+//     int stars, planets, moons, blackHoles;
+//     int currentBlackHoles, currentStars, currentPlanets, currentMoons;
+//     cout << "Enter the total number of bodies (N): ";
+//     cin >> N;
 
-    // Validate input
-    if (N <= 0) {
-        cerr << "Error: Number of bodies must be greater than 0." << endl;
-        return;
-    }
+//     // Validate input
+//     if (N <= 0) {
+//         cerr << "Error: Number of bodies must be greater than 0." << endl;
+//         return;
+//     }
 
-    // Generate random bodies (logic to be implemented)
-    cout << "Generating " << N << " random bodies with random child assignments..." << endl;
+//     // Generate random bodies (logic to be implemented)
+//     cout << "Generating " << N << " random bodies with random child assignments..." << endl;
 
-    //generate random number of stars, planets, moons, and black holes, summed to N, with planets always being the most numerous
-    //will assign random, bound values to each body, so that no planet is bigger than any star, and no moon bigger than any planet
+//     //generate random number of stars, planets, moons, and black holes, summed to N, with planets always being the most numerous
+//     //will assign random, bound values to each body, so that no planet is bigger than any star, and no moon bigger than any planet
 
-     // Seed the random number generator
-    srand(static_cast<unsigned int>(time(0)));
+//      // Seed the random number generator
+//     srand(static_cast<unsigned int>(time(0)));
 
-    // Determine the number of black holes (rare, typically 0-3)
-    blackHoles = rand() % 4;
+//     // Determine the number of black holes (rare, typically 0-3)
+//     blackHoles = rand() % 4;
 
-    // Determine the number of stars (10-20% of total bodies)
-    stars = max(1, static_cast<int>(N * (0.1 + static_cast<double>(rand()) / RAND_MAX * 0.1))); // 10-20% range
+//     // Determine the number of stars (10-20% of total bodies)
+//     stars = max(1, static_cast<int>(N * (0.1 + static_cast<double>(rand()) / RAND_MAX * 0.1))); // 10-20% range
 
-    // Determine the number of planets (most numerous)
-    planets = max(1, static_cast<int>(N * (0.4 + static_cast<double>(rand()) / RAND_MAX * 0.2))); // 40-60% range
+//     // Determine the number of planets (most numerous)
+//     planets = max(1, static_cast<int>(N * (0.4 + static_cast<double>(rand()) / RAND_MAX * 0.2))); // 40-60% range
 
-    // Remaining bodies are moons
-    moons = N - (blackHoles + stars + planets);
+//     // Remaining bodies are moons
+//     moons = N - (blackHoles + stars + planets);
 
-    // Ensure moons have at least 0 count
-    moons = max(0, moons);
+//     // Ensure moons have at least 0 count
+//     moons = max(0, moons);
 
-     // Output the generated counts
-    cout << "Generated random distribution of bodies:\n";
-    cout << "Black Holes: " << blackHoles << "\n";
-    cout << "Stars: " << stars << "\n";
-    cout << "Planets: " << planets << "\n";
-    cout << "Moons: " << moons << endl;
-    cout << "Assigning bodies to bodyCount vector..." << endl;
+//      // Output the generated counts
+//     cout << "Generated random distribution of bodies:\n";
+//     cout << "Black Holes: " << blackHoles << "\n";
+//     cout << "Stars: " << stars << "\n";
+//     cout << "Planets: " << planets << "\n";
+//     cout << "Moons: " << moons << endl;
+//     cout << "Assigning bodies to bodyCount vector..." << endl;
 
-    //assign the body counts to the bodyCount vector
-    bodyCount[0] = N;
-    bodyCount[1] = blackHoles;
-    bodyCount[2] = stars;
-    bodyCount[3] = planets;
-    bodyCount[4] = moons;
+//     //assign the body counts to the bodyCount vector
+//     bodyCount[0] = N;
+//     bodyCount[1] = blackHoles;
+//     bodyCount[2] = stars;
+//     bodyCount[3] = planets;
+//     bodyCount[4] = moons;
 
-    //initialize the current body counters
-    currentBlackHoles = 0;
-    currentStars = 0;
-    currentPlanets = 0;
-    currentMoons = 0;
+//     //initialize the current body counters
+//     currentBlackHoles = 0;
+//     currentStars = 0;
+//     currentPlanets = 0;
+//     currentMoons = 0;
 
-    //check the bodyCount vector
-    cout << "Body Counts: N:" << bodyCount[0] << " NS:" << bodyCount[1] << " NP:" << bodyCount[2] << " NM:" << bodyCount[3] << " NB:" << bodyCount[4] << endl;
-    //inform user the bodies will be generated now
-    cout << "Generating bodies..." << endl; 
+//     //check the bodyCount vector
+//     cout << "Body Counts: N:" << bodyCount[0] << " NS:" << bodyCount[1] << " NP:" << bodyCount[2] << " NM:" << bodyCount[3] << " NB:" << bodyCount[4] << endl;
+//     //inform user the bodies will be generated now
+//     cout << "Generating bodies..." << endl; 
 
-    //now that we have the counts, we can make the random bodies, with default positions, velocities, and radii, to be set in initiateHeavenscape
-    //we will also need to make a vector of used radii, to check against when generating unique radii
-    //first generate the black holes
-    for (int i = 0; i < N; i++) {
-        // Default vectors factored out of the loop as every body will have the same default values
-        Vector position(0.0, 0.0, 0.0);
-        Vector velocity(0.0, 0.0, 0.0);
-        Vector acceleration(0.0, 0.0, 0.0);
-        Vector netForce(0.0, 0.0, 0.0);
+//     //now that we have the counts, we can make the random bodies, with default positions, velocities, and radii, to be set in initiateHeavenscape
+//     //we will also need to make a vector of used radii, to check against when generating unique radii
+//     //first generate the black holes
+//     for (int i = 0; i < N; i++) {
+//         // Default vectors factored out of the loop as every body will have the same default values
+//         Vector position(0.0, 0.0, 0.0);
+//         Vector velocity(0.0, 0.0, 0.0);
+//         Vector acceleration(0.0, 0.0, 0.0);
+//         Vector netForce(0.0, 0.0, 0.0);
 
-        //initialize the mass, radius, type, children indices, and trajectory for each body(must be local variables)
-        double mass, radius;
-        string type;
-        vector<int> childrenIndices;
-        vector<Vector> trajectory;
+//         //initialize the mass, radius, type, children indices, and trajectory for each body(must be local variables)
+//         double mass, radius;
+//         string type;
+//         vector<int> childrenIndices;
+//         vector<Vector> trajectory;
 
-        //will first do blackholes, then stars, then planets, then moons, because of the if ELSE logic
-        if (currentBlackHoles < blackHoles) {
-            // Generate Black Hole
-            mass = generateBoundedDouble(BLACKHOLE_MASS_RANGE.first, BLACKHOLE_MASS_RANGE.second);
-            radius = generateSchwarzchildRadius(mass);
-            type = "blackhole";
-            currentBlackHoles++;
-            cout << "Black Hole " << currentBlackHoles << " created." << endl;
-        } else if (currentStars < stars) {
-            // Generate Star
-            mass = generateBoundedDouble(STAR_MASS_RANGE.first, STAR_MASS_RANGE.second);
-            radius = generateUniqueRadius(STAR_RADIUS_RANGE.first, STAR_RADIUS_RANGE.second, usedRadii);
-            type = "star";
-            currentStars++;
-            cout << "Star " << currentStars << " created." << endl;
-        } else if (currentPlanets < planets) {
-            // Generate Planet
-            mass = generateBoundedDouble(PLANET_MASS_RANGE.first, PLANET_MASS_RANGE.second);
-            radius = generateUniqueRadius(PLANET_RADIUS_RANGE.first, PLANET_RADIUS_RANGE.second, usedRadii);
-            type = "planet";
-            currentPlanets++;
-            cout << "Planet " << currentPlanets << " created." << endl;
-        } else if (currentMoons < moons) {
-            // Generate Moon
-            mass = generateBoundedDouble(MOON_MASS_RANGE.first, MOON_MASS_RANGE.second);
-            radius = generateUniqueRadius(MOON_RADIUS_RANGE.first, MOON_RADIUS_RANGE.second, usedRadii);
-            type = "moon";
-            currentMoons++;
-            cout << "Moon " << currentMoons << " created." << endl;
-        }
+//         //will first do blackholes, then stars, then planets, then moons, because of the if ELSE logic
+//         if (currentBlackHoles < blackHoles) {
+//             // Generate Black Hole
+//             mass = generateBoundedDouble(BLACKHOLE_MASS_RANGE.first, BLACKHOLE_MASS_RANGE.second);
+//             radius = generateSchwarzchildRadius(mass);
+//             type = "blackhole";
+//             currentBlackHoles++;
+//             cout << "Black Hole " << currentBlackHoles << " created." << endl;
+//         } else if (currentStars < stars) {
+//             // Generate Star
+//             mass = generateBoundedDouble(STAR_MASS_RANGE.first, STAR_MASS_RANGE.second);
+//             radius = generateUniqueRadius(STAR_RADIUS_RANGE.first, STAR_RADIUS_RANGE.second, usedRadii);
+//             type = "star";
+//             currentStars++;
+//             cout << "Star " << currentStars << " created." << endl;
+//         } else if (currentPlanets < planets) {
+//             // Generate Planet
+//             mass = generateBoundedDouble(PLANET_MASS_RANGE.first, PLANET_MASS_RANGE.second);
+//             radius = generateUniqueRadius(PLANET_RADIUS_RANGE.first, PLANET_RADIUS_RANGE.second, usedRadii);
+//             type = "planet";
+//             currentPlanets++;
+//             cout << "Planet " << currentPlanets << " created." << endl;
+//         } else if (currentMoons < moons) {
+//             // Generate Moon
+//             mass = generateBoundedDouble(MOON_MASS_RANGE.first, MOON_MASS_RANGE.second);
+//             radius = generateUniqueRadius(MOON_RADIUS_RANGE.first, MOON_RADIUS_RANGE.second, usedRadii);
+//             type = "moon";
+//             currentMoons++;
+//             cout << "Moon " << currentMoons << " created." << endl;
+//         }
 
-        // Add body to the list
-        bodies.push_back(Body(position, velocity, acceleration, netForce, mass, radius, gravitationalMultiplier, type, childrenIndices, trajectory));
-    }
-    cout << "All bodies generated." << endl;
-    cout << "Your new God will now create the universe..." << endl;
+//         // Add body to the list
+//         bodies.push_back(Body(position, velocity, acceleration, netForce, mass, radius, gravitationalMultiplier, type, childrenIndices, trajectory));
+//     }
+//     cout << "All bodies generated." << endl;
+//     cout << "Your new God will now create the universe..." << endl;
 
-    //children assignment
-    cout << "Assigning children to each body..." << endl;
-    //assign stars to black holes if there are black holes
+//     //children assignment
+//     cout << "Assigning children to each body..." << endl;
+//     //assign stars to black holes if there are black holes
 
-    //now we have our bodies, we can initiate the heavenscape
-    initiateHeavenscape(bodies, bodyCount);
-}
+//     //now we have our bodies, we can initiate the heavenscape
+//     initiateHeavenscape(bodies, bodyCount);
+// }
 
 /**
  * generate custom bodies, which requires user to input numbers for bodies and numbers for each child assignment(should only be used for small systems)
@@ -233,105 +233,105 @@ void generateRandomBodies() {
  * must input the number of children for each body( body number: children numbers, separated by spaces)
  *     will check that none of the children are more massive than the parent, and that no children are assigned to themselves, or more than one parent
  */
-void generateCustomBodies() {
-    cout << "Enter the total number of bodies (N): ";
-    cin >> N;
+// void generateCustomBodies() {
+//     cout << "Enter the total number of bodies (N): ";
+//     cin >> N;
 
-    // Validate input for total bodies
-    if (N <= 0) {
-        cerr << "Error: Number of bodies must be greater than 0." << endl;
-        return;
-    }
+//     // Validate input for total bodies
+//     if (N <= 0) {
+//         cerr << "Error: Number of bodies must be greater than 0." << endl;
+//         return;
+//     }
 
-    // Variables to store counts of each type
-    int stars, planets, moons, blackHoles;
-    cout << "Define the number of each type of body (star, planet, moon, black hole):" << endl;
+//     // Variables to store counts of each type
+//     int stars, planets, moons, blackHoles;
+//     cout << "Define the number of each type of body (star, planet, moon, black hole):" << endl;
 
-    // Input for each body type
-    do {
-        cout << "Stars: ";
-        cin >> stars;
-        cout << "Planets: ";
-        cin >> planets;
-        cout << "Moons: ";
-        cin >> moons;
-        cout << "Black holes: ";
-        cin >> blackHoles;
+//     // Input for each body type
+//     do {
+//         cout << "Stars: ";
+//         cin >> stars;
+//         cout << "Planets: ";
+//         cin >> planets;
+//         cout << "Moons: ";
+//         cin >> moons;
+//         cout << "Black holes: ";
+//         cin >> blackHoles;
 
-        if (stars + planets + moons + blackHoles != N) {
-            cerr << "Error: Total bodies must match N. Please re-enter." << endl;
-        }
-    } while (stars + planets + moons + blackHoles != N);
+//         if (stars + planets + moons + blackHoles != N) {
+//             cerr << "Error: Total bodies must match N. Please re-enter." << endl;
+//         }
+//     } while (stars + planets + moons + blackHoles != N);
 
-    // Assign counts to global bodyCount array
-    bodyCount[0] = N;
-    bodyCount[1] = blackHoles;
-    bodyCount[2] = stars;
-    bodyCount[3] = planets;
-    bodyCount[4] = moons;
+//     // Assign counts to global bodyCount array
+//     bodyCount[0] = N;
+//     bodyCount[1] = blackHoles;
+//     bodyCount[2] = stars;
+//     bodyCount[3] = planets;
+//     bodyCount[4] = moons;
 
-    // Generate bodies with default positions and velocities
-    cout << "Generating bodies..." << endl;
-    for (int i = 0; i < N; ++i) {
-        double mass, radius;
-        string type;
+//     // Generate bodies with default positions and velocities
+//     cout << "Generating bodies..." << endl;
+//     for (int i = 0; i < N; ++i) {
+//         double mass, radius;
+//         string type;
 
-        // Determine body type and assign properties
-        if (i < blackHoles) {
-            mass = generateBoundedDouble(BLACKHOLE_MASS_RANGE.first, BLACKHOLE_MASS_RANGE.second);
-            radius = generateSchwarzchildRadius(mass);
-            type = "blackhole";
-        } else if (i < blackHoles + stars) {
-            mass = generateBoundedDouble(STAR_MASS_RANGE.first, STAR_MASS_RANGE.second);
-            radius = generateUniqueRadius(STAR_RADIUS_RANGE.first, STAR_RADIUS_RANGE.second, usedRadii);
-            type = "star";
-        } else if (i < blackHoles + stars + planets) {
-            mass = generateBoundedDouble(PLANET_MASS_RANGE.first, PLANET_MASS_RANGE.second);
-            radius = generateUniqueRadius(PLANET_RADIUS_RANGE.first, PLANET_RADIUS_RANGE.second, usedRadii);
-            type = "planet";
-        } else {
-            mass = generateBoundedDouble(MOON_MASS_RANGE.first, MOON_MASS_RANGE.second);
-            radius = generateUniqueRadius(MOON_RADIUS_RANGE.first, MOON_RADIUS_RANGE.second, usedRadii);
-            type = "moon";
-        }
+//         // Determine body type and assign properties
+//         if (i < blackHoles) {
+//             mass = generateBoundedDouble(BLACKHOLE_MASS_RANGE.first, BLACKHOLE_MASS_RANGE.second);
+//             radius = generateSchwarzchildRadius(mass);
+//             type = "blackhole";
+//         } else if (i < blackHoles + stars) {
+//             mass = generateBoundedDouble(STAR_MASS_RANGE.first, STAR_MASS_RANGE.second);
+//             radius = generateUniqueRadius(STAR_RADIUS_RANGE.first, STAR_RADIUS_RANGE.second, usedRadii);
+//             type = "star";
+//         } else if (i < blackHoles + stars + planets) {
+//             mass = generateBoundedDouble(PLANET_MASS_RANGE.first, PLANET_MASS_RANGE.second);
+//             radius = generateUniqueRadius(PLANET_RADIUS_RANGE.first, PLANET_RADIUS_RANGE.second, usedRadii);
+//             type = "planet";
+//         } else {
+//             mass = generateBoundedDouble(MOON_MASS_RANGE.first, MOON_MASS_RANGE.second);
+//             radius = generateUniqueRadius(MOON_RADIUS_RANGE.first, MOON_RADIUS_RANGE.second, usedRadii);
+//             type = "moon";
+//         }
 
-        // Add body to the list
-        bodies.push_back(Body(Vector(), Vector(), Vector(), Vector(), mass, radius, gravitationalMultiplier, type, {}, {}));
-    }
+//         // Add body to the list
+//         bodies.push_back(Body(Vector(), Vector(), Vector(), Vector(), mass, radius, gravitationalMultiplier, type, {}, {}));
+//     }
 
-    cout << "All bodies generated. Now define child relationships..." << endl;
+//     cout << "All bodies generated. Now define child relationships..." << endl;
 
-    // Assign children to each body
-    for (int i = 0; i < N; ++i) {
-        int numChildren;
-        cout << "Enter the number of children for body " << i << " (" << bodies[i].type << "): ";
-        cin >> numChildren;
+//     // Assign children to each body
+//     for (int i = 0; i < N; ++i) {
+//         int numChildren;
+//         cout << "Enter the number of children for body " << i << " (" << bodies[i].type << "): ";
+//         cin >> numChildren;
 
-        if (numChildren > N - 1) {
-            cerr << "Error: Too many children specified. Skipping this body." << endl;
-            continue;
-        }
+//         if (numChildren > N - 1) {
+//             cerr << "Error: Too many children specified. Skipping this body." << endl;
+//             continue;
+//         }
 
-        cout << "Enter the indices of the children (space-separated): ";
-        for (int j = 0; j < numChildren; ++j) {
-            int childIndex;
-            cin >> childIndex;
+//         cout << "Enter the indices of the children (space-separated): ";
+//         for (int j = 0; j < numChildren; ++j) {
+//             int childIndex;
+//             cin >> childIndex;
 
-            // Validate child index
-            if (childIndex == i || childIndex < 0 || childIndex >= N) {
-                cerr << "Invalid child index. Skipping..." << endl;
-                continue;
-            }
-            bodies[i].childrenIndices.push_back(childIndex);
-        }
-    }
+//             // Validate child index
+//             if (childIndex == i || childIndex < 0 || childIndex >= N) {
+//                 cerr << "Invalid child index. Skipping..." << endl;
+//                 continue;
+//             }
+//             bodies[i].childrenIndices.push_back(childIndex);
+//         }
+//     }
 
-    // Assign positions and velocities
-    cout << "Assigning positions and velocities..." << endl;
-    initiateHeavenscape(bodies, bodyCount);
+//     // Assign positions and velocities
+//     cout << "Assigning positions and velocities..." << endl;
+//     initiateHeavenscape(bodies, bodyCount);
 
-    cout << "Custom bodies successfully generated and initialized." << endl;
-}
+//     cout << "Custom bodies successfully generated and initialized." << endl;
+// }
 
 
 /**
@@ -510,97 +510,97 @@ Vector calculateOrbitalVelocity(const Vector &parentPos, const Vector &childPos,
  * @param bodies the vector of bodies in the simulation
  * @param bodyCount the array of body counts ([0]: N, [1]: NS, [2]: NP, [3]: NM, [4]: NB)
  */
-void initiateHeavenscape(vector<Body> &bodies, int bodyCount[5])
-{
-    const double DISTANCE_SCALING_FACTOR = 1.0e12; // Scaling factor for distances
-    const double MIN_DISTANCE = 1.0e10;           // Minimum separation between bodies
+// void initiateHeavenscape(vector<Body> &bodies, int bodyCount[5])
+// {
+//     const double DISTANCE_SCALING_FACTOR = 1.0e12; // Scaling factor for distances
+//     const double MIN_DISTANCE = 1.0e10;           // Minimum separation between bodies
 
-    // Helper function to get parent position
-    auto getParentPosition = [&](int childIndex) -> Vector {
-        for (size_t i = 0; i < bodies.size(); ++i) {
-            for (int child : bodies[i].childrenIndices) {
-                if (child == childIndex) {
-                    return bodies[i].position;
-                }
-            }
-        }
-        return Vector(0, 0, 0); // Default to origin if no parent is found
-    };
+//     // Helper function to get parent position
+//     auto getParentPosition = [&](int childIndex) -> Vector {
+//         for (size_t i = 0; i < bodies.size(); ++i) {
+//             for (int child : bodies[i].childrenIndices) {
+//                 if (child == childIndex) {
+//                     return bodies[i].position;
+//                 }
+//             }
+//         }
+//         return Vector(0, 0, 0); // Default to origin if no parent is found
+//     };
 
-    // Black Holes
-    if (bodyCount[4] > 0) {
-        double blackHoleDistance = 1.4759e19; // Average distance between black holes
-        Vector center(0, 0, 0);
+//     // Black Holes
+//     if (bodyCount[4] > 0) {
+//         double blackHoleDistance = 1.4759e19; // Average distance between black holes
+//         Vector center(0, 0, 0);
 
-        for (int i = 0; i < bodyCount[4]; ++i) {
-            double angle = 2.0 * M_PI * i / bodyCount[4]; // Spread black holes evenly
-            bodies[i].position = center + Vector(
-                blackHoleDistance * cos(angle),
-                blackHoleDistance * sin(angle),
-                0);
-            bodies[i].velocity = Vector(0, 0, 0); // Black holes are stationary
-        }
-    }
+//         for (int i = 0; i < bodyCount[4]; ++i) {
+//             double angle = 2.0 * M_PI * i / bodyCount[4]; // Spread black holes evenly
+//             bodies[i].position = center + Vector(
+//                 blackHoleDistance * cos(angle),
+//                 blackHoleDistance * sin(angle),
+//                 0);
+//             bodies[i].velocity = Vector(0, 0, 0); // Black holes are stationary
+//         }
+//     }
 
-    // Stars
-    if (bodyCount[1] > 0) {
-        int startIndex = bodyCount[4]; // Start after black holes
-        int endIndex = startIndex + bodyCount[1];
-        double starDistance = 3.8e16; // Average distance from black holes to stars
+//     // Stars
+//     if (bodyCount[1] > 0) {
+//         int startIndex = bodyCount[4]; // Start after black holes
+//         int endIndex = startIndex + bodyCount[1];
+//         double starDistance = 3.8e16; // Average distance from black holes to stars
 
-        for (int i = startIndex; i < endIndex; ++i) {
-            Vector parentPos = getParentPosition(i); // Get parent position (black hole)
-            double orbitalRadius = starDistance + (i - startIndex) * MIN_DISTANCE;
+//         for (int i = startIndex; i < endIndex; ++i) {
+//             Vector parentPos = getParentPosition(i); // Get parent position (black hole)
+//             double orbitalRadius = starDistance + (i - startIndex) * MIN_DISTANCE;
 
-            // Position star in orbit around its parent (black hole)
-            bodies[i].position = calculateOrbitalPosition(parentPos, orbitalRadius);
+//             // Position star in orbit around its parent (black hole)
+//             bodies[i].position = calculateOrbitalPosition(parentPos, orbitalRadius);
 
-            // Velocity for stable orbit
-            bodies[i].velocity = calculateOrbitalVelocity(
-                parentPos, bodies[i].position, bodies[parentPos].mass, gravitationalMultiplier);
-        }
-    }
+//             // Velocity for stable orbit
+//             bodies[i].velocity = calculateOrbitalVelocity(
+//                 parentPos, bodies[i].position, bodies[parentPos].mass, gravitationalMultiplier);
+//         }
+//     }
 
-    // Planets
-    if (bodyCount[2] > 0) {
-        int startIndex = bodyCount[4] + bodyCount[1]; // Start after black holes and stars
-        int endIndex = startIndex + bodyCount[2];
-        double planetDistance = 5.7e10; // Average distance between planets and stars
+//     // Planets
+//     if (bodyCount[2] > 0) {
+//         int startIndex = bodyCount[4] + bodyCount[1]; // Start after black holes and stars
+//         int endIndex = startIndex + bodyCount[2];
+//         double planetDistance = 5.7e10; // Average distance between planets and stars
 
-        for (int i = startIndex; i < endIndex; ++i) {
-            Vector parentPos = getParentPosition(i); // Get parent position (star)
-            double orbitalRadius = planetDistance + (i - startIndex) * MIN_DISTANCE;
+//         for (int i = startIndex; i < endIndex; ++i) {
+//             Vector parentPos = getParentPosition(i); // Get parent position (star)
+//             double orbitalRadius = planetDistance + (i - startIndex) * MIN_DISTANCE;
 
-            // Position planet in orbit around its parent (star)
-            bodies[i].position = calculateOrbitalPosition(parentPos, orbitalRadius);
+//             // Position planet in orbit around its parent (star)
+//             bodies[i].position = calculateOrbitalPosition(parentPos, orbitalRadius);
 
-            // Velocity for stable orbit
-            bodies[i].velocity = calculateOrbitalVelocity(
-                parentPos, bodies[i].position, bodies[parentPos].mass, gravitationalMultiplier);
-        }
-    }
+//             // Velocity for stable orbit
+//             bodies[i].velocity = calculateOrbitalVelocity(
+//                 parentPos, bodies[i].position, bodies[parentPos].mass, gravitationalMultiplier);
+//         }
+//     }
 
-    // Moons
-    if (bodyCount[3] > 0) {
-        int startIndex = bodyCount[4] + bodyCount[1] + bodyCount[2]; // Start after black holes, stars, and planets
-        int endIndex = startIndex + bodyCount[3];
-        double moonDistance = 3.84e8; // Average distance between moons and planets
+//     // Moons
+//     if (bodyCount[3] > 0) {
+//         int startIndex = bodyCount[4] + bodyCount[1] + bodyCount[2]; // Start after black holes, stars, and planets
+//         int endIndex = startIndex + bodyCount[3];
+//         double moonDistance = 3.84e8; // Average distance between moons and planets
 
-        for (int i = startIndex; i < endIndex; ++i) {
-            Vector parentPos = getParentPosition(i); // Get parent position (planet)
-            double orbitalRadius = moonDistance + (i - startIndex) * MIN_DISTANCE;
+//         for (int i = startIndex; i < endIndex; ++i) {
+//             Vector parentPos = getParentPosition(i); // Get parent position (planet)
+//             double orbitalRadius = moonDistance + (i - startIndex) * MIN_DISTANCE;
 
-            // Position moon in orbit around its parent (planet)
-            bodies[i].position = calculateOrbitalPosition(parentPos, orbitalRadius);
+//             // Position moon in orbit around its parent (planet)
+//             bodies[i].position = calculateOrbitalPosition(parentPos, orbitalRadius);
 
-            // Velocity for stable orbit
-            bodies[i].velocity = calculateOrbitalVelocity(
-                parentPos, bodies[i].position, bodies[parentPos].mass, gravitationalMultiplier);
-        }
-    }
+//             // Velocity for stable orbit
+//             bodies[i].velocity = calculateOrbitalVelocity(
+//                 parentPos, bodies[i].position, bodies[parentPos].mass, gravitationalMultiplier);
+//         }
+//     }
 
-    cout << "Heavenscape initialization complete." << endl;
-}
+//     cout << "Heavenscape initialization complete." << endl;
+// }
 
 
 /**
@@ -674,12 +674,12 @@ int main() {
     string mode;
 
     // Prompt user for the mode
-    cout << "Enter mode (random, preset): ";
+    cout << "Enter mode (preset): ";
     getline(cin, mode); // Allow for "custom random" input
 
     // Validate mode
-    if (mode != "random" && mode != "preset") {
-        cerr << "Invalid mode. Allowed modes are: random, or preset" << endl;
+    if (mode != "preset") {
+        cerr << "Invalid mode. Allowed modes are: preset" << endl;
         return 1;
     }
 
@@ -712,13 +712,14 @@ int main() {
 
         
     // Delegate tasks based on mode
-    if (mode == "random") {
-        generateRandomBodies();
-        if (bodies.size() != (N)) {
-            cerr << "Error: Generating Random bodies failed." << endl;
-            return 1;
-        }
-    } else if (mode == "preset") {
+    // if (mode == "random") {
+    //     generateRandomBodies();
+    //     if (bodies.size() != (N)) {
+    //         cerr << "Error: Generating Random bodies failed." << endl;
+    //         return 1;
+    //     }
+    // } else 
+    if (mode == "preset") {
         generatePresetBodies();
         if (bodies.size() != (N)) {
             cerr << "Error: Generating Preset bodies failed." << endl;
