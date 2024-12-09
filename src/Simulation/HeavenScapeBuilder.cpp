@@ -66,7 +66,7 @@ const double GRAVITATIONAL_CONSTANT = 6.67430e-11;  //G baby
 const double SPEED_OF_LIGHT = 2.99792458e8;       //meters per second
 
 //global variables
-int N;
+int N, NB, NS, NP, NM;
 double gravitationalMultiplier = 1.0;
 int timestep;
 int iterations;
@@ -723,7 +723,7 @@ int main() {
     // } else 
     if (mode == "preset") {
         generatePresetBodies();
-        if (bodies.size() != (N)) {
+        if (bodies.size() != static_cast<size_t>(N)) {
             cerr << "Error: Generating Preset bodies failed." << endl;
             return 1;
         }
