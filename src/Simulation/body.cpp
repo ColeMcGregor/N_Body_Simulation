@@ -26,10 +26,10 @@ using namespace std;
     Constructor for the Body class
 */
 Body::Body(
-    const Vector &pos,                          // Position
-    const Vector &vel,                          // Velocity
-    const Vector &accel,                        // Acceleration
-    const Vector &net_force,                    // Net force
+    Vector &pos,                          // Position
+    Vector &vel,                          // Velocity
+    Vector &accel,                        // Acceleration
+    Vector &net_force,                    // Net force
     const double mass,                    // Mass
     const double radius,                  // Radius
     const double gravitationalMultiplier, // Gravitational multiplier

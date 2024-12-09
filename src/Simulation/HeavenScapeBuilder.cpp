@@ -74,11 +74,17 @@ int bodyCount[5];
 vector<double> usedRadii;
 vector<Body> bodies;
 
+//fill in vectors for SUN constant
+vector<Vector> SUN_POSITION = {Vector(0.0, 0.0, 0.0)};
+vector<Vector> SUN_VELOCITY = {Vector(0.0, 0.0, 0.0)};
+vector<Vector> SUN_ACCELERATION = {Vector(0.0, 0.0, 0.0)};
+vector<Vector> SUN_NET_FORCE = {Vector(0.0, 0.0, 0.0)};
+
 //Solar System constants
-const Body SUN = Body(  Vector(0.0, 0.0, 0.0), //position in center of system
-                        Vector(0.0, 0.0, 0.0), //velocity in center of system
-                        Vector(0.0, 0.0, 0.0), //acceleration in center of system
-                        Vector(0.0, 0.0, 0.0), //net force in center of system
+const Body SUN = Body(  SUN_POSITION, //position in center of system
+                        SUN_VELOCITY, //velocity in center of system
+                        SUN_ACCELERATION, //acceleration in center of system
+                        SUN_NET_FORCE, //net force in center of system
                         1.989e30, //mass in kg
                         6.9634e8, //radius in meters    
                         gravitationalMultiplier, //gravitational multiplier
@@ -382,10 +388,12 @@ void generatePresetBodies() {
         // Calculate initial position and velocity
         Vector position(r, 0, z); // Start along X-axis
         Vector velocity(0, v, vz); // Perpendicular in Y-axis
+        Vector acceleration(0, 0, 0); // Acceleration is zero
+        Vector net_force(0, 0, 0); // Net force is zero
 
         // Create the planet
         Body planet(
-            position, velocity, Vector(0, 0, 0), Vector(0, 0, 0),
+            position, velocity, acceleration, net_force,
             planetMassRanges[i - 1], // Mass from range or preset
             planetRadiusRanges[i - 1], // Radius from range or preset
             gravitationalMultiplier, "planet", {}, {}
@@ -402,8 +410,12 @@ void generatePresetBodies() {
     Vector moonPosition(bodies[3].position.x + moonR, 0, 0); // Offset from Earth by any axis, in this case, x
     Vector moonVelocity(0, moonV + bodies[3].velocity.y, 0); // Tangential to Earth's velocity, in this case, y, to make a perpendicular velocity vector
 
+    //acceleration and net force are zero, as the moon is not affected by any forces
+    Vector moonAcceleration(0, 0, 0);
+    Vector moonNetForce(0, 0, 0);
+
     Body moon(
-        moonPosition, moonVelocity, Vector(0, 0, 0), Vector(0, 0, 0),
+        moonPosition, moonVelocity, moonAcceleration, moonNetForce,
         7.34767309e22, // Mass of moon
         1.7374e6, // Radius of moon
         gravitationalMultiplier, "moon", {}, {}
