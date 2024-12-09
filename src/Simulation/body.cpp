@@ -111,6 +111,10 @@ void Body::update(double timestep, bool isHalfStep)
         // Full-step: Update position and finalize velocity
         this->position = this->position + this->velocity * timestep; // Update position
         this->velocity = this->velocity + (this->acceleration * (timestep * 0.5)); // Finalize velocity
+
+        //update trajectory
+        this->trajectory.push_back(this->position);
+
     }
 }
 
