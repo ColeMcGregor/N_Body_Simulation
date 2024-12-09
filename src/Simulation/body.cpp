@@ -101,15 +101,17 @@ void Body::applyForce(const Vector &force)
  * @return void
  */
 
-void Body::update(double timestep)
+void Body::update(double timestep, bool isHalfStep)
 {
-    // update velocity and position
-    this->velocity = this->velocity + (this->acceleration * timestep);
-    this->position = this->position + this->velocity * timestep;
-    // add the position to the trajectory for output
-    this->trajectory.push_back(this->position);
-    // reset acceleration for next timestep
-    this->acceleration = Vector(0, 0, 0);
+    if (isHalfStep) {
+        // Half-step: Update velocity using acceleration
+        this->velocity = this->velocity + (this->acceleration * (timestep * 0.5));
+        this->acceleration = Vector(0, 0, 0); // Reset acceleration after use
+    } else {
+        // Full-step: Update position and finalize velocity
+        this->position = this->position + this->velocity * timestep; // Update position
+        this->velocity = this->velocity + (this->acceleration * (timestep * 0.5)); // Finalize velocity
+    }
 }
 
 /*

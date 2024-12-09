@@ -58,83 +58,68 @@ public:
      * @param iterations the number of iterations of the simulation
      *
      */
-    void run(double timeStep, int iterations)
+    void run(double timeStep, int iterations) {
+    double total_time = 0.0;
+
+    if (omp_get_max_threads() > bodies.size()) {
+        cerr << "Number of threads cannot exceed the number of bodies" << endl;
+        exit(1);
+    }
+    int chunk_size = bodies.size() / omp_get_max_threads();
+
+    #pragma omp parallel
     {
-        // initialize total time variable
-        double total_time = 0.0;
-
-        // specifies how many bodies a thread will handle at any given time
-	if (omp_get_max_threads() > bodies.size()) {
-	  cerr << "Number of threads cannot exceed the number of bodies" << endl;
-	  exit(1);
-	}
-        int chunk_size = bodies.size() / omp_get_max_threads();
-
-        #pragma omp parallel
+        #pragma omp single
         {
-            #pragma omp single
-            {
-                cout << "Using " << omp_get_num_threads() << " threads:" << endl
-                        << endl;
+            cout << "Using " << omp_get_num_threads() << " threads:" << endl << endl;
+        }
+
+        double start_comp_time = omp_get_wtime();
+
+        for (int step = 0; step < iterations + 1; step++) {
+            // Step 1: Calculate forces and perform half-step velocity update
+            #pragma omp for schedule(dynamic, chunk_size)
+            for (size_t i = 0; i < bodies.size(); i++) {
+                Vector totalForce = bodies[i].sumForces(bodies); // Calculate total force
+                bodies[i].applyForce(totalForce);                // Apply force to compute acceleration
+                bodies[i].update(timeStep, true);                // Half-step velocity update
             }
 
-            // start timer for computation
-            double start_comp_time = omp_get_wtime();
+            // Step 2: Update positions and finalize velocities
+            #pragma omp for schedule(dynamic, chunk_size)
+            for (size_t i = 0; i < bodies.size(); i++) {
+                bodies[i].update(timeStep, false); // Update position and finalize velocity
+            }
 
-            for (int step = 0; step < iterations + 1; step++)
+            // A single thread will handle output
+            #pragma omp single
             {
-                // divide the work among threads
-                #pragma omp for schedule(dynamic, chunk_size)
-                for (size_t i = 0; i < bodies.size(); i++)
-                {
-                    // cout << "Thread " << omp_get_thread_num() << "handling body " << i << endl;
-                    //  calculate the total force on each body
-                    Vector totalForce = bodies[i].sumForces(bodies);
-                    bodies[i].applyForce(totalForce);
-                    bodies[i].update(timeStep);
-                }
+                if (step % 100000 == 0) {
+                    if (step == iterations) {
+                        double end_comp_time = omp_get_wtime();
+                        cout << "Simulation reached " << step << " iterations" << endl;
+                        cout << endl << "Computation time: " << end_comp_time - start_comp_time << " seconds" << endl;
 
-// a single thread will output the results to the output file
-                #pragma omp single
-                {
-                    if (step % 100000 == 0)
-                    {
-                        if (step == iterations)
-                        {
-                            // end timer for computation
-                            double end_comp_time = omp_get_wtime();
-                            cout << "Simulation reached " << step << " iterations" << endl;
-                            cout << endl
-                                    << "Computation time: " << end_comp_time - start_comp_time << " seconds" << endl;
+                        cout << endl << "Outputting to file..." << endl;
+                        double start_out_time = omp_get_wtime();
+                        fileManager.outputResults(outputFile, bodies, step);
+                        cout << "Done!" << endl;
 
-                            // start timer for outputting
-                            cout << endl
-                                    << "Outputting to file..." << endl;
-                            double start_out_time = omp_get_wtime();
-                            // outputs final results to destination file
-                            fileManager.outputResults(outputFile, bodies, step);
-                            cout << "Done!" << endl;
-                            // end timer for outputting
-                            double end_out_time = omp_get_wtime();
-                            cout << endl
-                                    << "Outputting took " << end_out_time - start_out_time << " seconds" << endl;
-                            cout << endl
-                                    << "File Destination: " << outputFile << endl;
+                        double end_out_time = omp_get_wtime();
+                        cout << endl << "Outputting took " << end_out_time - start_out_time << " seconds" << endl;
+                        cout << endl << "File Destination: " << outputFile << endl;
 
-                            // gather total time
-                            total_time = (end_comp_time - start_comp_time) + (end_out_time - start_out_time);
-                        }
-                        else
-                        {
-                            cout << "Simulation reached " << step << " iterations" << endl;
-                        }
+                        total_time = (end_comp_time - start_comp_time) + (end_out_time - start_out_time);
+                    } else {
+                        cout << "Simulation reached " << step << " iterations" << endl;
                     }
                 }
             }
         }
-        cout << endl
-                << "Elapsed time: " << total_time << " seconds" << endl;
     }
+    cout << endl << "Elapsed time: " << total_time << " seconds" << endl;
+}
+
 };
 
 int main(int argc, char *argv[])
