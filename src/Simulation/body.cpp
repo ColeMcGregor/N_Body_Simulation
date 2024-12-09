@@ -76,7 +76,7 @@ Vector Body::gravForce(const Body &p2) const
     double forceMag = (G * gravitationalMultiplier) * (mass * p2.mass) / ((dist * dist) + (epsilon * epsilon));
 
     // Normalize r(distance from one body to the other, ignoring dimensions) and scale by force magnitude
-    return Vector(r_normalized.x * forceMag, r_normalized.y * forceMag, r_normalized.z * forceMag); // the vectored force between the two bodies
+    return r_normalized * forceMag; // the vectored force between the two bodies, using the normalized distance vector and Vector Scalar Multiplication
 }
 
 /**
