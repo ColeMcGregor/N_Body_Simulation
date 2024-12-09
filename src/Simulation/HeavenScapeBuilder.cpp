@@ -380,16 +380,19 @@ void generatePresetBodies() {
     // Place the planets around the Sun(mercury to neptune)
     for (size_t i = 1; i < orbitalRadii.size(); ++i) {
         double r = orbitalRadii[i];
-        double v = sqrt(GRAVITATIONAL_CONSTANT * parentMasses[i - 1] / r);
-        //convert the inclination to radians
-        double inclination = orbitalInclinations[i] * (M_PI / 180.0);
-        //use the inclination to calculate the z position and velocity
-        double z = r * sin(inclination);      // Z position based on inclination
-        double vz = v * sin(inclination);    // Z velocity based on inclination
+        // Compute position vector in 3D space
+        double x = r * cos(inclination); // X position
+        double z = r * sin(inclination); // Z position
+        Vector position(x, 0, z); // Start in the XZ plane
 
-        // Calculate initial position and velocity
-        Vector position(r, 0, z); // Start along X-axis
-        Vector velocity(0, v, vz); // Perpendicular in Y-axis
+        // Compute velocity vector tangential to position
+        // Orbital velocity in the plane of inclination
+        double vx = -v * (z / r); // Tangential velocity component in X
+        double vy = v;            // Tangential velocity in Y
+        double vz = v * (x / r);  // Tangential velocity component in Z
+
+        Vector velocity(vx, vy, vz); // Full 3D velocity vector
+
         Vector acceleration(0, 0, 0); // Acceleration is zero
         Vector net_force(0, 0, 0); // Net force is zero
         vector<Vector> trajectory;
