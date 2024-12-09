@@ -133,7 +133,7 @@ public:
             }
         }
         cout << endl
-                << "Total elapsed time: " << total_time << " seconds" << endl;
+                << "Elapsed time: " << total_time << " seconds" << endl;
     }
 };
 
