@@ -67,7 +67,6 @@ const double SPEED_OF_LIGHT = 2.99792458e8;       //meters per second
 
 //global variables
 int N;
-=======
 double gravitationalMultiplier = 1.0;
 int timestep;
 int iterations;
@@ -219,7 +218,8 @@ void generateRandomBodies() {
     cout << "Your new God will now create the universe..." << endl;
 
     //children assignment
-
+    cout << "Assigning children to each body..." << endl;
+    //assign stars to black holes if there are black holes
 
     //now we have our bodies, we can initiate the heavenscape
     initiateHeavenscape(bodies, bodyCount);
@@ -491,79 +491,96 @@ Vector calculateOrbitalVelocity(const Vector &parentPos, const Vector &childPos,
  */
 void initiateHeavenscape(vector<Body> &bodies, int bodyCount[5])
 {
-    /*
-     * Determine the hierarchical structure and spatial arrangement of celestial bodies in the simulation:
-     *
-     * 1. Identify if black holes are present: (bodyCount[4] > 0)
-     *    - If present, the black hole is(are) the heaviest body(ies) and serves as the center of the simulation.
-     *    - Analyze the black hole's children (stars, planets, or both) and assign them appropriately.
-     *    - the closest black hole to us is 1560 light years away, or 1.4759e+19 meters, which can be used to average the distance between black holes, if more than one
-     *
-     * 2. If no black holes are present: (bodyCount[4] == 0)
-     *    - Designate the most massive body as the center of the simulation.
-     *
-     * 3. Arrange stars: (bodyCount[1] > 0)
-     *    - Determine the number of stars and ensure sufficient spacing between them to accommodate their planetary systems.
-     *    - Place stars in stable orbits around the black hole or the center of the simulation.
-     *    - If multiple stars exist, ensure they are spaced apart to allow for planetary systems.
-     *    - the closest star from sol is Alpha Centauri at 4.37 light years away, or 3.8 x 10^16 meters, which can be used to average the distance between stars
-     *
-     * 4. Assign planets: (bodyCount[2] > 0)
-     *    - Determine the number of planets and assign each to the correct parent (star or black hole).
-     *    - Ensure sufficient spacing between planets to allow for moon systems.
-     *    - the closest planet to sol is Mercury at 57 million kilometers, or 5.7 x 10^10 meters, which can be used to bind the distance from a planet to a star
-     *    - the shortest distance between any two planets is 0.28 AU, or 4.1887e+10, which can be used to average the minimum distance between planets
-     *    - the longest distance between two planets in our solar system is 13.2 AU, or 1.9747e+12 meters, which can be used to average the maximum distance between planets around a star
-     *
-     * 5. Handle moons: (bodyCount[3] > 0)
-     *    - Identify all moons and assign them to their appropriate parent planets.
-     *    - Position moons after planets, ensuring their orbital radii are correctly assigned.
-     *    - the closest moon to any planet in our solar system is phobos to mars, at an astonishly low 6000 km, or 6 x 10^6 meters, which can be used to average the minimum distance between moons and planets
-     *    - the moon farthest from its host body is Neso from neptune, at 4.96 x 10^10 meters, which can be used to average the maximum distance between moons and planets
-     *
-     */
-    //depending on number of black holes,  generate the positions equidistant from the center of the system, and each other
-    if (bodyCount[4] > 0) {
-        //generate the positions equidistant from the center of the system, either centered for one, or equidistant for multiple
-        for (size_t i = 0; i < bodyCount[4]; ++i) {
-            //generate the positions for the black holes (center for one, equidistant for multiple)
-            Vector position(0, 0, 0);
-            if (bodyCount[4] == 1) {
-                //center for one
-                bodies[i].position = position;
-            }
-            else if (bodyCount[4] == 2) {
-                //equidistant for 2
-                bodies[i].position = position + Vector(1, 1, 1); //these numbers need changing*********************************************************************
-                bodies[i + 1].position = position + Vector(-1, -1, -1); //these numbers need changing**************************************************************
-                i += 1;//account for the fact that we are adding two bodies
-            }
-            else if (bodyCount[4] == 3) {
-                //equidistant for 3
-                bodies[i].position = position + Vector(1, 1, 1); //these numbers need changing*********************************************************************
-                bodies[i + 1].position = position + Vector(-1, -1, -1); //these numbers need changing**************************************************************
-                bodies[i + 2].position = position + Vector(1, -1, -1); //these numbers need changing*********************************************************************
-                i += 2;//account for the fact that we are adding three bodies
-            }
-            else {
-                //equidistant for 4 or more (4 is the current max)
-                //these will be in a square formation
-                bodies[i].position = position + Vector(1, 1, 1); //these numbers need changing*********************************************************************
-                bodies[i + 1].position = position + Vector(-1, -1, -1); //these numbers need changing**************************************************************
-                bodies[i + 2].position = position + Vector(1, -1, -1); //these numbers need changing*********************************************************************
-                bodies[i + 3].position = position + Vector(-1, 1, 1); //these numbers need changing*********************************************************************
-                i += 3;//account for the fact that we are adding four bodies
+    const double DISTANCE_SCALING_FACTOR = 1.0e12; // Scaling factor for distances
+    const double MIN_DISTANCE = 1.0e10;           // Minimum separation between bodies
+
+    // Helper function to get parent position
+    auto getParentPosition = [&](int childIndex) -> Vector {
+        for (size_t i = 0; i < bodies.size(); ++i) {
+            for (int child : bodies[i].childrenIndices) {
+                if (child == childIndex) {
+                    return bodies[i].position;
+                }
             }
         }
-        cout << "Black holes positioned in Random Generation." << endl;
+        return Vector(0, 0, 0); // Default to origin if no parent is found
+    };
+
+    // Black Holes
+    if (bodyCount[4] > 0) {
+        double blackHoleDistance = 1.4759e19; // Average distance between black holes
+        Vector center(0, 0, 0);
+
+        for (int i = 0; i < bodyCount[4]; ++i) {
+            double angle = 2.0 * M_PI * i / bodyCount[4]; // Spread black holes evenly
+            bodies[i].position = center + Vector(
+                blackHoleDistance * cos(angle),
+                blackHoleDistance * sin(angle),
+                0);
+            bodies[i].velocity = Vector(0, 0, 0); // Black holes are stationary
+        }
     }
-    //stars baby
+
+    // Stars
     if (bodyCount[1] > 0) {
-        for (size_t i = bodyCount[4]; i < bodyCount[1] + bodyCount[4]; ++i) {
-        cout << "Stars positioned in Random Generation." << endl;
+        int startIndex = bodyCount[4]; // Start after black holes
+        int endIndex = startIndex + bodyCount[1];
+        double starDistance = 3.8e16; // Average distance from black holes to stars
+
+        for (int i = startIndex; i < endIndex; ++i) {
+            Vector parentPos = getParentPosition(i); // Get parent position (black hole)
+            double orbitalRadius = starDistance + (i - startIndex) * MIN_DISTANCE;
+
+            // Position star in orbit around its parent (black hole)
+            bodies[i].position = calculateOrbitalPosition(parentPos, orbitalRadius);
+
+            // Velocity for stable orbit
+            bodies[i].velocity = calculateOrbitalVelocity(
+                parentPos, bodies[i].position, bodies[parentPos].mass, gravitationalMultiplier);
+        }
     }
+
+    // Planets
+    if (bodyCount[2] > 0) {
+        int startIndex = bodyCount[4] + bodyCount[1]; // Start after black holes and stars
+        int endIndex = startIndex + bodyCount[2];
+        double planetDistance = 5.7e10; // Average distance between planets and stars
+
+        for (int i = startIndex; i < endIndex; ++i) {
+            Vector parentPos = getParentPosition(i); // Get parent position (star)
+            double orbitalRadius = planetDistance + (i - startIndex) * MIN_DISTANCE;
+
+            // Position planet in orbit around its parent (star)
+            bodies[i].position = calculateOrbitalPosition(parentPos, orbitalRadius);
+
+            // Velocity for stable orbit
+            bodies[i].velocity = calculateOrbitalVelocity(
+                parentPos, bodies[i].position, bodies[parentPos].mass, gravitationalMultiplier);
+        }
     }
+
+    // Moons
+    if (bodyCount[3] > 0) {
+        int startIndex = bodyCount[4] + bodyCount[1] + bodyCount[2]; // Start after black holes, stars, and planets
+        int endIndex = startIndex + bodyCount[3];
+        double moonDistance = 3.84e8; // Average distance between moons and planets
+
+        for (int i = startIndex; i < endIndex; ++i) {
+            Vector parentPos = getParentPosition(i); // Get parent position (planet)
+            double orbitalRadius = moonDistance + (i - startIndex) * MIN_DISTANCE;
+
+            // Position moon in orbit around its parent (planet)
+            bodies[i].position = calculateOrbitalPosition(parentPos, orbitalRadius);
+
+            // Velocity for stable orbit
+            bodies[i].velocity = calculateOrbitalVelocity(
+                parentPos, bodies[i].position, bodies[parentPos].mass, gravitationalMultiplier);
+        }
+    }
+
+    cout << "Heavenscape initialization complete." << endl;
 }
+
 
 /**
  * @brief outputs the bodies to the input.txt file
@@ -587,7 +604,6 @@ void outputBodies() {
      * position [x, y, z]
      * velocity [x, y, z]
      * mass [mass]
-     * density [density]
      * radius [radius]
      * [star, planet, moon, black hole]
      * ...
@@ -623,7 +639,6 @@ void outputBodies() {
         outputFile << "position " << bodies[i].position << endl; //output position
         outputFile << "velocity " << bodies[i].velocity << endl; //output velocity
         outputFile << "mass " << bodies[i].mass << endl; //output mass
-        outputFile << "density " << bodies[i].density << endl; //output density
         outputFile << "radius " << bodies[i].radius << endl; //output radius
         outputFile << bodies[i].type << endl; //output type
         outputFile << endl; //make empty line between bodies
@@ -638,12 +653,12 @@ int main() {
     string mode;
 
     // Prompt user for the mode
-    cout << "Enter mode (random, custom, custom random, preset): ";
+    cout << "Enter mode (random, preset): ";
     getline(cin, mode); // Allow for "custom random" input
 
     // Validate mode
-    if (mode != "random" && mode != "custom" && mode != "custom random" && mode != "preset") {
-        cerr << "Invalid mode. Allowed modes are: random, custom, custom random, preset" << endl;
+    if (mode != "random" && mode != "preset") {
+        cerr << "Invalid mode. Allowed modes are: random, or preset" << endl;
         return 1;
     }
 
@@ -680,12 +695,6 @@ int main() {
         generateRandomBodies();
         if (bodies.size() != (N)) {
             cerr << "Error: Generating Random bodies failed." << endl;
-            return 1;
-        }
-    } else if (mode == "custom") {
-        generateCustomBodies();
-        if (bodies.size() != (N)) {
-            cerr << "Error: Generating Custom bodies failed." << endl;
             return 1;
         }
     } else if (mode == "preset") {
