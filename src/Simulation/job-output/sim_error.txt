@@ -1,0 +1,11 @@
+
+Lmod is automatically replacing "intel/24.0" with "gcc/13.2.0".
+
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) impi/21.11
+
+Simulation.cpp: In member function ‘void Simulation::run(double, int)’:
+Simulation.cpp:67:35: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<Body>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]
+   67 |         if (omp_get_max_threads() > bodies.size()) {
+      |             ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~

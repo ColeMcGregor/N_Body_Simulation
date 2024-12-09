@@ -1,0 +1,24 @@
+g++ -Xpreprocessor -fopenmp -std=c++17 -Wall -c Simulation.cpp -o Simulation.o
+g++ Simulation.o FileManager.o body.o vector.o -o Simulation -fopenmp
+Using 32 threads:
+
+Simulation reached 0 iterations
+Simulation reached 100000 iterations
+Simulation reached 200000 iterations
+Simulation reached 300000 iterations
+Simulation reached 400000 iterations
+Simulation reached 500000 iterations
+Simulation reached 600000 iterations
+Simulation reached 700000 iterations
+Simulation reached 800000 iterations
+Simulation reached 900000 iterations
+
+1000000 iterations reached, outputting to file...
+
+Computation time: 57.7479 seconds
+
+Destination: ../output.txt
+
+Outputting took 92.7406 seconds
+
+Total elapsed time: 150.489 seconds
