@@ -10,10 +10,10 @@
 class Body
 {
 public:
-        Vector position;     // where the body is
-        Vector velocity;     // how fast it is moving in a given direction
-        Vector acceleration; // how fast it is accelerating in a given direction
-        Vector net_force;    // the net force acting on the body
+        const Vector position;     // where the body is
+        const Vector velocity;     // how fast it is moving in a given direction
+        const Vector acceleration; // how fast it is accelerating in a given direction
+        const Vector net_force;    // the net force acting on the body
         double mass;         // how much stuff it is made of
         double radius;       // how big it is from center to edge
         // special variables
