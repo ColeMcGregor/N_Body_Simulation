@@ -657,8 +657,10 @@ void outputBodies() {
             }
         }
         outputFile << endl; //end the line of children
-        outputFile << "position " << bodies[i].position << endl; //output position
-        outputFile << "velocity " << bodies[i].velocity << endl; //output velocity
+        outputFile << "position ";
+        outputFile << bodies[i].position << endl; //output position
+        outputFile << "velocity ";
+        outputFile << bodies[i].velocity << endl; //output velocity
         outputFile << "mass " << bodies[i].mass << endl; //output mass
         outputFile << "radius " << bodies[i].radius << endl; //output radius
         outputFile << bodies[i].type << endl; //output type
