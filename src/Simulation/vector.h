@@ -25,6 +25,7 @@ struct Vector
     std::vector<Body> relatedBodies;
     Vector(double x_ = 0.0, double y_ = 0.0, double z_ = 0.0);
     double magnitude() const;
+    Vector normalize() const;
     Vector operator+(const Vector &other) const;
     Vector operator-(const Vector &other) const;
     Vector operator*(double scalar) const;

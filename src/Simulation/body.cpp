@@ -64,16 +64,19 @@ Vector Body::gravForce(const Body &p2) const
 
     // Compute the distance vector
     Vector r(p2.position.x - position.x, p2.position.y - position.y, p2.position.z - position.z); // the vectored distance between the two bodies
-    double dist = r.magnitude();                                                                  // the magnitude of the distance between the two bodies
+    double dist = r.magnitude();                                                                   // the magnitude of the distance between the two bodies
     if (dist < epsilon)
     {
         dist = epsilon; // Prevent divide-by-zero or extremely large forces
     }
+
+    Vector r_normalized = r.normalize();
+
     // Compute gravitational force magnitude
     double forceMag = (G * gravitationalMultiplier) * (mass * p2.mass) / ((dist * dist) + (epsilon * epsilon));
 
     // Normalize r(distance from one body to the other, ignoring dimensions) and scale by force magnitude
-    return Vector(r.x / dist * forceMag, r.y / dist * forceMag, r.z / dist * forceMag); // the vectored force between the two bodies
+    return Vector(r_normalized.x * forceMag, r_normalized.y * forceMag, r_normalized.z * forceMag); // the vectored force between the two bodies
 }
 
 /**

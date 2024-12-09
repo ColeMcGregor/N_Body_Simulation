@@ -14,6 +14,13 @@ double Vector::magnitude() const
 {
   return std::sqrt((x * x) + (y * y) + (z * z));
 }
+Vector Vector::normalize() const {
+    double mag = this->magnitude(); // Calculate magnitude
+    if (mag == 0) {
+        throw std::runtime_error("Cannot normalize a zero vector");
+    }
+    return Vector(this->x / mag, this->y / mag, this->z / mag); // Divide components by magnitude
+}
 
 // Vector addition
 Vector Vector::operator+(const Vector &other) const
