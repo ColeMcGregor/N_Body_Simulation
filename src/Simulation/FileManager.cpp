@@ -20,8 +20,8 @@
 using namespace std;
 
 const int SLICING_FACTOR = 60; //iterations output to file every hour
-const int RADII_SCALE_FACTOR = 50000; // scale factor for radii
-const int TRAJECTORY_SCALE_FACTOR = 1000000; // scale factor for trajectories
+const int RADII_SCALE_FACTOR = 1000000; // scale factor for radii
+const int TRAJECTORY_SCALE_FACTOR = 1000000000; // scale factor for trajectories
 
 /**
  * @brief This function is used to load the configuration file and parse the information to create the bodies in the simulation
