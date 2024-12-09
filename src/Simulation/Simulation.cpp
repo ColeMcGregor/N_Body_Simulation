@@ -206,6 +206,7 @@ int main(int argc, char *argv[])
 
     // set the input file
     const string inputFile = string("../") + argv[1]; // "../" is the specific path to the current input file, can be removed depending on where the input file is located
+    const string inputFile = argv[1];
 
     // set the output file
     const string outputFile = "../output.txt";
