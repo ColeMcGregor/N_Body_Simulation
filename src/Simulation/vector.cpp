@@ -46,7 +46,7 @@ Vector Vector::operator/(double scalar) const
  * @return the file with the vector appended(or written if it's a new file)
  */
 std::ofstream& operator<<(std::ofstream& file, const Vector& vec) {
-  file << std::to_string(vec.x) << ", " << std::to_string(vec.y) << ", " << std::to_string(vec.z); // <3
+  file << std::to_string(vec.x) << " " << std::to_string(vec.y) << " " << std::to_string(vec.z); // <3
   file << std::endl;
   return file;
 }
@@ -58,7 +58,7 @@ std::ofstream& operator<<(std::ofstream& file, const Vector& vec) {
  * @return the file with the vector appended(or written if it's a new file)
  */
 std::ostringstream& operator<<(std::ostringstream& stream, const Vector& vec) {
-  stream << std::to_string(vec.x) << ", " << std::to_string(vec.y) << ", " << std::to_string(vec.z); // <3
+  stream << std::to_string(vec.x) << " " << std::to_string(vec.y) << " " << std::to_string(vec.z); // <3
   stream << std::endl;
   return stream;
 }
