@@ -747,10 +747,10 @@ int main() {
     // } else 
     if (mode == "preset") {
         generatePresetBodies();
-        if (bodies.size() != static_cast<size_t>(N)) {
-            cerr << "Error: Generating Preset bodies failed." << endl;
-            return 1;
-        }
+        //if (bodies.size() != static_cast<size_t>(N)) {
+	  //cerr << "Error: Generating Preset bodies failed." << endl;
+            //return 1;
+	    //}
         cout << "Preset system generated with " << bodies.size() << " bodies." << endl;
     }
     //output the bodies to the input.txt file
