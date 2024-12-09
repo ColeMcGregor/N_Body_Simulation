@@ -22,10 +22,10 @@ public:
         std::vector<int> childrenIndices; // the indices of the bodies that are children of this body
         std::vector<Vector> trajectory;   // the trajectory of the body through time
 
-        Body(Vector &pos,
-             Vector &vel,
-             Vector &accel,
-             Vector &net_force,
+        Body(const Vector &pos,
+             const Vector &vel,
+             const Vector &accel,
+             const Vector &net_force,
              const double mass,
              const double radius,
              const double gravitationalMultiplier,
