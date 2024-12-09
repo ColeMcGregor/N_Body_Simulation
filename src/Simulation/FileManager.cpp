@@ -20,7 +20,7 @@
 using namespace std;
 
 const int SLICING_FACTOR = 60; //iterations output to file every hour
-const int RADII_SCALE_FACTOR = 100000; // scale factor for radii
+const int RADII_SCALE_FACTOR = 50000; // scale factor for radii
 const int TRAJECTORY_SCALE_FACTOR = 1000000; // scale factor for trajectories
 
 /**
