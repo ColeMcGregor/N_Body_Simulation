@@ -81,6 +81,7 @@ const Vector SUN_ACCELERATION(0.0, 0.0, 0.0);
 const Vector SUN_NET_FORCE(0.0, 0.0, 0.0);
 
 vector<Vector> trajectory;
+trajectory.reserve(iterations);
 
 //Solar System constants
 const Body SUN = Body(  SUN_POSITION, //position in center of system
@@ -342,6 +343,14 @@ const Body SUN = Body(  SUN_POSITION, //position in center of system
 // }
 
 
+Vector calculateTangentialVelocity(const Vector& position, double speed) {
+    // Return a tangential velocity vector given a position and speed
+    double r = position.magnitude();
+    double vx = -speed * (position.z / r);
+    double vz = speed * (position.x / r);
+    return Vector(vx, 0, vz);
+}
+
 /**
  * generate preset bodies, similar to the solar system
  * N = 297
@@ -379,35 +388,29 @@ void generatePresetBodies() {
 
     // Place the planets around the Sun(mercury to neptune)
     for (size_t i = 1; i < orbitalRadii.size(); ++i) {
-        double r = orbitalRadii[i];
-        // Compute position vector in 3D space
-        double x = r * cos(inclination); // X position
-        double z = r * sin(inclination); // Z position
-        Vector position(x, 0, z); // Start in the XZ plane
+    double r = orbitalRadii[i];
+    double inclination = orbitalInclinations[i] * M_PI / 180.0; // Convert degrees to radians
 
-        // Compute velocity vector tangential to position
-        // Orbital velocity in the plane of inclination
-        double vx = -v * (z / r); // Tangential velocity component in X
-        double vy = v;            // Tangential velocity in Y
-        double vz = v * (x / r);  // Tangential velocity component in Z
+    // Compute position vector in 3D space
+    double x = r * cos(inclination);
+    double z = r * sin(inclination);
+    Vector position(x, 0, z);
 
-        Vector velocity(vx, vy, vz); // Full 3D velocity vector
+    // Compute velocity relative to parent mass
+    double v = sqrt(GRAVITATIONAL_CONSTANT * parentMasses[i - 1] / r);
+    Vector velocity = calculateTangentialVelocity(position, v);
 
-        Vector acceleration(0, 0, 0); // Acceleration is zero
-        Vector net_force(0, 0, 0); // Net force is zero
-        vector<Vector> trajectory;
+    // Create the body
+    Body planet(
+        position, velocity, Vector(0, 0, 0), Vector(0, 0, 0),
+        planetMassRanges[i - 1], planetRadiusRanges[i - 1],
+        gravitationalMultiplier, "planet", {}, trajectory
+    );
 
-        // Create the planet
-        Body planet(
-            position, velocity, acceleration, net_force,
-            planetMassRanges[i - 1], // Mass from range or preset
-            planetRadiusRanges[i - 1], // Radius from range or preset
-            gravitationalMultiplier, "planet", {}, trajectory
-        );
+    bodies.push_back(planet);
+    cout << bodyNames[i] << " created at r = " << r << " with v = " << v << endl;
+}
 
-        bodies.push_back(planet);
-        cout << bodyNames[i] << " created at r = " << r << " with v = " << v << endl;
-    }
 
     // Add Earth's Moon
     double moonR = 3.84e8; // Moon's distance from Earth in meters
