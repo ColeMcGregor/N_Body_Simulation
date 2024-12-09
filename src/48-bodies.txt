@@ -1,0 +1,394 @@
+Timestep 60
+Iterations 1000000
+N 48
+NS 1
+NP 35
+NM 12
+NB 0
+gravitationalMultiplier 1.0
+
+body 0  
+children 1 2 3
+position 0.0 0.0 0.0
+velocity 0.0 0.0 0.0
+mass 1.0e30
+density 1408
+radius 696340000
+star
+
+body 1
+position 1.0e11 0.0 1.0e8
+velocity 0.0 2.98e4 -1.0e2
+mass 6.0e24
+density 5514.0
+radius 6371000
+planet
+
+body 2
+children 4
+position -1.5e11 0.0 -2.0e8
+velocity 0.0 -2.41e4 2.0e2
+mass 5.97e24
+density 5514.0
+radius 6371000
+planet
+
+body 3
+position 0.0 2.2e11 3.0e8
+velocity -2.0e4 0.0 -3.0e2
+mass 6.42e23
+density 3933.0
+radius 3389500
+planet
+
+body 4
+position 1.2e11 2.0e10 -1.5e8
+velocity 1.0e4 2.98e4 1.5e2
+mass 7.34e22
+density 3340
+radius 1737400
+moon
+
+body 5
+position -2.0e11 -1.0e10 2.5e8
+velocity 1.2e4 -2.0e4 -2.5e2
+mass 6.0e24
+density 5270.0
+radius 6051800
+planet
+
+body 6
+position 1.0e11 -2.5e10 -1.8e8
+velocity 1.5e4 1.5e4 1.8e2
+mass 7.34e22
+density 3340
+radius 1737400
+moon
+
+body 7
+position -1.2e11 1.0e11 4.0e8
+velocity -2.1e4 -1.1e4 -4.0e2
+mass 4.87e24
+density 5243.0
+radius 6051800
+planet
+
+body 8
+position 2.5e11 -1.5e11 3.2e8
+velocity -1.5e4 2.0e4 -1.1e2
+mass 3.0e24
+density 5514.0
+radius 6371000
+planet
+
+body 9
+position -3.0e11 1.8e10 -2.4e8
+velocity 1.2e4 1.0e4 2.5e2
+mass 5.97e24
+density 5514.0
+radius 6371000
+planet
+
+body 10
+position 1.5e11 2.2e11 5.0e8
+velocity -2.2e4 -1.0e4 -5.0e2
+mass 6.42e23
+density 3933.0
+radius 3389500
+planet
+
+body 11
+position -1.6e11 -2.5e11 1.0e8
+velocity 3.0e4 -1.5e4 1.0e2
+mass 3.7e22
+density 3340
+radius 1737400
+moon
+
+body 12
+position 1.8e11 -3.2e10 -1.7e8
+velocity 1.4e4 2.3e4 -1.5e2
+mass 6.0e24
+density 5270.0
+radius 6051800
+planet
+
+body 13
+position -2.2e11 3.0e10 4.2e8
+velocity -1.2e4 3.0e4 2.0e2
+mass 7.34e22
+density 3340
+radius 1737400
+moon
+
+body 14
+position 2.0e10 -1.4e11 3.8e8
+velocity -2.1e4 -2.5e4 -3.0e2
+mass 4.87e24
+density 5243.0
+radius 6051800
+planet
+
+body 15
+position 2.7e11 1.5e11 -2.3e8
+velocity 1.3e4 1.8e4 2.4e2
+mass 2.0e24
+density 5500
+radius 6371000
+planet
+
+body 16
+position -1.8e11 -1.2e11 3.7e8
+velocity -1.4e4 2.0e4 -2.3e2
+mass 5.97e24
+density 5514.0
+radius 6371000
+planet
+
+body 17
+position -2.5e11 1.3e11 -3.9e8
+velocity 2.2e4 -1.5e4 3.1e2
+mass 3.6e23
+density 3933.0
+radius 3389500
+planet
+
+body 18
+position 1.4e11 2.8e10 1.8e8
+velocity 2.4e4 -1.2e4 -1.5e2
+mass 7.34e22
+density 3340
+radius 1737400
+moon
+
+body 19
+position -1.7e11 1.0e11 2.3e8
+velocity -1.9e4 2.0e4 -1.0e2
+mass 6.0e24
+density 5270.0
+radius 6051800
+planet
+
+body 20
+position 1.2e11 -1.5e11 3.0e8
+velocity 1.0e4 1.8e4 3.0e2
+mass 3.0e24
+density 5500
+radius 6371000
+planet
+
+body 21
+position 2.0e11 -2.2e11 1.5e8
+velocity -1.5e4 2.8e4 -2.0e2
+mass 5.8e24
+density 5514.0
+radius 6371000
+planet
+
+body 22
+position -1.6e11 1.1e11 -2.7e8
+velocity 1.6e4 -2.4e4 1.7e2
+mass 6.1e24
+density 5514.0
+radius 6371000
+planet
+
+body 23
+position 3.0e11 -3.5e10 3.8e8
+velocity 2.3e4 2.6e4 -3.5e2
+mass 4.6e24
+density 3933.0
+radius 3389500
+planet
+
+body 24
+position -2.1e11 1.6e11 4.2e8
+velocity -1.8e4 1.5e4 3.4e2
+mass 7.8e22
+density 3340
+radius 1737400
+moon
+
+body 25
+position 1.9e11 -2.8e10 -1.2e8
+velocity 1.0e4 -2.3e4 -1.1e2
+mass 5.9e24
+density 5270.0
+radius 6051800
+planet
+
+body 26
+position -1.4e11 2.0e11 2.1e8
+velocity -2.2e4 -1.8e4 2.4e2
+mass 3.5e24
+density 5500
+radius 6371000
+planet
+
+body 27
+position 2.6e11 1.4e10 -2.5e8
+velocity 2.7e4 1.4e4 3.2e2
+mass 6.8e23
+density 3933.0
+radius 3389500
+planet
+
+body 28
+position -2.9e11 -1.5e11 3.1e8
+velocity 1.1e4 2.1e4 -1.8e2
+mass 7.1e22
+density 3340
+radius 1737400
+moon
+
+body 29
+position 1.5e11 2.7e11 -3.0e8
+velocity -1.6e4 2.4e4 -3.0e2
+mass 6.0e24
+density 5270.0
+radius 6051800
+planet
+
+body 30
+position -1.3e11 -2.2e11 2.5e8
+velocity 1.2e4 -1.8e4 2.6e2
+mass 3.9e24
+density 5500
+radius 6371000
+planet
+
+body 31
+position 2.0e11 -1.7e10 -1.9e8
+velocity 2.1e4 1.9e4 -1.0e2
+mass 6.5e23
+density 3933.0
+radius 3389500
+planet
+
+body 32
+position -2.3e11 1.3e11 1.6e8
+velocity 1.4e4 -2.0e4 1.3e2
+mass 7.5e22
+density 3340
+radius 1737400
+moon
+
+body 33
+position 2.1e11 -1.9e11 -3.5e8
+velocity 2.0e4 1.5e4 3.1e2
+mass 4.9e24
+density 5270.0
+radius 6051800
+planet
+
+body 34
+position -1.8e11 1.6e10 2.7e8
+velocity 1.6e4 -1.2e4 -2.3e2
+mass 4.3e24
+density 5500
+radius 6371000
+planet
+
+body 35
+position 2.8e11 -3.1e10 -2.2e8
+velocity -1.3e4 2.2e4 2.1e2
+mass 6.4e23
+density 3933.0
+radius 3389500
+planet
+
+body 36
+position -2.0e11 -2.4e11 3.4e8
+velocity -2.0e4 -1.6e4 -3.6e2
+mass 7.6e22
+density 3340
+radius 1737400
+moon
+
+body 37
+position 1.3e11 -2.5e10 -1.4e8
+velocity 2.5e4 -2.0e4 -1.7e2
+mass 5.6e24
+density 5270.0
+radius 6051800
+planet
+
+body 38
+position -2.7e11 1.8e10 2.6e8
+velocity 1.7e4 1.2e4 2.8e2
+mass 3.3e24
+density 5500
+radius 6371000
+planet
+
+body 39
+position 2.2e11 -1.4e11 3.8e8
+velocity -1.8e4 1.6e4 -3.7e2
+mass 6.7e23
+density 3933.0
+radius 3389500
+planet
+
+body 40
+position -2.4e11 -1.1e11 2.1e8
+velocity -1.1e4 -2.3e4 2.0e2
+mass 7.2e22
+density 3340
+radius 1737400
+moon
+
+body 41
+position 2.9e11 2.6e10 -3.9e8
+velocity 1.5e4 -1.9e4 -3.5e2
+mass 5.2e24
+density 5270.0
+radius 6051800
+planet
+
+body 42
+position -1.1e11 1.9e11 1.3e8
+velocity 1.8e4 2.2e4 -1.6e2
+mass 4.2e24
+density 5500
+radius 6371000
+planet
+
+body 43
+position 1.6e11 -2.1e10 -2.8e8
+velocity -2.3e4 -1.5e4 2.7e2
+mass 6.6e23
+density 3933.0
+radius 3389500
+planet
+
+body 44
+position -1.9e11 -1.5e11 3.3e8
+velocity -2.0e4 1.9e4 -2.5e2
+mass 7.4e22
+density 3340
+radius 1737400
+moon
+
+body 45
+position 2.5e11 1.8e10 -1.7e8
+velocity 1.9e4 -1.7e4 2.1e2
+mass 5.7e24
+density 5270.0
+radius 6051800
+planet
+
+body 46
+position -2.3e11 2.2e11 2.5e8
+velocity -1.2e4 -2.5e4 -1.9e2
+mass 4.5e24
+density 5500
+radius 6371000
+planet
+
+body 47
+position 1.8e11 -1.1e11 3.2e8
+velocity 2.4e4 1.3e4 -3.4e2
+mass 6.3e23
+density 3933.0
+radius 3389500
+planet
