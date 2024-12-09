@@ -20,8 +20,7 @@
 using namespace std;
 
 const int SLICING_FACTOR = 60; //iterations output to file every hour
-const int RADII_SCALE_FACTOR = 10000; // scale factor for radii
-const int TRAJECTORY_SCALE_FACTOR = 100000000; // scale factor for trajectories
+const int SCALE_FACTOR = 1000000; //scale factor for radius
 
 /**
  * @brief This function is used to load the configuration file and parse the information to create the bodies in the simulation
@@ -198,13 +197,13 @@ vector<string> thread_outputs(omp_get_max_threads());
         for (size_t i = 0; i < bodies.size(); i++)
         { // for each body
             // body number, body type, body radius
-            double scaledRadius = bodies[i].radius / RADII_SCALE_FACTOR;
+            double scaledRadius = bodies[i].radius / SCALE_FACTOR;
             local_stream << bodies[i].type << " " << i << " " << scaledRadius << endl; // output the body number, type, and radius
             for (size_t j = 0; j < bodies[i].trajectory.size(); j++)
             {   
                 // output the trajectory of the body
                 if (j % SLICING_FACTOR == 0) {
-                    Vector scaledPosition = bodies[i].trajectory[j] / TRAJECTORY_SCALE_FACTOR;
+                    Vector scaledPosition = bodies[i].trajectory[j] / SCALE_FACTOR;
                     local_stream << scaledPosition; // Using the overloaded << operator
                 }
             }
