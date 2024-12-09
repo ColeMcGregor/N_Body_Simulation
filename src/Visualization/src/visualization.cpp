@@ -16,11 +16,13 @@
 #include "Body.h" // Assuming Body.cpp and Body.h define the Body class
 #include "vector.h" // Assuming Vector is defined here
 
+
 #include <algorithm>
 using namespace std;
 
 
-GLuint earthTexture;
+GLuint earthTexture, starTexture;
+
 /*
     g++ -std=c++11 -o vis visualization.cpp FileReader.cpp Body.cpp Star.cpp Planet.cpp Moon.cpp BlackHole.cpp vector.cpp -framework OpenGL -framework GLUT -I/usr/local/include
 */
@@ -189,18 +191,107 @@ float calculateMaxDistance() {
     return maxDist;
 }
 
-void setMaterialProperties() {
-    GLfloat setAmbient[] = {1.0f, 1.0f,  0.1f, 1.0f};  // Less intense ambient
-    GLfloat setDiffuse[] = {1, 1, 1, 1.0f};  // Diffuse color
-    GLfloat setSpecular[] = {3.0f, 3.0, 3.0f, 1.0f}; // Specular with lower intensity
-    GLfloat setShininess[] = {30.0f};  // Shininess of the planet
+void setMaterialProperties(int id) {
+    GLfloat ambient[4];
+    GLfloat diffuse[4];
+    GLfloat specular[4];
+    GLfloat shininess[1];
 
-    // Apply material properties to the object
-    glMaterialfv(GL_FRONT, GL_AMBIENT, setAmbient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, setDiffuse);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, setSpecular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, setShininess);
+    if (id == 1) {
+        // Gray with metallic highlights
+        ambient[0] = 0.4f; ambient[1] = 0.4f; ambient[2] = 0.4f; ambient[3] = 1.0f;
+        diffuse[0] = 0.8f; diffuse[1] = 0.8f; diffuse[2] = 0.7f; diffuse[3] = 1.0f;
+        specular[0] = 0.9f; specular[1] = 0.9f; specular[2] = 0.9f; specular[3] = 1.0f;
+        shininess[0] = 50.0f;
+    } else if (id == 2) {
+        // Yellowish-Brown with soft highlights
+        ambient[0] = 0.6f; ambient[1] = 0.5f; ambient[2] = 0.2f; ambient[3] = 1.0f;
+        diffuse[0] = 0.9f; diffuse[1] = 0.8f; diffuse[2] = 0.6f; diffuse[3] = 1.0f;
+        specular[0] = 0.3f; specular[1] = 0.3f; specular[2] = 0.2f; specular[3] = 1.0f;
+        shininess[0] = 25.0f;
+    } else if (id == 3) {
+        // Blue with vibrant specular highlights
+        ambient[0] = 0.0f; ambient[1] = 0.2f; ambient[2] = 0.5f; ambient[3] = 1.0f;
+        diffuse[0] = 0.0f; diffuse[1] = 0.4f; diffuse[2] = 1.0f; diffuse[3] = 1.0f;
+        specular[0] = 0.6f; specular[1] = 0.6f; specular[2] = 0.6f; specular[3] = 1.0f;
+        shininess[0] = 80.0f;
+    } else if (id == 4) {
+        // Red-Orange with a rocky appearance
+        ambient[0] = 0.5f; ambient[1] = 0.1f; ambient[2] = 0.0f; ambient[3] = 1.0f;
+        diffuse[0] = 1.0f; diffuse[1] = 0.3f; diffuse[2] = 0.0f; diffuse[3] = 1.0f;
+        specular[0] = 0.2f; specular[1] = 0.1f; specular[2] = 0.0f; specular[3] = 1.0f;
+        shininess[0] = 10.0f;
+    } else if (id == 5) {
+        // Brownish-Orange with subtle highlights
+        ambient[0] = 0.4f; ambient[1] = 0.3f; ambient[2] = 0.2f; ambient[3] = 1.0f;
+        diffuse[0] = 0.9f; diffuse[1] = 0.7f; diffuse[2] = 0.5f; diffuse[3] = 1.0f;
+        specular[0] = 0.3f; specular[1] = 0.2f; specular[2] = 0.1f; specular[3] = 1.0f;
+        shininess[0] = 15.0f;
+    } else if (id == 6) {
+        // Pale Yellow with a smooth finish
+        ambient[0] = 0.6f; ambient[1] = 0.6f; ambient[2] = 0.3f; ambient[3] = 1.0f;
+        diffuse[0] = 0.9f; diffuse[1] = 0.8f; diffuse[2] = 0.5f; diffuse[3] = 1.0f;
+        specular[0] = 0.4f; specular[1] = 0.4f; specular[2] = 0.2f; specular[3] = 1.0f;
+        shininess[0] = 20.0f;
+    } else if (id == 7) {
+        // Light Blue with soft highlights
+        ambient[0] = 0.3f; ambient[1] = 0.6f; ambient[2] = 0.8f; ambient[3] = 1.0f;
+        diffuse[0] = 0.5f; diffuse[1] = 0.8f; diffuse[2] = 1.0f; diffuse[3] = 1.0f;
+        specular[0] = 0.3f; specular[1] = 0.5f; specular[2] = 0.6f; specular[3] = 1.0f;
+        shininess[0] = 30.0f;
+    } else if (id == 8) {
+        // Deep Blue with reflective highlights
+        ambient[0] = 0.0f; ambient[1] = 0.1f; ambient[2] = 0.4f; ambient[3] = 1.0f;
+        diffuse[0] = 0.0f; diffuse[1] = 0.3f; diffuse[2] = 1.0f; diffuse[3] = 1.0f;
+        specular[0] = 0.4f; specular[1] = 0.4f; specular[2] = 0.6f; specular[3] = 1.0f;
+        shininess[0] = 40.0f;
+    } else {
+        // Default white
+        ambient[0] = 0.2f; ambient[1] = 0.2f; ambient[2] = 0.2f; ambient[3] = 1.0f;
+        diffuse[0] = 1.0f; diffuse[1] = 1.0f; diffuse[2] = 1.0f; diffuse[3] = 1.0f;
+        specular[0] = 1.0f; specular[1] = 1.0f; specular[2] = 1.0f; specular[3] = 1.0f;
+        shininess[0] = 50.0f;
+    }
+
+    
+
+    // Apply the material properties
+    glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
 }
+
+void drawRings(float innerRadius, float outerRadius, int segments, float red, float green, float blue) {
+    glPushMatrix();
+
+    // Set vibrant ring colors
+    glDisable(GL_LIGHTING);  // Disable lighting to emphasize color
+    glColor3f(red, green, blue);  // Ring color
+
+    // Draw the ring using a triangle strip
+    glBegin(GL_TRIANGLE_STRIP);
+    for (int i = 0; i <= segments; ++i) {
+        float angle = 2.0f * M_PI * i / segments;
+
+        float xInner = innerRadius * cos(angle);
+        float zInner = innerRadius * sin(angle);
+
+        float xOuter = outerRadius * cos(angle);
+        float zOuter = outerRadius * sin(angle);
+
+        // Inner point
+        glVertex3f(xInner, 0.0f, zInner);
+
+        // Outer point
+        glVertex3f(xOuter, 0.0f, zOuter);
+    }
+    glEnd();
+
+    glEnable(GL_LIGHTING);  // Re-enable lighting for other objects
+    glPopMatrix();
+}
+
 
 void drawRing(float radius, float red, float green, float blue) {
     glColor3f(red, green, blue);  // Set the color for the ring
@@ -253,25 +344,52 @@ void display() {
         // Draw body (planet or star)
         if (type == "star") {
             glDisable(GL_LIGHTING);
-            glColor3f(1.0f, 0.0f, 0.0f);
+            glColor3f(1.0f, 1.0f, 0.0f);
             glPushMatrix();
             glTranslatef(pos.x * scaleFactor, pos.y * scaleFactor, pos.z * scaleFactor);
             glutSolidSphere(scaledRadius / 100, 100, 100);
             glPopMatrix();
             glEnable(GL_LIGHTING);
         }else if (type == "planet") {
-            glColor3f(0.0f, 1.0f, 0.0f);  // Set planet color
+            if (body.getID() == 2) {
+            glColor3f(80.0f, 80.0f, 70.0f);  // Gray
+        } else if (body.getID() == 3) {
+            glColor3f(0.9f, 0.8f, 0.6f);  // Yellowish-Brown
+        } else if (body.getID() == 4) {
+            glColor3f(0.0f, 40.0f, 100.0f);  // Blue
+        } else if (body.getID() == 5) {
+            glColor3f(1.0f, 0.3f, 0.0f);  // Red-Orange
+        } else if (body.getID() == 6) {
+            glColor3f(0.9f, 0.7f, 0.5f);  // Brownish-Orange
+        } else if (body.getID() == 7) {
+            glColor3f(0.9f, 0.8f, 0.5f);  // Pale Yellow
+        } else if (body.getID() == 8) {
+            glColor3f(0.5f, 0.8f, 1.0f);  // Light Blue
+        } else if (body.getID() == 9) {
+            glColor3f(0.0f, 0.3f, 1.0f);  // Deep Blue
+        } else {
+            glColor3f(1.0f, 1.0f, 1.0f);  // Default white for unknown objects
+        }
             glPushMatrix();
-            setMaterialProperties();
+            setMaterialProperties(body.getID());
             glTranslatef(pos.x * scaleFactor, pos.y * scaleFactor, pos.z * scaleFactor);  // Apply scaling
             glutSolidSphere(scaledRadius, 100, 100);
             glPopMatrix();
 
+            if(body.getID() == 6){
+                glPushMatrix();
+                glTranslatef(pos.x * scaleFactor, pos.y * scaleFactor, pos.z * scaleFactor);
+               drawRings(scaledRadius * 1.2f, scaledRadius * 2.0f, 100, 0.8f, 0.8f, 0.5f);
+                glPopMatrix();
+            }
+            
             // Draw orbit ring
             glPushMatrix();
             glTranslatef(0.0f, pos.y * scaleFactor, 0.0f);  // Center the ring around the star
             drawRing(pos.x * scaleFactor, 255.0f, 165.5f, 1.0f);  // Blue ring
             glPopMatrix();
+
+            
 
         }
     }
@@ -287,6 +405,31 @@ void reshape(int w, int h) {
     glLoadIdentity();
     gluPerspective(45.0, (double)w / (double)h, 1.0, 1000.0);
     glMatrixMode(GL_MODELVIEW);
+}
+
+void setupLighting(const Vector& starPosition) {
+    glEnable(GL_LIGHTING);    // Enable lighting
+    glEnable(GL_LIGHT0);      // Enable light source 0
+    glEnable(GL_DEPTH_TEST);  // Enable depth testing for proper rendering
+
+    // Light position
+    GLfloat lightPos[] = { 
+        static_cast<GLfloat>(starPosition.x), 
+        static_cast<GLfloat>(starPosition.y), 
+        static_cast<GLfloat>(starPosition.z), 
+        1.0f  // Positional light
+    };
+
+    // Light properties
+    GLfloat ambientLight[] = { 0.1f, 0.1f, 0.1f, 1.0f };   // Minimal ambient light
+    GLfloat diffuseLight[] = { 1.0f, 1.0f, 0.8f, 1.0f };   // Soft white-yellow light
+    GLfloat specularLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };  // Specular highlights
+
+    // Apply light properties
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
 }
 
 // Function to set up the OpenGL environment
@@ -336,7 +479,7 @@ int main(int argc, char** argv) {
 
     // Initialize OpenGL
     init();
-
+    setupLighting(bodies[1].getPosition()[Body::currIndex]);
     // Register the display function to render the scene
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);                                               // Register the reshape callback
