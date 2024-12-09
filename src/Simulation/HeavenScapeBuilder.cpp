@@ -91,9 +91,9 @@ const Body SUN = Body(  Vector(0.0, 0.0, 0.0), //position in center of system
 /**
  * function used to generate radius of black holes, based on mass, as they have a defined radius based on their mass to be a black hole
  */
-double generateSchwarzchildRadius(double mass) {
-    return (2 * GRAVITATIONAL_CONSTANT * mass) / (SPEED_OF_LIGHT * SPEED_OF_LIGHT);
-}
+// double generateSchwarzchildRadius(double mass) {
+//     return (2 * GRAVITATIONAL_CONSTANT * mass) / (SPEED_OF_LIGHT * SPEED_OF_LIGHT);
+// }
 
 /**
  * generate random bodies, which will have random body counts, and random assignments of children
@@ -424,25 +424,25 @@ void generatePresetBodies() {
  * @param usedRadii the vector of radii that have already been used
  * @return the unique radius
  */
-double generateUniqueRadius(double minRadius, double maxRadius, const std::vector<double> &usedRadii)
-{
-    double radius;
-    bool unique;
-    do
-    {
-        radius = minRadius + (maxRadius - minRadius) * ((double)rand() / RAND_MAX); // Random within bounds
-        unique = true;                                                              // flag to check if the radius is unique
-        for (double r : usedRadii)
-        { // check if the radius is unique
-            if (fabs(radius - r) < 1.0e6)
-            {                   // avoid radii too close to others
-                unique = false; // set the flag to false if the radius is not unique
-                break;          // break out of the loop if the radius is not unique
-            }
-        }
-    } while (!unique);
-    return radius;
-}
+// double generateUniqueRadius(double minRadius, double maxRadius, const std::vector<double> &usedRadii)
+// {
+//     double radius;
+//     bool unique;
+//     do
+//     {
+//         radius = minRadius + (maxRadius - minRadius) * ((double)rand() / RAND_MAX); // Random within bounds
+//         unique = true;                                                              // flag to check if the radius is unique
+//         for (double r : usedRadii)
+//         { // check if the radius is unique
+//             if (fabs(radius - r) < 1.0e6)
+//             {                   // avoid radii too close to others
+//                 unique = false; // set the flag to false if the radius is not unique
+//                 break;          // break out of the loop if the radius is not unique
+//             }
+//         }
+//     } while (!unique);
+//     return radius;
+// }
 
 /**
  * @brief will generate a double value between a given range
@@ -450,12 +450,12 @@ double generateUniqueRadius(double minRadius, double maxRadius, const std::vecto
  * @param maxValue the maximum value of the range
  * @return the double value
  */
-double generateBoundedDouble(double minValue, double maxValue) {
-    double value;
-    //does not have to be unique, as it is used for radii, and not positions
-    value = minValue + (maxValue - minValue) * ((double)rand() / RAND_MAX); // Random within bounds
-    return value;
-}
+// double generateBoundedDouble(double minValue, double maxValue) {
+//     double value;
+//     //does not have to be unique, as it is used for radii, and not positions
+//     value = minValue + (maxValue - minValue) * ((double)rand() / RAND_MAX); // Random within bounds
+//     return value;
+// }
 
 /**
  * @brief calculates the orbital position of a body, depending on the parent body's position and the orbital radius
@@ -463,17 +463,17 @@ double generateBoundedDouble(double minValue, double maxValue) {
  * @param orbitalRadius the orbital radius of the body(this is the distance from the parent body you want to be away from)
  * @return the orbital position of the body
  */
-Vector calculateOrbitalPosition(const Vector &parentPos, double orbitalRadius)
-{
-    double theta = ((double)rand() / RAND_MAX) * 2.0 * M_PI; // Azimuthal angle [0, 2π]
-    double phi = ((double)rand() / RAND_MAX) * M_PI;         // Inclination angle [0, π]
+// Vector calculateOrbitalPosition(const Vector &parentPos, double orbitalRadius)
+// {
+//     double theta = ((double)rand() / RAND_MAX) * 2.0 * M_PI; // Azimuthal angle [0, 2π]
+//     double phi = ((double)rand() / RAND_MAX) * M_PI;         // Inclination angle [0, π]
 
-    double x = orbitalRadius * sin(phi) * cos(theta);       // x position
-    double y = orbitalRadius * sin(phi) * sin(theta);       // y position
-    double z = orbitalRadius * cos(phi);                    // z position
+//     double x = orbitalRadius * sin(phi) * cos(theta);       // x position
+//     double y = orbitalRadius * sin(phi) * sin(theta);       // y position
+//     double z = orbitalRadius * cos(phi);                    // z position
 
-    return Vector(parentPos.x + x, parentPos.y + y, parentPos.z + z); // return the orbital position of the body
-}
+//     return Vector(parentPos.x + x, parentPos.y + y, parentPos.z + z); // return the orbital position of the body
+// }
 
 /**
  * @brief calculates the orbital velocity of a body, depending on the parent body's position and the orbital radius
@@ -483,26 +483,26 @@ Vector calculateOrbitalPosition(const Vector &parentPos, double orbitalRadius)
  * @param gravitationalMultiplier the gravitational multiplier of the simulation
  * @return the orbital velocity of the body
  */
-Vector calculateOrbitalVelocity(const Vector &parentPos, const Vector &childPos, double parentMass, double gravitationalMultiplier)
-{
-    const double G = 6.67430e-11 * gravitationalMultiplier;
+// Vector calculateOrbitalVelocity(const Vector &parentPos, const Vector &childPos, double parentMass, double gravitationalMultiplier)
+// {
+//     const double G = 6.67430e-11 * gravitationalMultiplier;
 
-    // Calculate the distance vector and magnitude
-    Vector r = childPos - parentPos;
-    double distance = r.magnitude();
+//     // Calculate the distance vector and magnitude
+//     Vector r = childPos - parentPos;
+//     double distance = r.magnitude();
 
-    // Orbital speed
-    double speed = sqrt((G * parentMass) / distance);
+//     // Orbital speed
+//     double speed = sqrt((G * parentMass) / distance);
 
-    // Calculate a perpendicular velocity vector
-    Vector unitR = r / distance;           // Unit vector of position
-    Vector velocity(-unitR.y, unitR.x, 0); // Perpendicular in XY-plane
+//     // Calculate a perpendicular velocity vector
+//     Vector unitR = r / distance;           // Unit vector of position
+//     Vector velocity(-unitR.y, unitR.x, 0); // Perpendicular in XY-plane
 
-    // Normalize and scale to orbital speed
-    velocity = velocity * speed;
-    // return the orbital velocity of the body
-    return velocity;
-}
+//     // Normalize and scale to orbital speed
+//     velocity = velocity * speed;
+//     // return the orbital velocity of the body
+//     return velocity;
+// }
 
 /**
  * @brief this algorithm is used to set the correct positions, velocities, and orbital velocities of the bodies
