@@ -64,6 +64,10 @@ public:
         double total_time = 0.0;
 
         // specifies how many bodies a thread will handle at any given time
+	if (omp_get_max_threads() > bodies.size()) {
+	  cerr << "Number of threads cannot exceed the number of bodies" << endl;
+	  exit(1);
+	}
         int chunk_size = bodies.size() / omp_get_max_threads();
 
         #pragma omp parallel
