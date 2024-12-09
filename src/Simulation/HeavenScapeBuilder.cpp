@@ -75,10 +75,10 @@ vector<double> usedRadii;
 vector<Body> bodies;
 
 //fill in vectors for SUN constant
-Vector SUN_POSITION(0.0, 0.0, 0.0);
-Vector SUN_VELOCITY(0.0, 0.0, 0.0);
-Vector SUN_ACCELERATION(0.0, 0.0, 0.0);
-Vector SUN_NET_FORCE(0.0, 0.0, 0.0);
+const Vector SUN_POSITION(0.0, 0.0, 0.0);
+const Vector SUN_VELOCITY(0.0, 0.0, 0.0);
+const Vector SUN_ACCELERATION(0.0, 0.0, 0.0);
+const Vector SUN_NET_FORCE(0.0, 0.0, 0.0);
 
 vector<Vector> trajectory;
 
@@ -92,7 +92,7 @@ const Body SUN = Body(  SUN_POSITION, //position in center of system
                         gravitationalMultiplier, //gravitational multiplier
                         "star", //type
                         vector<int>{1, 2, 3, 4, 5, 6, 7, 8}, //children indices
-                        trajectory{} //trajectory
+                        trajectory //trajectory
                         );
 
 
