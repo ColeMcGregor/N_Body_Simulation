@@ -19,6 +19,8 @@
 #include "vector.h"
 using namespace std;
 
+const int SLICING_FACTOR = 1000; //Thousands of iterations to output to the file
+
 /**
  * @brief This function is used to load the configuration file and parse the information to create the bodies in the simulation
  * @param filePath: the path to the input file
@@ -172,27 +174,6 @@ void FileManager::outputResults(const string &filePath, const vector<Body> &bodi
      */
     file << "N: " << bodies.size() << endl; // N: 10
 
-    /**
-     * below will make a block of parent child relationships, in order of parent index followed by child indices
-     * example:
-     * 0 1 2 3
-     * 1 4 5
-     * 2 6 7
-     * 3 8 9
-     */
-    for (size_t i = 0; i < bodies.size(); i++)
-    {
-        if (bodies[i].childrenIndices.size() > 0)
-        {                     // if the body has children
-            file << i << " "; // output the index of the body
-            for (size_t j = 0; j < bodies[i].childrenIndices.size(); j++)
-            { // output the indices of the children of the body
-                file << bodies[i].childrenIndices[j] << " ";
-            }
-            file << endl;
-        }
-    }
-
 /**
  * below will make a block of body number, body type, body radius, and trajectory for each body
  * example:
@@ -219,7 +200,9 @@ vector<string> thread_outputs(omp_get_max_threads());
             for (size_t j = 0; j < bodies[i].trajectory.size(); j++)
             {   
                 // output the trajectory of the body
-                local_stream << bodies[i].trajectory[j]; // Using the overloaded << operator
+                if (j % SLICING_FACTOR == 0) {
+                    local_stream << bodies[i].trajectory[j]; // Using the overloaded << operator
+                }
             }
         }
         thread_outputs[omp_get_thread_num()] = local_stream.str();
