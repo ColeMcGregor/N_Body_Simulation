@@ -429,6 +429,12 @@ void generatePresetBodies() {
     bodies.push_back(moon);
     cout << "Moon created at r = " << moonR << " from Earth with v = " << moonV << endl;
 
+    //set NB, NS, NP, NM
+    bodyCount[4] = 0;
+    bodyCount[1] = 1;
+    bodyCount[2] = 8;
+    bodyCount[3] = 1;
+
     // Output information
     cout << "Preset solar system generated with " << bodies.size() << " bodies." << endl;
 }
@@ -663,6 +669,7 @@ void outputBodies() {
     outputFile << "NB " << NB << endl;
     //output gravitationalMultiplier
     outputFile << "gravitationalMultiplier " << gravitationalMultiplier << endl;
+    outputFile << endl;
     //output each body
     for (size_t i = 0; i < bodies.size(); ++i) {
         outputFile << "body " << i << endl;
@@ -675,9 +682,9 @@ void outputBodies() {
         }
         outputFile << endl; //end the line of children
         outputFile << "position ";
-        outputFile << bodies[i].position << endl; //output position
+        outputFile << bodies[i].position; //output position
         outputFile << "velocity ";
-        outputFile << bodies[i].velocity << endl; //output velocity
+        outputFile << bodies[i].velocity; //output velocity
         outputFile << "mass " << bodies[i].mass << endl; //output mass
         outputFile << "radius " << bodies[i].radius << endl; //output radius
         outputFile << bodies[i].type << endl; //output type
