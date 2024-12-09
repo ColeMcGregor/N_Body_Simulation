@@ -67,6 +67,7 @@ const double SPEED_OF_LIGHT = 2.99792458e8;       //meters per second
 
 //global variables
 double gravitationalMultiplier;
+int N;
 int timestep;
 int iterations;
 int bodyCount[5];
@@ -102,7 +103,7 @@ double generateSchwarzchildRadius(double mass) {
  *     will check that none of the children are more massive than the parent, and that no children are assigned to themselves, or more than one parent
  */
 void generateRandomBodies() {
-    int N, stars, planets, moons, blackHoles;
+    int stars, planets, moons, blackHoles;
     int currentBlackHoles, currentStars, currentPlanets, currentMoons;
     cout << "Enter the total number of bodies (N): ";
     cin >> N;
@@ -667,10 +668,6 @@ int main() {
     if (gravitationalMultiplier <= 0) {
         cout << "Gravitational multiplier must be greater than 0, Enter Gravitational Multiplier: " << endl;
         cin >> gravitationalMultiplier;
-    }
-    if (stable != true && stable != false) {
-        cout << "Stability must be true or false, Enter Stability: " << endl;
-        cin >> stable;
     }
 
 
