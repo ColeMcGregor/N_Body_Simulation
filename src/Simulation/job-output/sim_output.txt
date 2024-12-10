@@ -22,3 +22,5 @@ Destination: ../output.txt
 Outputting took 92.7406 seconds
 
 Total elapsed time: 150.489 seconds
+
+! THIS IS AN OLD VERSION BEFORE WE PARALLELIZED THE OUTPUT !
